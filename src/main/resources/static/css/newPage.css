@@ -1,0 +1,143 @@
+@CHARSET "UTF-8";
+
+/* 自定义分页控件样式 */
+/* 向左翻页 */
+.pageLeftBtnCon {
+	width: 32px !important;
+	height: 20px !important;
+	border: 1px solid #bfbfbf;
+	cursor: pointer;
+	margin-top: -2px;
+}
+.pageLeftBtn {
+	background-image: url(static/img/left.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	position: absolute;
+    left: 6px !important;
+    top: 2.5px !important;
+    width: 20px !important;
+    height: 16px !important;
+    cursor: pointer;
+    z-index: 5000;
+}
+.pageLeftBtn.leftClick {
+	background-image: url(static/img/left-hover.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.pageLeftBtn.leftUnClick {
+	 cursor: not-allowed;
+}
+
+/* 页数按钮 */
+.indexBtnCon {
+	height: 28px !important;
+	padding: 0px 5px;
+}
+.indexPageBtn {
+	width: 20px !important;
+	height: 20px !important;
+	border: 1px solid #bfbfbf;
+	line-height: 22px;
+	text-align: center;
+	color: #6A707D;
+	cursor: pointer;
+}
+.indexPageBtn.current,
+.indexPageBtn.current:hover {
+	color: #FFF;
+	background: #318BF5;
+}
+.indexPageBtn:hover {
+	color: #318BF5;
+}
+
+/* 向左双箭头翻页 */
+.leftHide {
+	display: none;
+}
+.indexPageBtn.leftDouNext {
+	line-height: 14px;
+}
+.indexPageBtn.leftDouNext:hover {
+	background-image: url(static/img/left-double.png);
+	background-repeat: no-repeat;
+	background-size: 50% 50%;
+	background-position: center;
+}
+
+/* 向右双箭头翻页 */
+.rightHide {
+	display: none;
+}
+.indexPageBtn.rightDouNext {
+	line-height: 14px;
+}
+.indexPageBtn.rightDouNext:hover {
+	background-image: url(static/img/right-double.png);
+	background-repeat: no-repeat;
+	background-size: 50% 50%;
+	background-position: center;
+}
+
+/* 向右翻页 */
+.pageRightBtnCon {
+	width: 32px !important;
+	height: 20px !important;
+	border: 1px solid #bfbfbf;
+	cursor: pointer;
+	margin-top: -2px;
+}
+.pageRightBtn {
+	background-image: url(static/img/right.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	position: absolute;
+    left: 6px !important;
+    top: 2.5px !important;
+    width: 20px !important;
+    height: 16px !important;
+    cursor: pointer;
+    z-index: 5000;
+}
+.pageRightBtn.rightClick {
+	background-image: url(static/img/right-hover.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.pageRightBtn.rightUnClick {
+	 cursor: not-allowed;
+}
+
+/* 跳转Label */
+.tzLabel {
+	height: 24px !important;
+    width: 45px !important;
+    padding-left: 8px;
+}
+
+/* 跳转页数Editor */
+.numEditor {
+	width: 40px !important;
+    margin-top: -3px !important;
+    height: 21px !important;
+}
+.numEditor .editor {
+	text-align: center;
+	padding: 0px !important;
+    width: 40px !important;
+}
+
+/* 页Label */
+.yLabel {
+	height: 24px !important;
+    width: 16px !important;
+    padding-left: 8px;
+}
+
+
+
+
+
+

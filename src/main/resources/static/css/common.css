@@ -1,0 +1,535 @@
+@CHARSET "UTF-8";
+
+/* 按钮样式 */
+.d-button.sure,
+.d-button.simple {
+	padding: 16px 12px;
+}
+
+.d-button.simple .button-left,
+.d-button.sure .button-left {
+	margin: -12px 3px 0 3px;
+}
+
+/* sure按钮 */
+.d-button.sure {
+	background: #318BF5;
+    color: #fff;
+}
+
+.d-button.sure .button-left .d-icon {
+	margin-top: 3px;
+    color: #fff;
+}
+
+.d-button.sure:hover {
+	background: #5AA2F7;
+}
+
+/* simple按钮 */
+.d-button.simple {
+	background: #f7f7f7;
+}
+
+.d-button.simple .button-left .d-icon {
+	margin-top: 3px;
+    color: #000;
+}
+
+.d-button.simple:hover {
+	background: #fff;
+}
+
+/* 通用表格操作列 */
+.commonLabel,
+.delLabel {
+	font-size: 13px;
+	cursor: pointer;
+	visibility: visible;
+	margin-left: 20px;
+}
+
+/* 表格操作other功能 */
+.commonLabel {
+	color: #2196ff;
+}
+
+/* 表格操作删除功能 */
+.delLabel {
+	color: #FF5723;
+}
+
+
+/* autoForm样式 */
+.d-auto-form .d-form-layout-row .form-label {
+	margin-top: 3px;
+}
+
+.d-auto-form .d-form-layout .d-text-box,
+.d-auto-form .d-form-layout .d-text-box .editor {
+	height: 32px !important;
+}
+
+.d-text-box .editor,
+.d-form-element .form-content .form-editor .editor,
+.d-form-element .form-content .d-text-area .textarea {
+    padding: 0px 0px 0px 14px !important;
+    width: calc(100% - 16px) !important;
+}
+
+.editor.blank-text,
+.d-form-element .form-content .form-editor .editor.blank-text {
+	font-style: inherit !important;
+	color: #AAA !important;
+}
+
+.d-form-element .form-content .form-editor .d-icon-button .d-icon {
+	background-size: 80% 80%;
+}
+
+.d-auto-form .d-form-layout .d-text-box .d-trigger {
+	height: 32px;
+}
+
+.d-auto-form .d-form-layout .d-text-box .d-trigger .d-icon {
+	margin-top: 6px;
+}
+
+.d-form-element .form-label-required:before {
+	left: 5px !important;
+	content: "" !important;
+	background-image: url(static/img/bt-1x.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 13px !important;
+    height: 13px !important;
+    top: 6px !important;
+}
+
+.d-form-element .form-label-align-left {
+	text-align: right !important;
+}
+
+.d-auto-form .d-form-layout .d-text-box .d-trigger .d-icon {
+	margin: 6px 3px 0px 0px !important;
+}
+
+.d-text-box:hover,
+.d-text-box.d-focused {
+	border-color: #00c1de !important;
+}
+
+/* 表格表头工具栏 */
+.header-option-button {
+	display: none !important;
+}
+
+
+
+/* 公共表格样式 */
+.d-grid .header-table .header {
+	background: #F3F3F3;
+	height: 35px;
+	font-size: 13px;
+}
+/* 勾选框大小 */
+.d-checkbox-icononly {
+	height: 16px;
+	width: 16px;
+}
+
+/* 列标题换行样式 */
+.d-grid .header-table .header > .cell {
+	word-break: normal !important;
+    display: block !important; 
+    white-space: pre-wrap !important;
+    word-wrap : break-word !important;
+    overflow: hidden !important;
+    line-height: 18px !important;
+}
+
+/* 单元格时间换行 */
+.dateLink {
+	word-break: normal !important;
+    display: block !important; 
+    white-space: pre-wrap !important;
+    word-wrap : break-word !important;
+    overflow: hidden !important;
+    line-height: 18px !important;
+    height: 35px !important;
+}
+
+.d-grid .data-table .row {
+	height: 35px;
+	font-size: 12px;
+}
+.d-grid-cell-editor .d-text-box {
+	height: 32px;
+}
+.d-grid-cell-editor .d-text-box > .editor-wrapper > .editor {
+	font-size: 13px;
+	height: 32px !important;
+}
+.d-grid .data-table .row:hover {
+	background: #d1ecff;
+}
+.d-grid .data-table .current-row {
+	background: #d1ecff;
+	color: #000;
+}
+.d-grid .frame-table .hover-row,
+.d-grid .data-table .hover-row,
+.d-grid .data-table .row .current-cell {
+	background: #d1ecff !important;
+}
+.d-grid {
+    background-color: #FFF;
+}
+.d-grid .frame-table {
+	width: 100%;
+}
+.d-grid .data-table .row td:last-child {
+	border-right: 1px solid #E5E5E5;
+}
+.d-grid .data-table .row td {
+	border-top: 0px solid #E5E5E5;
+	border-left: 0px solid #E5E5E5;
+    border-right: 0px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+}
+.d-grid .header-table {
+	border-right: 1px solid #E5E5E5;
+}
+.d-grid .cell,
+.d-grid .header-table .header > .cell {
+	padding: 2px 10px 0px 10px;
+	-webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.d-grid .header-table .header > .cell {
+	color: #333 !important;
+}
+.d-grid .header-table .header {
+	border-top: 1px solid #E5E5E5;
+	border-left: 1px solid #EEEEEE;
+    border-bottom: 1px solid #E5E5E5;
+    border-right: 0px solid #EEEEEE;
+}
+.d-grid .header-table .header .caption-required:before {
+	color: #318BF5;
+}
+.d-shadow-sides {
+	-webkit-box-shadow: 0 4px 8px 0 #f0f0f0 !important;
+    -moz-box-shadow: 0 4px 8px 0 #f0f0f0 !important;
+    box-shadow: 0 4px 8px 0 #f0f0f0 !important;
+}
+/* 表格单元格下拉图标 */
+.d-grid-cell-editor > div > .d-icon-button.d-trigger.d-trigger-clear {
+	height: 33px !important;
+}
+.d-grid-cell-editor > div > .d-icon-button.d-trigger.d-trigger-clear > div {
+	padding-top: 7px;
+}
+.d-grid-cell-editor > div > .d-icon-button.d-trigger {
+	height: 31px;
+}
+.d-grid-cell-editor > div > .d-icon-button.d-trigger > .d-icon.d-trigger-icon-drop {
+	padding-top: 6px;
+}
+.d-text-box .d-trigger:hover {
+	background: none !important;
+	color: #7986A9;
+}
+
+.d-grid .data-table .selected-row {
+	color: #000 !important;
+	background: #FFF !important;
+}
+
+.d-grid .header-table .header .caption-required:before {
+	top: 0px !important;
+}
+
+
+/* 公共panel标题样式*/
+.d-panel .d-caption-bar {
+	height: 30px;
+	background-color: #fff !important;
+	border-bottom: 1px solid #FFF;
+	color: #333333;
+}
+
+.panel-body {
+	background: #FFF !important;
+}
+
+.d-panel > .d-caption-bar > .caption {
+	margin-top: 8px;
+    border-left: 2px solid #318BF5;
+    height: 14px;
+    font-size: 14px;
+    padding: 0px 8px;
+    margin-left: 10px !important;
+    line-height: 14px !important;
+}
+
+/* 上传等待提示框 */
+
+#d_dialogUploadTip > .dialog-header,
+#d_dialogUploadTip > .dialog-footer{
+	height: 0px !important;
+}
+
+#d_upTipIcon {
+	background-image: url(static/img/loading.gif);
+	background-repeat: no-repeat;
+	background-size: 100%;
+	position: absolute;
+    left: 10px !important;
+    top: 4px !important;
+}
+
+#d_upTipLabel {
+	position: absolute;
+    left: 80px !important;
+    top: 23px !important;
+    height: 62px;
+    font-size: 15px;
+    font-family: monospace;
+    height: 30px !important;
+}
+
+.d-form-element .form-content .form-hint .d-data-message {
+	margin-top: 5px;
+}
+
+.commonCon {
+	background: #FFF !important;
+}
+
+/* 分页 */
+.d-toolbar {
+	background: #FFF !important;
+}
+
+.d-modal-mask {
+	opacity: 0.2 !important;
+}
+
+/* dataSetDropDown */
+.d-drop-down-box .d-list-box .data-table .row {
+	height: 35px !important;
+}
+
+.d-drop-down-box .d-list-box .data-table .current-row,
+.d-drop-down-box .d-list-box .data-table .row:hover {
+	background: #d1ecff;
+	color: #666;
+}
+
+/* 日期控件 */
+.d-date-picker .date-block .date-table td.selected-date,
+.d-date-picker .d-button-highlight {
+	background-color: #318BF5 !important;
+}
+
+.d-date-picker .date-block .date-table td:hover,
+.d-date-picker .d-button-highlight.d-button-hover {
+	background-color: #4697F6 !important;
+}
+.d-auto-form .d-form-layout .d-text-area,
+.d-auto-form .d-form-layout .d-text-box {
+	width: 99% !important;
+}
+
+/* 勾选框 */
+.d-checkbox .icon.checked {
+	color: #FFF;
+    font-size: 10px;
+    background: #318BF5;
+}
+
+/* 操作及异常提示框 */
+.d-shadow-frame {
+	-webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8) !important;
+    -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8) !important;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.8) !important;
+}
+.d-dialog.d-message-box {
+	width: 380px !important;
+}
+.d-dialog.d-message-box .d-caption-bar {
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.d-dialog.d-message-box .d-caption-bar .button-group .d-close-button {
+	position: absolute;
+    right: 20px;
+    font-size: 1.8em;
+    color: #AAA;
+    top: 10px;
+}
+.d-dialog.d-message-box .d-caption-bar .button-group .d-close-button:hover {
+	border-color: #FFF !important;
+	color: #999;
+} 
+
+.d-dialog.d-message-box .d-caption-bar .caption {
+	color: #121212;
+    line-height: 26px;
+    position: absolute;
+    top: 6px;
+    padding-left: 18px;
+}
+
+.d-dialog.d-message-box .question-icon:before {
+	content: "" !important;
+}
+.d-dialog.d-message-box .dialog-body .content-panel {
+	padding: 0 !important;
+	height: auto !important;
+}
+.d-dialog.d-message-box .dialog-body .content-panel .msg-content {
+	min-height: 40px !important;
+	padding: 30px 20px 10px 65px !important;
+}
+.d-dialog.d-message-box .dialog-body .content-panel .msg-content .msg-icon {
+	background-image: url(static/img/delTipIcon.png) !important;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 26px !important;
+    height: 26px !important;
+    position: absolute;
+    top: 28px;
+    left: 18px;
+}
+.d-dialog.d-message-box .dialog-body .content-panel .msg-content .msg-text {
+	font-size: 14px;
+    color: #666;
+    /* position: absolute;
+    top: 31px;
+    left: 64px; */
+}
+
+.d-dialog.d-message-box .dialog-body .button-panel {
+	padding: 7px 18px 15px 0px !important;
+    text-align: right;
+    height: 26px;
+}
+
+.d-dialog.d-message-box .dialog-body .button-panel .d-button {
+	width: 80px;
+    padding-top: 3px;
+    height: 32px;
+    font-size: 14px;
+    min-width: 80px !important;
+}
+.d-dialog.d-message-box .dialog-body .button-panel .d-button:nth-child(1) {
+	margin-right: 10px;
+	background: #318BF5;
+}
+
+.d-dialog.d-message-box .dialog-body .button-panel .d-button:nth-child(2),
+.d-dialog.d-message-box .dialog-body .button-panel .d-button:nth-child(2):hover {
+	color: #666;
+	background: #FFF;
+}
+
+/* 静默提示 */
+.d-tip.d-tip-floating {
+	/* top: calc(100% - 140px) !important; */
+	margin-top: -25px !important;
+    background: #539ff8;
+}
+
+/* a标签 */
+a {
+	margin-left: 20px;
+    color: #2196ff !important;
+    text-decoration: unset !important;
+    font-size: 13px;
+}
+
+
+/* tabbar */
+.d-tabbar {
+	background: #f2f6ff;
+	border: 1px solid #e4e7ed;
+}
+
+.d-tabbar,
+.d-tabbar .tabs-wrap,
+.d-tabbar .tabs-wrap .tabs,
+.d-tabbar .tabs-wrap .tabs .tab,
+.d-tabbar .tabs-wrap .tabs .tab span {
+	height: 35px !important;
+}
+
+.d-tabbar .tabs-wrap .tabs .tab {
+	padding: 0px 18px !important;
+	font-size: 13px !important;
+	border-radius: 0px !important;
+	cursor: pointer;
+	background: #f2f6ff;
+}
+
+.d-tabbar .tabs-wrap .tabs {
+	padding: 0px !important;
+}
+
+.d-tabbar .tabs-wrap .tabs .tab:hover,
+.d-tabbar.d-tabbar-top .tab-selected {
+	-webkit-box-shadow: inset 0 0 0 #15a4fa !important;
+    -moz-box-shadow: inset 0 0 0 #15a4fa !important;
+    box-shadow: inset 0 0 0 #15a4fa !important;
+}
+
+.d-tabbar .tabs-wrap .tabs .tab:hover,
+.d-tabbar.d-tabbar-top .tab-selected {
+	background: #fff !important;
+	color: #5AA2F7;
+}
+
+.d-tabbar .tabs-wrap .tabs .tab .tab-left {
+	margin-right: 0px !important;
+}
+
+.d-tabbar .tabs-wrap .tabs .tab .tab-left .caption {
+	line-height: 35px !important;
+}
+
+.d-radio .icon:before,
+.d-radio:hover .icon:before, 
+.d-radio-focused .icon:before {
+	background-color: #5AA2F7 !important;
+}
+
+/* d-tag-editor */
+.d-tag-editor {
+	min-height: 45px !important;
+}
+
+.d-tag-editor .tag-container {
+    width: 500px !important;
+}
+
+.d-tag-editor .tag-container .tag {
+	border-radius: 0px !important;
+	background: #5AA2F7 !important;
+	color: #FFF;
+}
+
+.d-tag-editor .tag-container .tag .close {
+	line-height: 18px !important;
+	color: #97efd1;
+}
+
+.d-tag-editor .d-icon-button {
+	margin-top: 8px !important;
+	background: #FFF !important;
+}
+
+.d-tag-editor .d-icon-button:hover {
+	border: 1px solid #FFF;
+	color: #5AA2F7;
+}

@@ -1,0 +1,98 @@
+#d_floatPanel {
+	-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.login {
+    -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+}
+
+.login .top {
+	background-color: #4285f4;
+	 -webkit-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.4);
+}
+
+.login .top .banner {
+	background-image: url(static/img/malagu-logo.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%; 
+}
+
+.login .app-name {
+	color: #fff;
+    font-size: 1.7em;
+    text-align: center;
+}
+
+.login .panel-body {
+	background-color: #fff; 
+}
+
+.login .login-btn {
+	display: block;
+	height: 40px;
+}
+
+.login .login-btn.d-button .button-left {
+	height: 40px;
+	line-height: 40px;
+}
+
+.login .login-btn .caption {
+	font-size: 1.5em;
+}
+
+.login .d-text-box {
+	height: 35px !important;
+	line-height: 35px !important;
+	border: 1px solid #DCDEE0;
+}
+
+
+
+.login .d-tip {
+	background-color: #ff4a4f;
+}
+
+.fa:before {
+	position: absolute;
+    z-index: 100;
+    left: 10px;
+    top: 8px;
+    font-size: 22px;
+    color: #bebebe;
+}
+
+.d-auto-form .d-form-layout .d-text-box {
+	height: 35px !important;
+	line-height: 35px !important;
+	border: 1px solid #DCDEE0;
+}
+
+.d-auto-form .d-form-layout-row .d-form-element .d-text-box .editor {
+	height: 35px !important;
+	width: 265px !important;
+	padding: 0px !important;
+}
+
+.d-dirty-flag {
+	display: none;
+}
+
+.login .d-text-box .editor {
+	height: 35px !important;
+    font-size: 13px;
+    padding-left: 6px !important;
+    width: 265px !important;
+    margin-left: 35px;
+}
+
+.blank-text {
+	font-style: normal !important;
+}
+

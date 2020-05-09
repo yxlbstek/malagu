@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+#d_calendarForm .d-form-element .form-label-required:before {
+	left: 25px !important;
+}
+
+#d_jobForm tr:nth-child(2) .d-form-element .form-label-required:before,
+#d_jobForm tr:nth-child(3) .d-form-element .form-label-required:before {
+	left: 25px !important;
+}
+
+

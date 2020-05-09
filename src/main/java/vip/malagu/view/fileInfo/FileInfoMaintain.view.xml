@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="FileInfo">
+      <Property name="creationType">vip.malagu.orm.FileInfo</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="catagoryId">
+        <Property></Property>
+        <Property name="label">业务分类ID</Property>
+      </PropertyDef>
+      <PropertyDef name="businessId">
+        <Property></Property>
+        <Property name="label">业务数据ID</Property>
+      </PropertyDef>
+      <PropertyDef name="module">
+        <Property></Property>
+        <Property name="label">所属模块</Property>
+      </PropertyDef>
+      <PropertyDef name="position">
+        <Property></Property>
+        <Property name="label">位置</Property>
+      </PropertyDef>
+      <PropertyDef name="fileName">
+        <Property></Property>
+        <Property name="label">文件名称</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">文件路径</Property>
+      </PropertyDef>
+      <PropertyDef name="type">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">文件类型</Property>
+      </PropertyDef>
+      <PropertyDef name="size">
+        <Property name="dataType">Double</Property>
+        <Property name="label">文件大小</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">上传日期</Property>
+      </PropertyDef>
+      <PropertyDef name="username">
+        <Property></Property>
+        <Property name="label">上传人用户名</Property>
+      </PropertyDef>
+      <PropertyDef name="creator">
+        <Property></Property>
+        <Property name="label">上传人</Property>
+      </PropertyDef>
+      <PropertyDef name="remark">
+        <Property></Property>
+        <Property name="label">备注</Property>
+        <Validator name="validator1" type="length">
+          <Property name="maxLength">100</Property>
+          <Property name="resultMessage">输入内容过长、不能超过100字</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="op">
+        <Property name="submittable">false</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Upload">
+      <PropertyDef name="fileName"/>
+      <PropertyDef name="fileType">
+        <Property name="mapping">
+          <Property name="mapValues">${dict.items('fileType')}</Property>
+          <Property name="keyProperty">key</Property>
+          <Property name="valueProperty">value</Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="remark"/>
+    </DataType>
+    <DataType name="Query">
+      <PropertyDef name="fileName">
+        <Property></Property>
+        <Property name="label">文件名称</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">上传日期</Property>
+      </PropertyDef>
+      <PropertyDef name="creator">
+        <Property></Property>
+        <Property name="label">上传人</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dsFileInfo">
+      <ClientEvent name="beforeLoadData" signature="self,arg,searchForm">var param = {&#xD;
+	fileName: null,&#xD;
+	createDate: null,&#xD;
+	creator: null&#xD;
+}&#xD;
+&#xD;
+var formEntity = searchForm.get(&quot;entity&quot;);&#xD;
+if (formEntity) {&#xD;
+	param.fileName = formEntity.get(&quot;fileName&quot;);&#xD;
+	param.createDate = formEntity.get(&quot;createDate&quot;);&#xD;
+	param.creator = formEntity.get(&quot;creator&quot;);&#xD;
+}&#xD;
+self.set(&quot;parameter&quot;, param);</ClientEvent>
+      <Property name="dataType">[FileInfo]</Property>
+      <Property name="pageSize">10</Property>
+      <Property name="dataProvider">fileInfoController#load</Property>
+    </DataSet>
+    <Panel>
+      <Property name="caption">文件查询</Property>
+      <Property name="height">100</Property>
+      <Property name="style">
+        <Property name="border-bottom">1px solid #e5e5e5</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <Container>
+          <Property name="style">
+            <Property name="padding-left">8px</Property>
+          </Property>
+          <AutoForm id="searchForm" layoutConstraint="left">
+            <Property name="cols">*,*,*</Property>
+            <Property name="dataType">Query</Property>
+            <Property name="createPrivateDataSet">true</Property>
+            <Property name="width">70%</Property>
+            <Property name="labelWidth">60</Property>
+            <AutoFormElement>
+              <Property name="name">fileName</Property>
+              <Property name="property">fileName</Property>
+              <Editor>
+                <TextEditor>
+                  <Property name="blankText">请输入</Property>
+                </TextEditor>
+              </Editor>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">createDate</Property>
+              <Property name="property">createDate</Property>
+              <Property name="trigger">dateDropDown</Property>
+              <Property name="editable">false</Property>
+              <Editor>
+                <TextEditor>
+                  <Property name="blankText">请选择</Property>
+                </TextEditor>
+              </Editor>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">creator</Property>
+              <Property name="property">creator</Property>
+              <Editor>
+                <TextEditor>
+                  <Property name="blankText">请输入</Property>
+                </TextEditor>
+              </Editor>
+            </AutoFormElement>
+          </AutoForm>
+          <Button layoutConstraint="left">
+            <ClientEvent name="onClick" signature="self,arg,dsFileInfo">dsFileInfo.flush();&#xD;
+&#xD;
+</ClientEvent>
+            <Property name="caption">查询</Property>
+            <Property name="className">sure</Property>
+            <Property name="style">
+              <Property name="margin-top">8px</Property>
+            </Property>
+          </Button>
+          <Button>
+            <ClientEvent name="onClick" signature="self,arg,searchForm">searchForm.set(&quot;entity&quot;, {});</ClientEvent>
+            <Property name="caption">重置</Property>
+            <Property name="className">simple</Property>
+            <Property name="style">
+              <Property name="margin-top">8px</Property>
+              <Property name="margin-left">10px</Property>
+            </Property>
+          </Button>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <Panel layout="padding:8">
+      <Property name="caption">文件信息列表</Property>
+      <Buttons/>
+      <Children>
+        <Container layout="hbox align:center;pack:end">
+          <Property name="height">40</Property>
+          <Property name="contentOverflow">hidden</Property>
+          <Button id="addBtn">
+            <Property name="caption">文件上传</Property>
+            <Property name="className">sure</Property>
+            <Property name="action">uploadAction</Property>
+          </Button>
+        </Container>
+        <DataGrid id="dgFileInfo">
+          <Property name="dataSet">dsFileInfo</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="filterMode">serverSide</Property>
+          <RowNumColumn>
+            <ClientEvent name="onRenderHeaderCell">arg.dom.innerHTML = &quot;&lt;span>序号&lt;/span>&quot;;</ClientEvent>
+            <Property name="width">60</Property>
+            <Property name="align">center</Property>
+          </RowNumColumn>
+          <DataColumn name="fileName">
+            <ClientEvent name="onRenderCell">/*$(arg.dom).off(&quot;click&quot;);&#xD;
+$(arg.dom)&#xD;
+	.text(arg.data.get(&quot;fileName&quot;) || &quot;&quot;)&#xD;
+	.addClass(&quot;link&quot;)&#xD;
+	.click(function() {&#xD;
+		var path = arg.data.get(&quot;path&quot;);&#xD;
+		var fileName = arg.data.get(&quot;fileName&quot;);&#xD;
+		var sIndex = path.indexOf(&quot;static&quot;) - 1;&#xD;
+		var eIndex = path.indexOf(fileName);&#xD;
+		var showPath = path.substring(sIndex, eIndex) + fileName;&#xD;
+		//window.open(showPath.replace(/\//g,&quot;/&quot;));&#xD;
+	});*/&#xD;
+arg.processDefault = true;</ClientEvent>
+            <Property name="property">fileName</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn name="createDate">
+            <Property name="property">createDate</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn name="creator">
+            <Property name="property">creator</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn name="remark">
+            <Property name="property">remark</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn>
+            <ClientEvent name="onRenderCell" signature="self,arg,dgFileInfo,updateAction,ajaxActionFile,downloadAction">var btns = [];&#xD;
+&#xD;
+//if (window['downloadBtn']) {&#xD;
+	var mb = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;commonLabel&quot;,&#xD;
+		content: &quot;下载&quot;,&#xD;
+		onclick: function() {&#xD;
+			var fileInfo = dgFileInfo.get(&quot;currentEntity&quot;);&#xD;
+			ajaxActionFile.set(&quot;parameter&quot;, fileInfo.get(&quot;path&quot;)).execute(function(result) {&#xD;
+				if (result) {&#xD;
+					downloadAction.set(&quot;parameter&quot;, {&#xD;
+						path: fileInfo.get(&quot;path&quot;),&#xD;
+						fileName: fileInfo.get(&quot;fileName&quot;)&#xD;
+					}).execute();&#xD;
+				} else {&#xD;
+					window.tip(&quot;文件不存在.&quot;);&#xD;
+				}&#xD;
+			});&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(mb);&#xD;
+//}&#xD;
+//if (window['deleteBtn']) {&#xD;
+	var db = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;delLabel&quot;,&#xD;
+		content: &quot;删除&quot;,&#xD;
+		onclick: function() {&#xD;
+			var entity = dgFileInfo.get(&quot;currentEntity&quot;);&#xD;
+			dorado.MessageBox.confirm(&quot;确认删除？&quot;, function() {&#xD;
+				entity.remove();&#xD;
+				updateAction.execute();&#xD;
+			});&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(db);&#xD;
+//}&#xD;
+&#xD;
+$(arg.dom).empty().xCreate(btns);&#xD;
+&#xD;
+//if (window['showBtn']) {&#xD;
+	if (arg.data.get(&quot;path&quot;)) {&#xD;
+		var index = arg.data.get(&quot;path&quot;).indexOf(&quot;static&quot;);&#xD;
+		var path = arg.data.get(&quot;path&quot;).substring(index, arg.data.get(&quot;path&quot;).length);&#xD;
+		if (path.indexOf(&quot;project&quot;) != -1) {&#xD;
+			path = path.substring(path.indexOf(&quot;project&quot;), arg.data.get(&quot;path&quot;).length);&#xD;
+		}&#xD;
+		&#xD;
+		var name = arg.data.get(&quot;fileName&quot;);&#xD;
+		var index = name.lastIndexOf(&quot;.&quot;);&#xD;
+		var suf = name.substring(index + 1, name.length);&#xD;
+		if (suf == &quot;doc&quot;&#xD;
+				|| suf == &quot;docx&quot; || suf == &quot;xls&quot;&#xD;
+				|| suf == &quot;xlsx&quot; || suf == &quot;ppt&quot;) {&#xD;
+			var pathIndex = path.lastIndexOf(&quot;.&quot;);&#xD;
+			path = path.substring(0, pathIndex + 1) + &quot;pdf&quot;;&#xD;
+		}&#xD;
+		var h = &quot;&lt;a href='&quot; + path + &quot;' target='_Blank'>查看&lt;/a>&quot;;&#xD;
+		$(h).appendTo(arg.dom);&#xD;
+	}&#xD;
+//}&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+            <Property name="property">op</Property>
+            <Property name="name">op</Property>
+            <Property name="width">180</Property>
+            <Property name="caption">操作</Property>
+            <Property name="align">center</Property>
+            <Editor/>
+          </DataColumn>
+        </DataGrid>
+        <Container id="pageControl" layout="hbox align:center;pack:end" layoutConstraint="bottom">
+          <ClientEvent name="onReady">window.initPage(view.get(&quot;#dsFileInfo&quot;), self);</ClientEvent>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <UpdateAction id="updateAction">
+      <Property name="successMessage">保存成功.</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="dataResolver">fileInfoController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsFileInfo</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UploadAction id="uploadAction">
+      <ClientEvent name="beforeFileUpload" signature="self,arg,dialogUploadTip">&#xD;
+/*self.set(&quot;parameter&quot;, {&#xD;
+	projectId: window.parent.param.projectId,&#xD;
+	relevantModule: &quot;projectDatum&quot;,&#xD;
+    fileName: arg.file.name,&#xD;
+    type: uploadEntity.get(&quot;fileType&quot;),&#xD;
+    remark: uploadEntity.get(&quot;remark&quot;) || &quot;&quot;&#xD;
+});*/&#xD;
+&#xD;
+dialogUploadTip.show();</ClientEvent>
+      <ClientEvent name="onFilesAdded" signature="self,arg,dsFileInfo,formUpload">/*var fileName = null;&#xD;
+arg.files.each(function(file){&#xD;
+	fileName = file.name;&#xD;
+});&#xD;
+var fileInfo = dsFileInfo.getData(&quot;#&quot;);&#xD;
+fileInfo.set(&quot;fileName&quot;, fileName);&#xD;
+formUpload.get(&quot;entity&quot;).set(&quot;fileName&quot;, fileName);*/&#xD;
+&#xD;
+</ClientEvent>
+      <ClientEvent name="onFileUploaded" signature="self,arg,dialogUploadTip,dsFileInfo">dsFileInfo.flush();&#xD;
+dialogUploadTip.hide();</ClientEvent>
+      <ClientEvent name="onError" signature="self,arg,dialogUploadTip">dialogUploadTip.hide();</ClientEvent>
+      <Property name="fileResolver">uploader#upload</Property>
+      <Property name="successMessage">上传成功.</Property>
+      <Property name="maxFileSize">6000MB</Property>
+      <Filters/>
+    </UploadAction>
+    <DownloadAction id="downloadAction">
+      <Property name="fileProvider">uploader#download</Property>
+      <Property name="successMessage">下载成功.</Property>
+    </DownloadAction>
+    <AjaxAction id="ajaxActionFile">
+      <Property name="service">fileInfoController#exist</Property>
+    </AjaxAction>
+    <Dialog id="dialogUploadTip">
+      <Property name="closeable">false</Property>
+      <Property name="width">280</Property>
+      <Property name="height">70</Property>
+      <Property name="showCaptionBar">false</Property>
+      <Property name="contentOverflow">hidden</Property>
+      <Buttons/>
+      <Children>
+        <Container id="upTipIcon" layoutConstraint="left">
+          <Property name="width">60</Property>
+          <Property name="height">60</Property>
+        </Container>
+        <Label id="upTipLabel" layoutConstraint="left">
+          <Property name="text">文件上传中...</Property>
+        </Label>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DateDropDown id="dateDropDown">
+      <Property name="icon">/static/img/date.png</Property>
+      <Property name="autoOpen">true</Property>
+    </DateDropDown>
+  </View>
+</ViewConfig>

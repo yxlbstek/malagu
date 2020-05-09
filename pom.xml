@@ -1,0 +1,154 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- 继承的父项目 -->
+	<parent>
+		<groupId>com.bstek.bdf3</groupId>
+		<artifactId>bdf3-starter-parent</artifactId>
+		<version>2.0.2.RELEASE</version>
+	</parent>
+	<artifactId>malagu</artifactId>
+	<dependencies>
+		<!-- bdf3预定义依赖，简化依赖的复杂度 -->
+		<dependency>
+			<groupId>com.bstek.bdf3</groupId>
+			<artifactId>bdf3-starter-multitenant</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-core</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- 定时任务 -->
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-quartz</artifactId>
+	    </dependency>
+		
+		<!-- redis -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		
+		<dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.38</version>
+		</dependency>
+		
+		<!-- 开发测试工具 -->
+		<!-- <dependency> 
+				<groupId>org.springframework.boot</groupId> 
+				<artifactId>spring-boot-devtools</artifactId> 
+				<scope>provided</scope> 
+			</dependency> -->
+		
+		<!-- 数据库驱动 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc6</artifactId>
+		  	<version>11.2.0.3</version>
+		</dependency>
+		
+		<!-- 在线预览 -->
+		<dependency>
+		    <groupId>org.jodconverter</groupId>
+		    <artifactId>jodconverter-local</artifactId>
+		    <version>4.2.2</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.jodconverter</groupId>
+		    <artifactId>jodconverter-spring-boot-starter</artifactId>
+		    <version>4.2.2</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.jodconverter</groupId>
+		    <artifactId>jodconverter-core</artifactId>
+		    <version>4.2.2</version>
+		</dependency>
+		
+		<!-- ureport2 -->
+		<dependency>
+		    <groupId>com.bstek.ureport</groupId>
+		    <artifactId>ureport2-console</artifactId>
+		    <version>2.2.9</version>
+		</dependency>
+		
+		<!-- URULE2 -->
+		<dependency>
+			<groupId>com.bstek.urule</groupId>
+			<artifactId>urule-console-pro</artifactId>
+			<version>2.2.3</version>
+		</dependency>
+		
+		<!-- UFLO2 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.1.17.Final</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.1.17.Final</version><!--$NO-MVN-MAN-VER$-->
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-core</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.bstek.uflo</groupId>
+			<artifactId>uflo-console</artifactId>
+			<version>2.1.5</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-core</artifactId>
+					<groupId>org.hibernate</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- 阿里云短信 -->
+		<dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+
+	</dependencies>
+	<!-- bdf3项目jar存放的maven私服 -->
+	<repositories>
+		<repository>
+			<id>bsdn-maven-repository</id>
+			<url>http://nexus.bsdn.org/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>sonatype</id>
+			<url>https://oss.sonatype.org/content/groups/public/</url>
+		</repository>
+		<repository>
+		    <id>nexus-aliyun</id>
+		    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+</project>

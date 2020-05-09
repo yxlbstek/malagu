@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Url">
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
+      <Property name="defaultDisplayProperty">name</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">路径</Property>
+      </PropertyDef>
+      <PropertyDef name="navigable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可导航</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="PasswordChange">
+      <PropertyDef name="oldPassword">
+        <Property name="required">true</Property>
+        <Property name="label">原密码</Property>
+        <Validator name="validator1" type="ajax">
+          <Property name="service">userController#validateOldPassword</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="newPassword">
+        <Property name="required">true</Property>
+        <Property name="label">新密码</Property>
+        <Validator name="validator1" type="custom">
+          <ClientEvent name="onValidate">if (arg.data != arg.entity.get(&quot;comfirmNewPassword&quot;)) {
+	arg.result = &quot;两次密码输入不相同。&quot;
+} else {
+	arg.entity.setMessages(&quot;comfirmNewPassword&quot;, null);
+}
+
+</ClientEvent>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="confirmNewPassword">
+        <Property name="required">true</Property>
+        <Property name="label">再次确认</Property>
+        <Validator name="validator1" type="custom">
+          <ClientEvent name="onValidate">if (arg.data != arg.entity.get(&quot;newPassword&quot;)) {
+	arg.result = &quot;两次密码输入不相同。&quot;
+} else {
+	arg.entity.setMessages(&quot;newPassword&quot;, null);
+}
+</ClientEvent>
+        </Validator>
+      </PropertyDef>
+    </DataType>
+    <DataType name="User">
+      <Property name="creationType">com.bstek.bdf3.security.orm.User</Property>
+      <PropertyDef name="username">
+        <Property></Property>
+        <Property name="label">用户名</Property>
+      </PropertyDef>
+      <PropertyDef name="nickname">
+        <Property></Property>
+        <Property name="label">昵称</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property></Property>
+        <Property name="label">密码</Property>
+      </PropertyDef>
+      <PropertyDef name="administrator">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">是否管理员</Property>
+      </PropertyDef>
+      <PropertyDef name="accountNonExpired">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="accountNonLocked">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="credentialsNonExpired">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Role">
+      <Property name="creationType">com.bstek.bdf3.security.orm.Role</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">角色名</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property></Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View id="view">
+    <ClientEvent name="onReady" signature="self,arg,tabControl,subUrlCon,splitPanel,ajaxActionMsg,ajaxActionOpen">window.urlShow = true;
+
+window.openTab = function (caption, icon, path) {
+	var tab = tabControl.getTab(path);
+	if (!tab) {
+		tab = {
+			$type: &quot;IFrame&quot;,
+			name: path,
+			caption: caption,
+			path: path,
+			closeable: true
+		}
+		if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+			tab.iconClass = icon;
+		}
+		else {
+			tab.icon = icon;
+		}
+		tab = tabControl.addTab(tab);
+	}
+	tabControl.set(&quot;currentTab&quot;, tab);
+	tabControl.closeOtherTabs(tabControl.get(&quot;currentTab&quot;));
+};
+
+window.refreshTab = function (caption, icon, path) {
+	var tab = tabControl.getTab(path);
+	if (tab) {
+		if (tab instanceof dorado.widget.tab.IFrameTab) {
+			tab.get(&quot;control&quot;).reload();
+		} else {
+			tab.refresh();
+		}
+	}
+}
+
+</ClientEvent>
+    <Property name="packages">font-awesome,colors</Property>
+    <Property name="contentOverflow">hidden</Property>
+    <DataSet id="dsUrl">
+      <ClientEvent name="onLoadData" signature="self,arg,dtUrl">setTimeout(function() {&#xD;
+	var i = 0;&#xD;
+	dtUrl.get(&quot;nodes&quot;).each(function(node) {&#xD;
+		if (i &lt;= 0) {&#xD;
+			dtUrl.set(&quot;currentNode&quot;, node);&#xD;
+		}&#xD;
+		i++;&#xD;
+	});&#xD;
+}, 50);&#xD;
+</ClientEvent>
+      <Property name="dataType">[Url]</Property>
+      <Property name="dataProvider">frameworkController#loadUrlForLoginUser</Property>
+      <Property name="cacheable">true</Property>
+    </DataSet>
+    <DataSet id="dsLoginUser">
+      <ClientEvent name="onLoadData">/*var picture = self.getData(&quot;#.picture&quot;);&#xD;
+if (picture) {&#xD;
+	var prx = &quot;${configure['file.prefixPath']}&quot;;&#xD;
+	var index = picture.indexOf(prx);&#xD;
+	picture = picture.substring(index, picture.length);&#xD;
+	$(&quot;#d_userImg&quot;).css({&#xD;
+		&quot;background-image&quot; : &quot;url(&quot; + picture.replace(/\\/g, &quot;/&quot;) + &quot;)&quot;,&#xD;
+		&quot;background-repeat&quot; : &quot;no-repeat&quot;,&#xD;
+		&quot;background-size&quot; : &quot;100% 100%&quot;&#xD;
+	});&#xD;
+}*/&#xD;
+</ClientEvent>
+      <Property name="dataType">User</Property>
+      <Property name="dataProvider">userMaintainController#loadLoginUser</Property>
+    </DataSet>
+    <Container>
+      <Property name="height">100%</Property>
+      <Property name="width">100%</Property>
+      <Container>
+        <Property name="contentOverflow">hidden</Property>
+        <Property name="height">50</Property>
+        <Property name="style">
+          <Property name="background">#fff</Property>
+        </Property>
+        <Container layout="hbox align:center;pack:end" layoutConstraint="right">
+          <Property name="width">280</Property>
+          <Property name="height">50</Property>
+          <Property name="contentOverflow">hidden</Property>
+          <Control id="exit">
+            <ClientEvent name="onClick">dorado.MessageBox.confirm(&quot;确认退出系统？&quot;, function() {&#xD;
+	window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;;&#xD;
+});&#xD;
+</ClientEvent>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+          </Control>
+          <Control id="msg">
+            <ClientEvent name="onClick" signature="self,arg,Chat">/*ajaxActionOpen.set(&quot;parameter&quot;, &quot;com.kuchi.geotechnical.view.message.MessageMaintain.d&quot;).execute(function(result) {&#xD;
+	if (result) {&#xD;
+		window.hideSubUrlBtn();&#xD;
+		var nodes = dtUrl.get(&quot;nodes&quot;);&#xD;
+		nodes.each(function(node) {&#xD;
+			if (node._data.get(&quot;name&quot;) == &quot;消息管理&quot;) {&#xD;
+				dtUrl.set(&quot;currentNode&quot;, node);&#xD;
+			}&#xD;
+		});&#xD;
+		window.openTab(&quot;&quot;, &quot;&quot;, &quot;com.kuchi.geotechnical.view.message.MessageMaintain.d&quot;);&#xD;
+	}&#xD;
+});*/&#xD;
+&#xD;
+Chat.set({&#xD;
+	width: &quot;700&quot;,&#xD;
+	height: &quot;560&quot;&#xD;
+});&#xD;
+Chat.show(function() {&#xD;
+	Chat.set({&#xD;
+		width: &quot;701&quot;,&#xD;
+		height: &quot;560&quot;&#xD;
+	});&#xD;
+});&#xD;
+arg.returnValue = false;&#xD;
+</ClientEvent>
+            <Property name="height">20</Property>
+            <Property name="width">20</Property>
+          </Control>
+          <Control id="userImg">
+            <ClientEvent name="onClick" signature="self,arg,dialogUser">dialogUser.show();</ClientEvent>
+            <Property name="height">30</Property>
+            <Property name="width">30</Property>
+            <Property name="style">
+              <Property name="margin-top">10px</Property>
+              <Property name="margin-right">30px</Property>
+            </Property>
+          </Control>
+          <Label id="count">
+            <Property name="height">2</Property>
+            <Property name="width">2</Property>
+          </Label>
+        </Container>
+        <Container layout="hbox align:center;pack:start" layoutConstraint="left">
+          <Property name="height">50</Property>
+          <Property name="contentOverflow">hidden</Property>
+          <Property name="width">500</Property>
+          <Control>
+            <ClientEvent name="onReady">/*var options = {&#xD;
+	type : &quot;GET&quot;,&#xD;
+	async : false,&#xD;
+	url : &quot;login/img/:orgId&quot;.replace(&quot;:orgId&quot;, &quot;${loginOrg.id}&quot;),&#xD;
+	success : function(result) {&#xD;
+		if (result) {&#xD;
+			var logoPath = null;&#xD;
+			var logoUrl = result.logo;&#xD;
+			if (logoUrl) {&#xD;
+				var sd = logoUrl.indexOf(&quot;static&quot;);&#xD;
+				logoPath = logoUrl.substring(sd, logoUrl.length);&#xD;
+				if (logoPath.indexOf(&quot;project&quot;) != -1) {&#xD;
+					logoPath = logoPath.substring(logoPath.indexOf(&quot;project&quot;), logoPath.length);&#xD;
+				}&#xD;
+				$(&quot;.banner&quot;).css({&#xD;
+					&quot;background-image&quot; : &quot;url(&quot;&#xD;
+							+ logoPath.replace(/\\/g, &quot;/&quot;) + &quot;)&quot;,&#xD;
+					&quot;background-repeat&quot; : &quot;no-repeat&quot;,&#xD;
+					&quot;background-size&quot; : &quot;100% 100%&quot;&#xD;
+				});&#xD;
+			}&#xD;
+		}&#xD;
+	}&#xD;
+};&#xD;
+$.ajax(options);*/</ClientEvent>
+            <Property name="height">30</Property>
+            <Property name="exClassName">banner</Property>
+            <Property name="width">30</Property>
+          </Control>
+          <Label id="orgLabel">
+            <Property name="text">${loginOrg.name}</Property>
+          </Label>
+        </Container>
+      </Container>
+      <SplitPanel id="splitPanel">
+        <ClientEvent name="onReady">$(&quot;.side-panel&quot;).addClass(&quot;urlShow&quot;);</ClientEvent>
+        <Property name="position">190</Property>
+        <Property name="collapsed">false</Property>
+        <Property name="width">100%</Property>
+        <Property name="resizeable">false</Property>
+        <Property name="className">worksplit</Property>
+        <Property name="animate">true</Property>
+        <MainControl>
+          <Panel id="workspace">
+            <ClientEvent name="onRefreshDom">$(arg.dom).find(&quot;.d-dock-layout&quot;).height($(arg.dom).find(&quot;.content-panel&quot;).height());
+</ClientEvent>
+            <ClientEvent name="onReady">$(self.getDom()).find(&quot;.d-dock-layout&quot;).height($(self.getDom()).find(&quot;.content-panel&quot;).height());
+</ClientEvent>
+            <Property name="showCaptionBar">false</Property>
+            <Property name="maximizeable">true</Property>
+            <Property name="className">workspace</Property>
+            <Property name="contentOverflow">hidden</Property>
+            <Property name="height">100%</Property>
+            <Buttons/>
+            <Children>
+              <Container layout="padding:8">
+                <Property name="style">
+                  <Property name="background">#F2F6FF</Property>
+                </Property>
+                <TabControl id="tabControl">
+                  <ClientEvent name="onDoubleClick" signature="self,arg,workspace">if (workspace.get(&quot;maximized&quot;)) {
+	workspace.maximizeRestore();
+} else {
+	workspace.maximize();
+}</ClientEvent>
+                  <ClientEvent name="onTabContextMenu" signature="self,arg,menu">menu.show({&#xD;
+	position: {&#xD;
+		left: arg.event.pageX,&#xD;
+		top: arg.event.pageY&#xD;
+	}&#xD;
+});&#xD;
+</ClientEvent>
+                  <Property name="tabPlacement">top</Property>
+                  <Property name="showMenuButton">true</Property>
+                </TabControl>
+              </Container>
+            </Children>
+            <Tools/>
+          </Panel>
+        </MainControl>
+        <SideControl>
+          <Container>
+            <Property name="style">
+              <Property name="background-color">rgb(38, 45, 73)</Property>
+            </Property>
+            <Property name="contentOverflow">hidden</Property>
+            <Container layout="hbox align:center;pack:center">
+              <Property name="height">30</Property>
+              <Property name="style">
+                <Property name="background">#303538</Property>
+                <Property name="border-bottom">1px solid #1b1d1e</Property>
+              </Property>
+              <Property name="contentOverflow">hidden</Property>
+              <Control>
+                <ClientEvent name="onClick" signature="self,arg,splitPanel">if (window.urlShow) {&#xD;
+	$(&quot;.side-panel&quot;).removeClass(&quot;urlShow&quot;);&#xD;
+	$(&quot;.side-panel&quot;).addClass(&quot;urlHide&quot;);&#xD;
+	$(&quot;.side-panel&quot;).animate({width: &quot;32px&quot;});&#xD;
+	setTimeout(function() {&#xD;
+		splitPanel.set(&quot;position&quot;, &quot;32&quot;);&#xD;
+	}, 120);&#xD;
+	window.urlShow = false;&#xD;
+} else {&#xD;
+	$(&quot;.side-panel&quot;).removeClass(&quot;urlHide&quot;);&#xD;
+	$(&quot;.side-panel&quot;).addClass(&quot;urlShow&quot;);&#xD;
+	$(&quot;.side-panel&quot;).animate({width: &quot;190px&quot;});&#xD;
+	setTimeout(function() {&#xD;
+		splitPanel.set(&quot;position&quot;, &quot;190&quot;);&#xD;
+	}, 120);&#xD;
+	window.urlShow = true;&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="className">lrBtn</Property>
+              </Control>
+            </Container>
+            <DataTree id="dtUrl">
+              <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;icon&quot;, icon);
+	}
+}
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+
+var parent = arg.dom.parentNode.parentNode.parentNode;
+if (arg.node.get(&quot;level&quot;)) {
+	if (arg.node.get(&quot;level&quot;) == 1) {
+		$(parent).removeClass(&quot;threeNode&quot;);
+		$(parent).removeClass(&quot;twoNode&quot;);
+		$(parent).addClass(&quot;oneNode&quot;);
+	} else if (arg.node.get(&quot;level&quot;) == 2) {
+		$(parent).removeClass(&quot;threeNode&quot;);
+		$(parent).removeClass(&quot;oneNode&quot;);
+		$(parent).addClass(&quot;twoNode&quot;);
+	} else {
+		$(parent).removeClass(&quot;twoNode&quot;);
+		$(parent).removeClass(&quot;oneNode&quot;);
+		$(parent).addClass(&quot;threeNode&quot;);
+	}
+}
+
+</ClientEvent>
+              <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
+if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
+	if (icon != arg.node.get(&quot;iconClass&quot;)) {
+		arg.node.set(&quot;iconClass&quot;, icon);
+	}
+} else {
+	if (icon != arg.node.get(&quot;icon&quot;)) {
+		arg.node.set(&quot;icon&quot;, icon);
+	}
+}
+$(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
+
+arg.node.expandAsync();
+arg.node.collapse();</ClientEvent>
+              <ClientEvent name="onDataRowClick">var url = self.get(&quot;currentEntity&quot;);
+if (url.get(&quot;path&quot;)) {
+	window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+}
+
+var node = self.get(&quot;currentNode&quot;);
+if (node.get(&quot;expanded&quot;)) {
+	node.collapse();
+} else {
+	node.expandAsync();
+}
+</ClientEvent>
+              <ClientEvent name="onDataRowDoubleClick">var url = self.get(&quot;currentEntity&quot;);
+if (url.get(&quot;path&quot;)) {
+	window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+}
+
+</ClientEvent>
+              <Property name="dataSet">dsUrl</Property>
+              <Property name="currentNodeDataPath">currentNode</Property>
+              <Property name="draggable">false</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="childrenProperty">children</Property>
+                  <Property name="labelProperty">name</Property>
+                  <Property name="recursive">true</Property>
+                  <Property name="tipProperty">description</Property>
+                  <Property name="name">name</Property>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </Container>
+        </SideControl>
+      </SplitPanel>
+    </Container>
+    <Dialog id="dialogUser">
+      <ClientEvent name="onShow" signature="self,arg,dsCustomUser,infoOrgLabel">/*var user = dsCustomUser.getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	var picture = user.get(&quot;picture&quot;);&#xD;
+	if (picture) {&#xD;
+		var prx = &quot;${configure['file.prefixPath']}&quot;;&#xD;
+		var index = picture.indexOf(prx);&#xD;
+		picture = picture.substring(index, picture.length);&#xD;
+		$(&quot;#d_infoImg&quot;).css({&#xD;
+			&quot;background-image&quot; : &quot;url(&quot; + picture.replace(/\\/g, &quot;/&quot;) + &quot;)&quot;,&#xD;
+			&quot;background-repeat&quot; : &quot;no-repeat&quot;,&#xD;
+			&quot;background-size&quot; : &quot;100% 100%&quot;&#xD;
+		});&#xD;
+	}&#xD;
+	var value = &quot;测试内容&quot;;&#xD;
+	if (user.get(&quot;orgName&quot;)) {&#xD;
+		value += user.get(&quot;orgName&quot;);&#xD;
+	}&#xD;
+	infoOrgLabel.set(&quot;text&quot;, value);&#xD;
+}*/&#xD;
+</ClientEvent>
+      <Property name="width">650</Property>
+      <Property name="height">560</Property>
+      <Property name="showCaptionBar">false</Property>
+      <Buttons/>
+      <Children>
+        <Panel>
+          <Property name="caption">个人信息</Property>
+          <Buttons/>
+          <Children>
+            <Container>
+              <Container id="imgInfoCon" layout="hbox align:center;pack:start">
+                <Property name="height">70</Property>
+                <Property name="contentOverflow">hidden</Property>
+                <Control id="infoImg">
+                  <Property name="height">60</Property>
+                  <Property name="width">60</Property>
+                </Control>
+                <Label id="infoNameLabel">
+                  <Property name="height">0</Property>
+                  <Property name="dataSet">dsCustomUser</Property>
+                  <Property name="property">name</Property>
+                </Label>
+                <Label id="infoOrgLabel">
+                  <Property name="height">0</Property>
+                </Label>
+              </Container>
+              <Container id="UserInfoCon">
+                <AutoForm id="userInfoAF">
+                  <Property name="dataSet">dsLoginUser</Property>
+                  <Property name="cols">*</Property>
+                  <AutoFormElement>
+                    <Property name="name">username</Property>
+                    <Property name="property">username</Property>
+                    <Property name="editable">false</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement>
+                    <Property name="name">nickname</Property>
+                    <Property name="property">nickname</Property>
+                    <Property name="editable">false</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement>
+                    <Property name="name">password</Property>
+                    <Property name="property">password</Property>
+                    <Property name="editable">false</Property>
+                    <Property name="editorType">PasswordEditor</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                </AutoForm>
+              </Container>
+            </Container>
+            <Button id="infoPassBtn">
+              <ClientEvent name="onClick" signature="self,arg,dialogPassword">dialogPassword.show();</ClientEvent>
+              <Property name="caption">修改</Property>
+              <Property name="className">simple</Property>
+              <Property name="icon">/static/img/info-modify.png</Property>
+            </Button>
+          </Children>
+          <Tools>
+            <SimpleIconButton>
+              <ClientEvent name="onClick" signature="self,arg,dialogUser">dialogUser.hide();</ClientEvent>
+              <Property name="icon">/static/img/close.png</Property>
+            </SimpleIconButton>
+          </Tools>
+        </Panel>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <FloatPanel id="dialogPassword" layout="padding:20">
+      <Property name="caption">密码修改</Property>
+      <Property name="center">true</Property>
+      <Property name="shadowMode">frame</Property>
+      <Property name="containerUi">default</Property>
+      <Property name="width">400</Property>
+      <Property name="height">265</Property>
+      <Buttons/>
+      <Children>
+        <AutoForm id="autoFormPassword">
+          <Property name="dataType">PasswordChange</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="createPrivateDataSet">true</Property>
+          <Property name="rowPadding">12</Property>
+          <AutoFormElement>
+            <Property name="name">oldPassword</Property>
+            <Property name="property">oldPassword</Property>
+            <Property name="editorType">PasswordEditor</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">newPassword</Property>
+            <Property name="property">newPassword</Property>
+            <Property name="editorType">PasswordEditor</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">confirmNewPassword</Property>
+            <Property name="property">confirmNewPassword</Property>
+            <Property name="editorType">PasswordEditor</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+        <AjaxAction id="ajaxActionChangePassword">
+          <Property name="service">userController#changePassword</Property>
+          <Property name="executingMessage">正在执行……</Property>
+          <Property name="successMessage">密码修改成功。</Property>
+        </AjaxAction>
+        <Container layout="hbox pack:center;regionPadding:15" layoutConstraint="bottom">
+          <Button>
+            <ClientEvent name="onClick" signature="self,arg,ajaxActionChangePassword,autoFormPassword">var newPassword = autoFormPassword.get(&quot;entity&quot;).get(&quot;newPassword&quot;);
+var entity = autoFormPassword.get(&quot;entity&quot;);
+
+entity.set(&quot;confirmNewPassword&quot;, entity.get(&quot;confirmNewPassword&quot;));
+entity.set(&quot;newPassword&quot;, entity.get(&quot;newPassword&quot;));
+entity.set(&quot;oldPassword&quot;, entity.get(&quot;oldPassword&quot;));
+
+
+if (entity.get(&quot;oldPassword&quot;) &amp;&amp; entity.get(&quot;newPassword&quot;) &amp;&amp; entity.get(&quot;confirmNewPassword&quot;) &amp;&amp; autoFormPassword.validate(true) === true) {
+	ajaxActionChangePassword.set(&quot;parameter&quot;, {
+		username: &quot;${loginUsername}&quot;,
+		newPassword: newPassword
+	}).execute(function() {
+		self.get(&quot;parent.parent&quot;).hide();
+		autoFormPassword.get(&quot;entity&quot;).reset();
+	});
+}
+</ClientEvent>
+            <Property name="caption">确认</Property>
+            <Property name="width">60</Property>
+            <Property name="className">sure</Property>
+          </Button>
+          <Button>
+            <ClientEvent name="onClick">self.get(&quot;parent.parent&quot;).hide();
+</ClientEvent>
+            <Property name="caption">取消</Property>
+            <Property name="width">60</Property>
+            <Property name="className">simple</Property>
+          </Button>
+        </Container>
+      </Children>
+      <Tools/>
+    </FloatPanel>
+    <Import src="com.bstek.bdf3.notice.ui.view.Chat#Chat"/>
+  </View>
+</ViewConfig>
