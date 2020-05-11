@@ -1,4 +1,4 @@
-package vip.malagu.service;
+package vip.malagu.service.upload;
 
 import java.io.File;
 import java.io.FileInputStream;
