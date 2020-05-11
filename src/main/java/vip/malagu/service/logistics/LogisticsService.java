@@ -1,4 +1,4 @@
-package vip.malagu.service.kuaidi;
+package vip.malagu.service.logistics;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,14 +12,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import vip.malagu.config.kuaidi.KuaiDiConfig;
+import vip.malagu.config.kuaidi.LogisticsConfig;
 import vip.malagu.util.EncryptUtils;
 
 @Service
-public class KuaiDiService {
+public class LogisticsService {
 
 	@Autowired
-	public KuaiDiConfig kuaiDiConfig;
+	public LogisticsConfig logisticsConfig;
 
 	/**
 	 * 查询快递信息
@@ -34,8 +34,8 @@ public class KuaiDiService {
 		param.append(",\"num\":\"").append(num).append("\"");
 		param.append("}");
 		params.put("param", param.toString());
-		params.put("customer", kuaiDiConfig.getCustomer());
-		String sign = EncryptUtils.MD5Encode(param + kuaiDiConfig.getKey() + kuaiDiConfig.getCustomer());
+		params.put("customer", logisticsConfig.getCustomer());
+		String sign = EncryptUtils.MD5Encode(param + logisticsConfig.getKey() + logisticsConfig.getCustomer());
 		params.put("sign", sign);
 		return execute(params);
 	}
@@ -62,7 +62,7 @@ public class KuaiDiService {
 			}
 			byte[] bytes = builder.toString().getBytes("UTF-8");
 
-			URL url = new URL(kuaiDiConfig.getUrl());
+			URL url = new URL(logisticsConfig.getUrl());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setConnectTimeout(3000);
 			conn.setReadTimeout(3000);

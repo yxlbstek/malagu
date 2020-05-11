@@ -6,15 +6,15 @@ import org.springframework.context.annotation.Configuration;
  
 
 @Configuration
-public class KuaiDiConfig {
+public class LogisticsConfig {
  
-	@Value("${kuaidi.url}")
+	@Value("${logistics.url}")
 	private String url;
 	
-	@Value("${kuaidi.key}")
+	@Value("${logistics.key}")
 	private String key;
 	
-	@Value("${kuaidi.customer}")
+	@Value("${logistics.customer}")
 	private String customer;
 
 	public String getUrl() {
