@@ -38,8 +38,8 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
 	@Override
 	public boolean validateCode(@RequestBody AuthCodeParam param) {
-		AssertUtils.isNotNullParam(param.getPhone(), "手机号");
-		AssertUtils.isNotNullParam(param.getCode(), "登录验证码");
+		AssertUtils.isNotEmptyParam(param.getPhone(), "手机号");
+		AssertUtils.isNotEmptyParam(param.getCode(), "登录验证码");
 		AssertUtils.isNotNullParam(param.getCodeType(), "验证码类型");
 		Object cacheCode = RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
 		if (cacheCode == null || (cacheCode != null && StringUtils.isBlank(cacheCode.toString().trim()))) {
