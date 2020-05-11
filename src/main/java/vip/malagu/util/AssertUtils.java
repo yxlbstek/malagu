@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.custom.exception.ICustomException;
 import vip.malagu.enums.SystemErrorEnum;
@@ -156,7 +158,7 @@ public final class AssertUtils {
 	 * @param customException 错误异常
 	 */
 	public static void isNotEmpty(String obj, ICustomException customException) {
-		if (obj == null || "".equals(obj)) {
+		if (StringUtils.isBlank(obj)) {
 			throw new CustomException(customException);
 		}
 	}
@@ -167,7 +169,7 @@ public final class AssertUtils {
 	 * @param customException 错误异常
 	 */
 	public static void isEmpty(String obj, ICustomException customException) {
-		if (obj != null && !"".equals(obj)) {
+		if (StringUtils.isNotBlank(obj)) {
 			throw new CustomException(customException);
 		}
 	}
@@ -178,7 +180,7 @@ public final class AssertUtils {
 	 * @param paramName 提示名称
 	 */
 	public static void isNotEmptyParam(String obj, String paramName) {
-		if (obj == null || "".equals(obj)) {
+		if (StringUtils.isBlank(obj)) {
 			throw new CustomException(paramName + "不能为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
@@ -189,7 +191,7 @@ public final class AssertUtils {
 	 * @param paramName 提示名称
 	 */
 	public static void isEmptyParam(String obj, String paramName) {
-		if (obj != null && !"".equals(obj)) {
+		if (StringUtils.isNotBlank(obj)) {
 			throw new CustomException(paramName + "需为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
