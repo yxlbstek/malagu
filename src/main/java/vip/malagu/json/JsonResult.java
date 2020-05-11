@@ -64,8 +64,8 @@ public class JsonResult<T> implements Serializable {
 
     /**
      * 当错误时返回的值
-     * @param code
-     * @param msg
+     * @param msg 异常信息
+     * @param status 异常状态
      * @return
      */
     public static <T> JsonResult<T> error(String msg, String status){
@@ -74,7 +74,7 @@ public class JsonResult<T> implements Serializable {
 
     /**
      * 当错误时返回的值
-     * @param codeEnum
+     * @param statusEnum 异常信息
      * @return
      */
     public static <T> JsonResult<T> error(ICustomException statusEnum){
