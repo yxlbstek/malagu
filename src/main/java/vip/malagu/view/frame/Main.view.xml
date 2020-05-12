@@ -121,43 +121,10 @@
   </Model>
   <View id="view">
     <ClientEvent name="onReady" signature="self,arg,tabControl,subUrlCon,splitPanel,ajaxActionMsg,ajaxActionOpen">window.urlShow = true;
-
-window.openTab = function (caption, icon, path) {
-	var tab = tabControl.getTab(path);
-	if (!tab) {
-		tab = {
-			$type: &quot;IFrame&quot;,
-			name: path,
-			caption: caption,
-			path: path,
-			closeable: true
-		}
-		if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
-			tab.iconClass = icon;
-		}
-		else {
-			tab.icon = icon;
-		}
-		tab = tabControl.addTab(tab);
-	}
-	tabControl.set(&quot;currentTab&quot;, tab);
-	tabControl.closeOtherTabs(tabControl.get(&quot;currentTab&quot;));
-};
-
-window.refreshTab = function (caption, icon, path) {
-	var tab = tabControl.getTab(path);
-	if (tab) {
-		if (tab instanceof dorado.widget.tab.IFrameTab) {
-			tab.get(&quot;control&quot;).reload();
-		} else {
-			tab.refresh();
-		}
-	}
-}
-
 </ClientEvent>
     <Property name="packages">font-awesome,colors</Property>
     <Property name="contentOverflow">hidden</Property>
+    <Property name="javaScriptFile">static/js/FrameMain.js</Property>
     <DataSet id="dsUrl">
       <ClientEvent name="onLoadData" signature="self,arg,dtUrl">setTimeout(function() {&#xD;
 	var i = 0;&#xD;
