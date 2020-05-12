@@ -10,8 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import org.springframework.stereotype.Component;
 
-//@Component
+
+@Component
 public class DoradoURLGenericFilterBean implements Filter {
 	
 	@Override
