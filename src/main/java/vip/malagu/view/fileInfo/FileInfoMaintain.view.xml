@@ -324,13 +324,9 @@ $(arg.dom).empty().xCreate(btns);&#xD;
     </UpdateAction>
     <UploadAction id="uploadAction">
       <ClientEvent name="beforeFileUpload" signature="self,arg,dialogUploadTip">&#xD;
-/*self.set(&quot;parameter&quot;, {&#xD;
-	projectId: window.parent.param.projectId,&#xD;
-	relevantModule: &quot;projectDatum&quot;,&#xD;
-    fileName: arg.file.name,&#xD;
-    type: uploadEntity.get(&quot;fileType&quot;),&#xD;
-    remark: uploadEntity.get(&quot;remark&quot;) || &quot;&quot;&#xD;
-});*/&#xD;
+self.set(&quot;parameter&quot;, {&#xD;
+	module: &quot;FileInfoMaintain&quot;&#xD;
+});&#xD;
 &#xD;
 dialogUploadTip.show();</ClientEvent>
       <ClientEvent name="onFilesAdded" signature="self,arg,dsFileInfo,formUpload">/*var fileName = null;&#xD;

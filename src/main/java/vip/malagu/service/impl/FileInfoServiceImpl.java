@@ -34,6 +34,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		}
 		JpaUtil
 			.linq(FileInfo.class)
+			.equal("module", "FileInfoMaintain")
 			.addIf(fileName)
 				.like("fileName", "%" + fileName + "%")
 			.endIf()
