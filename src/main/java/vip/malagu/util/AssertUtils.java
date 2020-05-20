@@ -45,22 +45,22 @@ public final class AssertUtils {
 	/**
 	 * 对象参数不为Null，为Null时抛异常 
 	 * @param obj 对象参数
-	 * @param paramName 提示名称
+	 * @param msg 错误提示信息
 	 */
-	public static void isNotNullParam(Object obj, String paramName) {
+	public static void isNotNullParam(Object obj, String msg) {
 		if (obj == null) {
-			throw new CustomException(paramName + "不能为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
+			throw new CustomException(msg, SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
 	
 	/**
 	 * 对象参数为Null，不为Null时抛异常 
 	 * @param obj 对象参数
-	 * @param paramName 提示名称
+	 * @param msg 错误提示信息
 	 */
-	public static void isNullParam(Object obj, String paramName) {
+	public static void isNullParam(Object obj, String msg) {
 		if (obj != null) {
-			throw new CustomException(paramName + "需为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
+			throw new CustomException(msg, SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
 	
@@ -89,22 +89,22 @@ public final class AssertUtils {
 	/**
 	 * Map参数不为空，为空时抛异常 
 	 * @param map 集合参数
-	 * @param paramName 参数名
+	 * @param msg 错误提示信息
 	 */
-	public static void isNotEmptyParam(Map<?, ?> map, String paramName) {
+	public static void isNotEmptyParam(Map<?, ?> map, String msg) {
 		if (map == null || map.isEmpty()) {
-			throw new CustomException(paramName + "不能为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
+			throw new CustomException(msg, SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
 	
 	/**
 	 * Map参数为空，不为空时抛异常 
 	 * @param map 集合参数
-	 * @param paramName 提示名称
+	 * @param msg 错误提示信息
 	 */
-	public static void isEmptyParam(Map<?, ?> map, String paramName) {
+	public static void isEmptyParam(Map<?, ?> map, String msg) {
 		if (map != null && !map.isEmpty()) {
-			throw new CustomException(paramName + "需为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
+			throw new CustomException(msg, SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
 	
@@ -133,22 +133,22 @@ public final class AssertUtils {
 	/**
 	 * 集合参数不为空，为空时抛参数异常 
 	 * @param collection 集合参数
-	 * @param paramName 提示名称
+	 * @param msg 错误提示信息
 	 */
-	public static void isNotEmptyParam(Collection<?> collection, String paramName) {
+	public static void isNotEmptyParam(Collection<?> collection, String msg) {
 		if (collection == null || collection.isEmpty()) {
-			throw new CustomException(paramName + "不能为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
+			throw new CustomException(msg, SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
 	
 	/**
 	 * 集合参数为空，不为空时抛异常 
 	 * @param collection 集合参数
-	 * @param paramName 提示名称
+	 * @param msg 错误提示信息
 	 */
-	public static void isEmptyParam(Collection<?> collection, String paramName) {
+	public static void isEmptyParam(Collection<?> collection, String msg) {
 		if (collection != null && !collection.isEmpty()) {
-			throw new CustomException(paramName + "需为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
+			throw new CustomException(msg, SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
 	
@@ -177,22 +177,22 @@ public final class AssertUtils {
 	/**
 	 * 字符串参数不为空，为空时抛参数异常 
 	 * @param obj 字符串参数
-	 * @param paramName 提示名称
+	 * @param msg 错误提示信息
 	 */
-	public static void isNotEmptyParam(String obj, String paramName) {
+	public static void isNotEmptyParam(String obj, String msg) {
 		if (StringUtils.isBlank(obj)) {
-			throw new CustomException(paramName + "不能为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
+			throw new CustomException(msg, SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
 	
 	/**
 	 * 字符串参数为空，不为空时抛异常 
 	 * @param obj 字符串参数
-	 * @param paramName 提示名称
+	 * @param msg 错误提示信息
 	 */
-	public static void isEmptyParam(String obj, String paramName) {
+	public static void isEmptyParam(String obj, String msg) {
 		if (StringUtils.isNotBlank(obj)) {
-			throw new CustomException(paramName + "需为空", SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
+			throw new CustomException(msg, SystemErrorEnum.PARAMETER_ANOMALY.getStatus());
 		}
 	}
 	

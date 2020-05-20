@@ -13,6 +13,7 @@ import vip.malagu.app.service.AuthCodeService;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.util.AssertUtils;
+import vip.malagu.util.Constant;
 import vip.malagu.util.RedisUtils;
 
 @Service
@@ -23,8 +24,8 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
 	@Override
 	public void getCode(@RequestBody AuthCodeParam param) {
-		AssertUtils.isNotEmptyParam(param.getPhone(), "手机号");
-		AssertUtils.isNotNullParam(param.getCodeType(), "验证码类型");
+		AssertUtils.isNotEmptyParam(param.getPhone(), Constant.USER_PHONE_NOT_EMPTY);
+		AssertUtils.isNotNullParam(param.getCodeType(), Constant.MSG_CODE_TYPE_NOT_EMPTY);
 		String code = "";
 		Object object = RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
 		if (object != null) {
@@ -38,9 +39,9 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
 	@Override
 	public boolean validateCode(@RequestBody AuthCodeParam param) {
-		AssertUtils.isNotEmptyParam(param.getPhone(), "手机号");
-		AssertUtils.isNotEmptyParam(param.getCode(), "登录验证码");
-		AssertUtils.isNotNullParam(param.getCodeType(), "验证码类型");
+		AssertUtils.isNotEmptyParam(param.getPhone(), Constant.USER_PHONE_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(param.getCode(), Constant.MSG_CODE_NOT_EMPTY);
+		AssertUtils.isNotNullParam(param.getCodeType(), Constant.MSG_CODE_TYPE_NOT_EMPTY);
 		Object cacheCode = RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
 		if (cacheCode == null || (cacheCode != null && StringUtils.isBlank(cacheCode.toString().trim()))) {
 			throw new CustomException(SystemErrorEnum.CODE_NO_EMPTY);

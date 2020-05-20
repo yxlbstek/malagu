@@ -53,13 +53,13 @@ public class AppLoginController {
 	public JsonResult<Object> login(@RequestBody UserLoginParam loginDto, HttpServletRequest request,
 			HttpServletResponse response) {
 		String orgId = request.getHeader("orgId");
-		AssertUtils.isNotEmptyParam(orgId, "登录公司ID");
+		AssertUtils.isNotEmptyParam(orgId, Constant.LOGIN_ORG_ID_NOT_EMPTY);
 		String type = request.getHeader("type");
-		AssertUtils.isNotEmptyParam(type, "登录终端类型");
+		AssertUtils.isNotEmptyParam(type, Constant.LOGIN_TYPE_NOT_EMPTY);
 		String username = loginDto.getUsername();
-		AssertUtils.isNotEmptyParam(username, "登录用户名");
+		AssertUtils.isNotEmptyParam(username, Constant.LOGIN_USERNAME_NOT_EMPTY);
 		String password = loginDto.getPassword();
-		AssertUtils.isNotEmptyParam(password, "登录密码");
+		AssertUtils.isNotEmptyParam(password, Constant.LOGIN_PASSWORD_NOT_EMPTY);
 		List<Organization> orgs = MultitenantUtils.doQuery(() -> {
 			return JpaUtil.linq(Organization.class).equal("id", orgId).list();
 		});
@@ -110,15 +110,15 @@ public class AppLoginController {
 	public JsonResult<Object> phoneLogin(@RequestBody UserLoginParam loginDto, HttpServletRequest request,
 			HttpServletResponse response) {
 		String orgId = request.getHeader("orgId");
-		AssertUtils.isNotEmptyParam(orgId, "登录公司ID");
+		AssertUtils.isNotEmptyParam(orgId, Constant.LOGIN_ORG_ID_NOT_EMPTY);
 		String type = request.getHeader("type");
-		AssertUtils.isNotEmptyParam(type, "登录终端类型");
+		AssertUtils.isNotEmptyParam(type, Constant.LOGIN_TYPE_NOT_EMPTY);
 		String codeType = request.getHeader("codeType");
-		AssertUtils.isNotEmptyParam(codeType, "验证码类型");
+		AssertUtils.isNotEmptyParam(codeType, Constant.MSG_CODE_TYPE_NOT_EMPTY);
 		String phone = loginDto.getPhone();
-		AssertUtils.isNotEmptyParam(phone, "登录手机号");
+		AssertUtils.isNotEmptyParam(phone, Constant.USER_PHONE_NOT_EMPTY);
 		String code = loginDto.getCode();
-		AssertUtils.isNotEmptyParam(code, "登录验证码");
+		AssertUtils.isNotEmptyParam(code, Constant.MSG_CODE_NOT_EMPTY);
 		List<Organization> orgs = MultitenantUtils.doQuery(() -> {
 			return JpaUtil.linq(Organization.class).equal("id", orgId).list();
 		});
