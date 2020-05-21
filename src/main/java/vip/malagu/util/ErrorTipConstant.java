@@ -1,15 +1,13 @@
 package vip.malagu.util;
 
-public class Constant {
+/**
+ * 断言-错误提示信息相关
+ * @author Lynn -- 2020年5月21日 下午4:59:21
+ */
+public class ErrorTipConstant {
 	
-	public Constant() {}
+	public ErrorTipConstant() {}
 
-	/**
-	 * 终端登录缓存Key 前缀
-	 */
-	public static final String CACHE_USER_LOGIN_PREFIX = "user_login_token_";
-	
-	//错误提示信息相关
 	/**
 	 * 登录公司ID不能为空
 	 */
@@ -44,15 +42,5 @@ public class Constant {
 	 * 短信验证码不能为空
 	 */
 	public static final String MSG_CODE_NOT_EMPTY = "短信验证码不能为空";
-
-	
-
-
-	
-
-
-
-
-
 
 }

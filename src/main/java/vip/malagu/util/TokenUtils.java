@@ -17,7 +17,7 @@ public class TokenUtils {
 	public static String createToken(String type, String orgId, String username) {
 		String dateStr = DateUtils.dateToString(new Date(), "yyyyMMddHHmmss");
 		String token = EncryptUtils.DESEncode(orgId + "=" + username + "=" +  dateStr);
-		String key = Constant.CACHE_USER_LOGIN_PREFIX + type + "_" + orgId + "_" + username;
+		String key = CacheConstant.CACHE_USER_LOGIN_PREFIX + type + "_" + orgId + "_" + username;
 		RedisUtils.set(key, token);
 		return token;
 	}
@@ -38,7 +38,7 @@ public class TokenUtils {
 		if (!orgId.equals(infos[0])) {
 			throw new CustomException(SystemErrorEnum.ORG_NOT_MATCHING);
 		}
-		String key = Constant.CACHE_USER_LOGIN_PREFIX + type + "_" + orgId + "_" + infos[1];
+		String key = CacheConstant.CACHE_USER_LOGIN_PREFIX + type + "_" + orgId + "_" + infos[1];
 		Object cacheToken = RedisUtils.get(key);
 		if (cacheToken == null || (cacheToken != null && !token.equals(cacheToken))) {
 			throw new CustomException(SystemErrorEnum.TOKEN_STALE_DATED);

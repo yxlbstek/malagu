@@ -10,7 +10,8 @@ import vip.malagu.app.service.AuthCodeService;
 import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.json.JsonResult;
 import vip.malagu.util.AssertUtils;
-import vip.malagu.util.Constant;
+import vip.malagu.util.CacheConstant;
+import vip.malagu.util.ErrorTipConstant;
 import vip.malagu.util.EncryptUtils;
 import vip.malagu.util.RedisUtils;
 import vip.malagu.util.TokenUtils;
@@ -53,13 +54,13 @@ public class AppLoginController {
 	public JsonResult<Object> login(@RequestBody UserLoginParam loginDto, HttpServletRequest request,
 			HttpServletResponse response) {
 		String orgId = request.getHeader("orgId");
-		AssertUtils.isNotEmptyParam(orgId, Constant.LOGIN_ORG_ID_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(orgId, ErrorTipConstant.LOGIN_ORG_ID_NOT_EMPTY);
 		String type = request.getHeader("type");
-		AssertUtils.isNotEmptyParam(type, Constant.LOGIN_TYPE_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(type, ErrorTipConstant.LOGIN_TYPE_NOT_EMPTY);
 		String username = loginDto.getUsername();
-		AssertUtils.isNotEmptyParam(username, Constant.LOGIN_USERNAME_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(username, ErrorTipConstant.LOGIN_USERNAME_NOT_EMPTY);
 		String password = loginDto.getPassword();
-		AssertUtils.isNotEmptyParam(password, Constant.LOGIN_PASSWORD_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(password, ErrorTipConstant.LOGIN_PASSWORD_NOT_EMPTY);
 		List<Organization> orgs = MultitenantUtils.doQuery(() -> {
 			return JpaUtil.linq(Organization.class).equal("id", orgId).list();
 		});
@@ -110,15 +111,15 @@ public class AppLoginController {
 	public JsonResult<Object> phoneLogin(@RequestBody UserLoginParam loginDto, HttpServletRequest request,
 			HttpServletResponse response) {
 		String orgId = request.getHeader("orgId");
-		AssertUtils.isNotEmptyParam(orgId, Constant.LOGIN_ORG_ID_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(orgId, ErrorTipConstant.LOGIN_ORG_ID_NOT_EMPTY);
 		String type = request.getHeader("type");
-		AssertUtils.isNotEmptyParam(type, Constant.LOGIN_TYPE_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(type, ErrorTipConstant.LOGIN_TYPE_NOT_EMPTY);
 		String codeType = request.getHeader("codeType");
-		AssertUtils.isNotEmptyParam(codeType, Constant.MSG_CODE_TYPE_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(codeType, ErrorTipConstant.MSG_CODE_TYPE_NOT_EMPTY);
 		String phone = loginDto.getPhone();
-		AssertUtils.isNotEmptyParam(phone, Constant.USER_PHONE_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(phone, ErrorTipConstant.USER_PHONE_NOT_EMPTY);
 		String code = loginDto.getCode();
-		AssertUtils.isNotEmptyParam(code, Constant.MSG_CODE_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(code, ErrorTipConstant.MSG_CODE_NOT_EMPTY);
 		List<Organization> orgs = MultitenantUtils.doQuery(() -> {
 			return JpaUtil.linq(Organization.class).equal("id", orgId).list();
 		});
@@ -173,7 +174,7 @@ public class AppLoginController {
 		if (infos.length != 3) {
 			return JsonResult.error(SystemErrorEnum.TOKEN_INVALID);
 		}
-		String key = Constant.CACHE_USER_LOGIN_PREFIX + type + "_" + infos[0] + "_" + infos[1];
+		String key = CacheConstant.CACHE_USER_LOGIN_PREFIX + type + "_" + infos[0] + "_" + infos[1];
 		RedisUtils.delete(key);
 		return JsonResult.success();
 	}
