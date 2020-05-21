@@ -30,6 +30,10 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.NumberToTextConverter;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Excel操作工具类
+ * @author Lynn -- 2020年5月21日 下午5:12:06
+ */
 @SuppressWarnings("hiding")
 public final class ExcelUtils {
 

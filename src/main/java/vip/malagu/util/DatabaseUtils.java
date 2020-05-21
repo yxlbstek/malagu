@@ -17,6 +17,10 @@ import java.util.Map;
 
 import com.bstek.dorado.core.Configure;
 
+/**
+ * 数据库相关工具类
+ * @author Lynn -- 2020年5月21日 下午5:11:12
+ */
 public final class DatabaseUtils {
 
 	/**

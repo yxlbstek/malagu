@@ -2,6 +2,10 @@ package vip.malagu.util;
 
 import java.util.UUID;
 
+/**
+ * ID相关工具类
+ * @author Lynn -- 2020年5月21日 下午5:13:39
+ */
 public final class IdUtils {
 
 	//开始时间截 2020-01-01

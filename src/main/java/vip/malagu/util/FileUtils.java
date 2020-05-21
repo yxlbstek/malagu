@@ -9,6 +9,10 @@ import org.springframework.util.StringUtils;
 import com.bstek.dorado.core.Configure;
 import com.bstek.dorado.web.DoradoContext;
 
+/**
+ * 文件相关工具类
+ * @author Lynn -- 2020年5月21日 下午5:12:51
+ */
 public final class FileUtils {
 
 	public static File getTempDirectory() {

@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+/**
+ * Redis操作工具类
+ * @author Lynn -- 2020年5月21日 下午5:13:59
+ */
 @Component
 @SuppressWarnings("hiding")
 public final class RedisUtils {

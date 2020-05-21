@@ -5,6 +5,10 @@ import java.util.Date;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
 
+/**
+ * Token相关工具类
+ * @author Lynn -- 2020年5月21日 下午5:14:24
+ */
 public class TokenUtils {
 
 	/**
