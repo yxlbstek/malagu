@@ -13,10 +13,10 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * 工具类
- * 1. 将 集合数据 转换成 树形结构数据
- * 2. 将 树形结构数据 转换成 平铺数据
- * 3. 收集 集合中 指定的 属性值
- * 4. 集合source转Map，Key为source元素的propertyName属性值，Value为该元素
+ * @see 1. 将 集合数据 转换成 树形结构数据
+ * @see 2. 将 树形结构数据 转换成 平铺数据
+ * @see 3. 收集 集合中 指定的 属性值
+ * @see 4. 集合source转Map，Key为source元素的propertyName属性值，Value为该元素
  *
  */
 public final class CommonUtils {
@@ -99,8 +99,10 @@ public final class CommonUtils {
 			Object value = null;
 			if (obj instanceof Map) {
 				value = ((Map) obj).get(propertyName);
-			} else if (obj != null) {
-				value = BeanUtils.getFieldValue(obj, propertyName);
+			} else {
+				if (obj != null) {
+					value = BeanUtils.getFieldValue(obj, propertyName);
+				}
 			}
 			if (value != null) {
 				result.add(value);
