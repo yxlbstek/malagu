@@ -80,7 +80,7 @@ public final class ExcelUtils {
 				for (Field field : fields) {
 					if (map.get(field.getName()) != null) {
 						String cellValue = map.get(field.getName()).toString();
-						BeanUtils.setFieldValue(obj, field.getName(), FieldUtils.convertType(field.getType(), cellValue));
+						BeanUtils.setFieldValue(obj, field.getName(), BeanUtils.convertType(field.getType(), cellValue));
 					}
 				}
 				result.add(obj);
