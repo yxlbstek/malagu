@@ -130,45 +130,33 @@ public final class BeanUtils {
 	 * @param value 值
 	 * @return
 	 */
-	public static Object convertType(Class<?> type, String value) {
+	public static Object convertType(Class<?> clz, String value) {
 		Object result = null;
-		String strType = type.getSimpleName();
-		if (strType.equals("long")) {
+		String type = clz.getSimpleName();
+		if (type.equals("long")) {
 			result = Long.parseLong(value);
-
-		} else if (strType.equals("Long")) {
+		} else if (type.equals("Long")) {
 			result = Long.valueOf(value);
-
-		} else if (strType.equals("int")) {
+		} else if (type.equals("int")) {
 			result = Integer.parseInt(value);
-
-		} else if (strType.equals("Integer")) {
+		} else if (type.equals("Integer")) {
 			result = Integer.valueOf(value);
-
-		} else if (strType.equals("float")) {
+		} else if (type.equals("float")) {
 			result = Float.parseFloat(value);
-
-		} else if (strType.equals("Float")) {
+		} else if (type.equals("Float")) {
 			result = Float.valueOf(value);
-
-		} else if (strType.equals("double")) {
+		} else if (type.equals("double")) {
 			result = Double.parseDouble(value);
-
-		} else if (strType.equals("Double")) {
+		} else if (type.equals("Double")) {
 			result = Double.valueOf(value);
-
-		} else if (strType.equals("BigDecimal")) {
+		} else if (type.equals("BigDecimal")) {
 			result = new BigDecimal(value);
-
-		} else if (strType.equals("boolean") || strType.equals("Boolean")) {
+		} else if (type.equals("boolean") || type.equals("Boolean")) {
 			result = value.equals("0") || value.equals("true") ? true : false;
-
-		} else if (strType.equals("Date")) {
+		} else if (type.equals("Date")) {
 			result = DateUtils.stringToDate(value, "yyyy-MM-dd HH:mm:ss");
-
 		} else {
 			result = value;
-
 		}
 		return result;
 	}
