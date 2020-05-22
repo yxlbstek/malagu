@@ -156,7 +156,7 @@ public class IdCardUtils {
 	 * @param passportNo 护照
 	 * @return
 	 */
-	public static boolean PassportValidate(String passportNo) {
+	public static boolean passportValidate(String passportNo) {
 		Matcher m = pPassport.matcher(passportNo);
 		if (m.matches()) {
 			return true;
