@@ -17,10 +17,13 @@ import org.springframework.util.CollectionUtils;
  * @see 2. 将 树形结构数据 转换成 平铺数据
  * @see 3. 收集 集合中 指定的 属性值
  * @see 4. 集合source转Map，Key为source元素的propertyName属性值，Value为该元素
+ * @see 5. 判断请求是否来自手机端
  *
  */
 public final class CommonUtils {
-
+	
+	private static final String[] agent = { "Android", "iPhone", "iPod", "iPad", "Windows Phone", "MQQBrowser" }; 
+	
 	/**
 	 * 将数据转换成 树形 结构
 	 * @param datas 需转换的数据集合
@@ -141,6 +144,26 @@ public final class CommonUtils {
 			return BeanUtils.getFieldValue(obj, propertyName);
 		}
 		return null;
+	}
+	
+	/**
+	 * 判断请求是否来自手机端
+	 * @param userAgent
+	 * @return
+	 */
+	public static boolean checkAgentIsMobile(String userAgent) {
+		boolean result = false;
+		if (!userAgent.contains("Windows NT") || (userAgent.contains("Windows NT") && userAgent.contains("compatible; MSIE 9.0;"))) {
+			if (!userAgent.contains("Windows NT") && !userAgent.contains("Macintosh")) {
+				for (String item : agent) {
+					if (userAgent.contains(item)) {
+						result = true;
+						break;
+					}
+				}
+			}
+		}
+		return result;
 	}
 
 }
