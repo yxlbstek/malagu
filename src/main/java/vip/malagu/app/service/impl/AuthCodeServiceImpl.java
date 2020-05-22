@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import vip.malagu.aliyun.service.AliyunSendSmsService;
 import vip.malagu.app.param.dto.AuthCodeParam;
 import vip.malagu.app.service.AuthCodeService;
+import vip.malagu.constants.ErrorTipConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.util.AssertUtils;
-import vip.malagu.util.ErrorTipConstant;
 import vip.malagu.util.RedisUtils;
 
 @Service

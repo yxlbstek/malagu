@@ -1,4 +1,4 @@
-package vip.malagu.util;
+package vip.malagu.constants;
 
 /**
  * 断言-错误提示信息相关

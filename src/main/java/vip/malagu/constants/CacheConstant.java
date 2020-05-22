@@ -1,4 +1,4 @@
-package vip.malagu.util;
+package vip.malagu.constants;
 
 /**
  * Redis缓存相关

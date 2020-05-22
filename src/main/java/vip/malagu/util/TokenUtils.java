@@ -2,6 +2,7 @@ package vip.malagu.util;
 
 import java.util.Date;
 
+import vip.malagu.constants.CacheConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
 
