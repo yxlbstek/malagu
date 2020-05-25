@@ -533,3 +533,33 @@ a {
 	border: 1px solid #FFF;
 	color: #5AA2F7;
 }
+
+/* Main页面侧面板 */
+.sidePanel-main {
+	z-index: 11000 !important;
+	position: relative;
+	overflow: auto;
+	background: #FFF;
+	height: calc(100% - 76px) !important;
+}
+
+.sidePanel-caption {
+    border-left: 2px solid #318BF5;
+    height: 14px;
+    font-size: 14px;
+    padding: 0px 8px;
+    margin-left: 10px !important;
+    line-height: 14px !important;
+}
+
+.sidePanel-closeBtn {
+	cursor: pointer;
+    top: 12px;
+    font-size: 22px;
+    position: absolute;
+    right: 12px;
+}
+
+.sidePanel-closeBtn:hover {
+	color: #318BF5;
+}
