@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Url">
+      <Property name="creationType">com.bstek.bdf3.security.orm.Url</Property>
+      <Property name="defaultDisplayProperty">name</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property></Property>
+        <Property name="label">图标</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">路径</Property>
+      </PropertyDef>
+      <PropertyDef name="navigable">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">可导航</Property>
+        <Property name="defaultValue">true</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">排序号</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="label">描述</Property>
+      </PropertyDef>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dsUrl">
+      <ClientEvent name="onLoadData" signature="self,arg,bvUrl">var topUrls = [];&#xD;
+var haveChildUrls = [];&#xD;
+self.getData().each(function(url) {&#xD;
+	if (url.get(&quot;path&quot;)) {&#xD;
+		topUrls.push(url);&#xD;
+	}&#xD;
+	if (!url.get(&quot;children&quot;).isEmpty()) {&#xD;
+		haveChildUrls.push(url);&#xD;
+	}&#xD;
+});&#xD;
+&#xD;
+var items = [];&#xD;
+if (topUrls.length > 0) {&#xD;
+	var item = {&#xD;
+		title: &quot;top&quot;,&#xD;
+		items: topUrls&#xD;
+	};&#xD;
+	items.push(item);&#xD;
+}&#xD;
+if (haveChildUrls.length > 0) {&#xD;
+	haveChildUrls.each(function(url) {&#xD;
+		var item = {&#xD;
+			icon: url.get(&quot;icon&quot;),&#xD;
+			title: url.get(&quot;name&quot;),&#xD;
+			items: url.get(&quot;children&quot;)&#xD;
+		};&#xD;
+		items.push(item);&#xD;
+	});&#xD;
+}&#xD;
+bvUrl.set(&quot;items&quot;, items);&#xD;
+</ClientEvent>
+      <Property name="dataType">[Url]</Property>
+      <Property name="dataProvider">frameworkController#loadUrlForLoginUser</Property>
+      <Property name="loadMode">onReady</Property>
+    </DataSet>
+    <Panel id="urlPanel" layout="padding:100">
+      <Buttons/>
+      <Children>
+        <BlockView id="bvUrl">
+          <ClientEvent name="onRenderBlock">$(arg.dom).empty();&#xD;
+var $urlCon = $(&quot;&lt;div class='urlCon'>&lt;/div>&quot;).appendTo(arg.dom);&#xD;
+var items = arg.data.items || [];&#xD;
+if (arg.data.title != &quot;top&quot;) {&#xD;
+	var captionDiv = &quot;&lt;div class='captionDiv'>&quot; &#xD;
+		+ &quot;&lt;span class='captionIcon &quot; + arg.data.icon + &quot;'>&lt;/span>&quot;&#xD;
+		+ &quot;&lt;span class='captionName'>&quot; + arg.data.title + &quot;&lt;/span>&quot;&#xD;
+	+ &quot;&lt;/div>&quot;;&#xD;
+	$(captionDiv).appendTo($urlCon);&#xD;
+}&#xD;
+items.each(function(item){&#xD;
+	var urlDiv = &quot;&lt;div class='urlDiv'>&quot; &#xD;
+		+ &quot;&lt;span class='urlIcon &quot; + item.get(&quot;icon&quot;) + &quot;'>&lt;/span>&quot;&#xD;
+		+ &quot;&lt;span class='urlName'>&quot; + item.get(&quot;name&quot;) + &quot;&lt;/span>&quot;&#xD;
+	+ &quot;&lt;/div>&quot;;&#xD;
+	var $url = $(urlDiv).appendTo($urlCon);&#xD;
+	$url.click(function() {&#xD;
+		window.parent.openTab(&quot;&quot;, &quot;&quot;, item.get(&quot;path&quot;));&#xD;
+	});&#xD;
+});&#xD;
+</ClientEvent>
+          <Property name="blockDecoratorSize">1</Property>
+          <Property name="blockWidth">900</Property>
+          <Property name="blockHeight">10</Property>
+        </BlockView>
+      </Children>
+      <Tools/>
+    </Panel>
+  </View>
+</ViewConfig>

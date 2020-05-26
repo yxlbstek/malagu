@@ -1,0 +1,94 @@
+@CHARSET "UTF-8";
+
+#d_bvUrl {
+	margin-top: -50px;
+	height: calc(100% - 100px) !important;
+}
+
+#d_bvUrl > div > div {
+	height: 100% !important;
+}
+
+#d_bvUrl .block {
+	width: 98% !important;
+	height: auto !important;
+	background-color: #f2f6ff8c;
+	border: 1px solid #e5e5e5;
+	-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    position: relative !important;
+}
+
+.captionDiv {
+	width: max-content;
+	font-size: 14px;
+	margin-left: 20px;
+}
+
+.captionDiv .captionIcon {
+	color: #000;
+}
+
+.captionDiv .captionName {
+	color: #000000b3;
+	font-weight: bold;
+    font-family: monospace;
+    margin-left: 5px;
+}
+    
+
+.urlCon {
+	height: calc(100% - 40px) !important;
+	width: calc(100% - 60px) !important;
+	margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    display: inline-block;
+    
+}
+
+.urlDiv {
+	width: 160px;
+    height: 50px;
+    border: 1px solid #e5e5e5;
+    display: inline-block;
+    margin-left: 20px;
+    margin-top: 10px;
+    text-align: center;
+    cursor: pointer;
+    background: #fff;
+}
+
+.urlDiv:hover {
+	border-color: #00C1DE;
+}
+
+.urlDiv > span {
+	margin-top: 18px;
+}
+
+.urlDiv .urlIcon {
+	margin-right: 5px;
+	color: #000;
+}
+
+.urlDiv:hover .urlIcon {
+	color: #ff6a00 !important;
+}
+
+.urlDiv .urlName {
+	color: #555;
+	font-weight: bold;
+	font-family: monospace;
+}
+
+.urlDiv:hover .urlName {
+	color: #000;
+}
+
+
+
+
+
+

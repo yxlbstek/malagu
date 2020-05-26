@@ -534,13 +534,14 @@ a {
 	color: #5AA2F7;
 }
 
-/* Main页面侧面板 */
+/* Main页面侧面板-用户信息 */
 .sidePanel-main {
 	z-index: 11000 !important;
-	position: relative;
+	position: fixed !important;
 	overflow: auto;
 	background: #FFF;
-	height: calc(100% - 76px) !important;
+	height: calc(100% - 70px) !important;
+	top: 60px !important;
 }
 
 .sidePanel-caption {
@@ -557,7 +558,7 @@ a {
     top: 12px;
     font-size: 22px;
     position: absolute;
-    right: 12px;
+    right: 10px;
 }
 
 .sidePanel-closeBtn:hover {
