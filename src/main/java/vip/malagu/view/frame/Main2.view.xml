@@ -516,8 +516,14 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 arg.node.expandAsync();
 arg.node.collapse();</ClientEvent>
         <ClientEvent name="onDataRowClick">var url = self.get(&quot;currentEntity&quot;);
+var $sidePanel = $(&quot;#d_urlSidePanel&quot;);
 if (url.get(&quot;path&quot;)) {
+	$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;active&quot;);
+	$sidePanel.attr(&quot;data-disabled&quot;, &quot;active&quot;);
 	window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+} else {
+	$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);
+	$sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);
 }
 
 var node = self.get(&quot;currentNode&quot;);
