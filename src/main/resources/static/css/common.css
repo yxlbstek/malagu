@@ -54,11 +54,18 @@
 	color: #2196ff;
 }
 
+.commonLabel:hover {
+	font-weight: 600;
+}
+
 /* 表格操作删除功能 */
 .delLabel {
 	color: #FF5723;
 }
 
+.delLabel:hover {
+	font-weight: 600;
+}
 
 /* autoForm样式 */
 .d-auto-form .d-form-layout-row .form-label {
