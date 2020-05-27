@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Organization">
+      <Property name="creationType">org.malagu.multitenant.domain.Organization</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">公司ID</Property>
+        <Property name="readOnly">false</Property>
+        <Validator name="validator1" type="regExp">
+          <Property name="whiteRegExp">${configure['bdf3.organizationIdRegExp']}</Property>
+          <Property name="resultMessage">${configure['bdf3.organizationIdRegExpResultMessage']}</Property>
+        </Validator>
+        <Validator type="ajax">
+          <Property name="name">validator</Property>
+          <Property name="service">organizationController#isExist</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">公司名称</Property>
+      </PropertyDef>
+      <PropertyDef name="username">
+        <Property name="label">管理员</Property>
+        <Property name="defaultValue">admin</Property>
+      </PropertyDef>
+      <PropertyDef name="dataSourceInfoId">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="dataSourceInfo">
+        <Property name="dataType">DataSourceInfo</Property>
+        <Property name="label">数据源</Property>
+        <Property name="submittable">false</Property>
+      </PropertyDef>
+      <PropertyDef name="op">
+        <Property name="submittable">false</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="DataSourceInfo">
+      <Property name="creationType">org.malagu.multitenant.domain.DataSourceInfo</Property>
+      <Property name="defaultDisplayProperty">name</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">名称</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Query">
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">公司名称</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <DataSet id="dsDataSourceInfo">
+      <Property name="dataType">[DataSourceInfo]</Property>
+      <Property name="dataProvider">dataSourceInfoController#load</Property>
+    </DataSet>
+    <DataSet id="dsOrg">
+      <Property name="dataType">[Organization]</Property>
+      <Property name="dataProvider">organizationController#load</Property>
+      <Property name="pageSize">13</Property>
+    </DataSet>
+    <Panel>
+      <Property name="caption">公司查询</Property>
+      <Property name="height">100</Property>
+      <Property name="style">
+        <Property name="border-bottom">1px solid #e5e5e5</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <Container>
+          <Property name="style">
+            <Property name="padding-left">8px</Property>
+          </Property>
+          <AutoForm id="searchForm" layoutConstraint="left">
+            <Property name="cols">*</Property>
+            <Property name="dataType">Query</Property>
+            <Property name="createPrivateDataSet">true</Property>
+            <Property name="width">28%</Property>
+            <Property name="labelWidth">60</Property>
+            <AutoFormElement>
+              <Property name="name">name</Property>
+              <Property name="property">name</Property>
+              <Property name="labelWidth">90</Property>
+              <Editor>
+                <TextEditor>
+                  <Property name="blankText">请输入</Property>
+                </TextEditor>
+              </Editor>
+            </AutoFormElement>
+          </AutoForm>
+          <Button layoutConstraint="left">
+            <ClientEvent name="onClick" signature="self,arg,dgOrg,searchForm">window.clearTimeout(self.urlQueryTimeout);&#xD;
+self.urlQueryTimeout = window.setTimeout(function() {&#xD;
+	var key = searchForm.get(&quot;entity.name&quot;);&#xD;
+	if (!key) {&#xD;
+		dgOrg.filter();&#xD;
+	} else {&#xD;
+		dgOrg.filter([{&#xD;
+			junction: &quot;or&quot;,&#xD;
+			criterions: [{&#xD;
+				property: &quot;name&quot;,&#xD;
+				operator: &quot;like&quot;,&#xD;
+				value: key&#xD;
+			}]&#xD;
+		}]);&#xD;
+	}&#xD;
+}, 250);</ClientEvent>
+            <Property name="caption">查询</Property>
+            <Property name="className">sure</Property>
+            <Property name="style">
+              <Property name="margin-top">8px</Property>
+            </Property>
+          </Button>
+          <Button>
+            <ClientEvent name="onClick" signature="self,arg,searchForm">searchForm.set(&quot;entity&quot;, {});</ClientEvent>
+            <Property name="caption">重置</Property>
+            <Property name="className">simple</Property>
+            <Property name="style">
+              <Property name="margin-top">8px</Property>
+              <Property name="margin-left">10px</Property>
+            </Property>
+          </Button>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <Panel layout="padding:8">
+      <Property name="caption">公司列表</Property>
+      <Buttons/>
+      <Children>
+        <Container layout="hbox align:center;pack:end">
+          <Property name="height">40</Property>
+          <Property name="contentOverflow">hidden</Property>
+          <Button id="addBtn">
+            <ClientEvent name="onClick" signature="self,arg,dsOrg,dialogOrg,id,ds">id.set(&quot;readOnly&quot;, false);&#xD;
+ds.set(&quot;readOnly&quot;, false);&#xD;
+dsOrg.insert();&#xD;
+dialogOrg.show();</ClientEvent>
+            <Property name="caption">添加公司</Property>
+            <Property name="className">sure</Property>
+          </Button>
+        </Container>
+        <DataGrid id="dgOrg">
+          <Property name="dataSet">dsOrg</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="sortMode">serverSide</Property>
+          <Property name="filterMode">serverSide</Property>
+          <RowNumColumn>
+            <ClientEvent name="onRenderHeaderCell">arg.dom.innerHTML = &quot;&lt;span>序号&lt;/span>&quot;;</ClientEvent>
+            <Property name="width">60</Property>
+            <Property name="align">center</Property>
+          </RowNumColumn>
+          <DataColumn name="id">
+            <Property name="property">id</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn name="name">
+            <Property name="property">name</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">dataSourceInfo.name</Property>
+            <Property name="name">dataSourceInfo.name</Property>
+            <Property name="caption">数据源</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn>
+            <ClientEvent name="onRenderCell" signature="self,arg,id,ds,dialogOrg,dgOrg,updateAction">var btns = [];&#xD;
+&#xD;
+//if (window['modifyBtn']) {&#xD;
+	var mb = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;commonLabel&quot;,&#xD;
+		content: &quot;修改&quot;,&#xD;
+		onclick: function() {&#xD;
+			id.set(&quot;readOnly&quot;, true);&#xD;
+			ds.set(&quot;readOnly&quot;, true);&#xD;
+			dialogOrg.show()&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(mb);&#xD;
+//}&#xD;
+&#xD;
+//if (window['deleteBtn']) {&#xD;
+	var db = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;delLabel&quot;,&#xD;
+		content: &quot;删除&quot;,&#xD;
+		onclick: function() {&#xD;
+			var entity = dgOrg.get(&quot;currentEntity&quot;);&#xD;
+			dorado.MessageBox.confirm(&quot;确认删除？&quot;, function() {&#xD;
+				entity.remove();&#xD;
+				updateAction.execute();&#xD;
+			});&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(db);&#xD;
+//}&#xD;
+&#xD;
+$(arg.dom).empty().xCreate(btns);&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+            <Property name="property">op</Property>
+            <Property name="name">op</Property>
+            <Property name="width">180</Property>
+            <Property name="caption">操作</Property>
+            <Property name="align">center</Property>
+            <Editor/>
+          </DataColumn>
+        </DataGrid>
+        <Container id="pageControl" layout="hbox align:center;pack:end" layoutConstraint="bottom">
+          <ClientEvent name="onReady">window.initPage(view.get(&quot;#dsOrg&quot;), self);</ClientEvent>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <UpdateAction id="updateAction">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogOrg">dialogOrg.hide()
+</ClientEvent>
+      <Property name="dataResolver">organizationController#save</Property>
+      <Property name="successMessage">保存成功.</Property>
+      <Property name="executingMessage">正在执行…</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsOrg</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <DataSetDropDown id="ddDataSourceInfo">
+      <Property name="dataSet">dsDataSourceInfo</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="assignmentMap">dataSourceInfoId=id,dataSourceInfo.name=name</Property>
+    </DataSetDropDown>
+    <Dialog id="dialogOrg">
+      <ClientEvent name="onHide" signature="self,arg,dsOrg">dsOrg.getData().cancel();
+</ClientEvent>
+      <Property name="width">500</Property>
+      <Property name="height">360</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="minimizeable">false</Property>
+      <Property name="showCaptionBar">false</Property>
+      <Buttons>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAction</Property>
+          <Property name="className">sure</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide()
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="className">simple</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Panel>
+          <Property name="caption">公司信息</Property>
+          <Buttons/>
+          <Children>
+            <AutoForm>
+              <Property name="dataSet">dsOrg</Property>
+              <Property name="cols">*</Property>
+              <Property name="labelPosition">left</Property>
+              <Property name="labelAlign">right</Property>
+              <Tip>
+                <Property name="text">自动创建一个默认用户，用户名/密码：admin/123456</Property>
+                <Property name="floating">false</Property>
+                <Property name="caption">小贴士</Property>
+                <Property name="icon">INFO</Property>
+              </Tip>
+              <AutoFormElement id="id">
+                <Property name="name">id</Property>
+                <Property name="property">id</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">name</Property>
+                <Property name="property">name</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">username</Property>
+                <Property name="property">username</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement id="ds">
+                <Property name="name">dataSourceInfo</Property>
+                <Property name="property">dataSourceInfo</Property>
+                <Property name="trigger">ddDataSourceInfo</Property>
+                <Property name="editable">false</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </Children>
+          <Tools/>
+        </Panel>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>
