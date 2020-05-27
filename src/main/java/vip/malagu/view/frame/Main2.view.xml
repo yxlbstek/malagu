@@ -204,7 +204,8 @@ if (picture) {&#xD;
     <Container id="urlShowBtnCon" layoutConstraint="left">
       <ClientEvent name="onClick">//var $sidePanel = $(&quot;#d_urlSidePanel&quot;);&#xD;
 //$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);&#xD;
-//$sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);</ClientEvent>
+//$sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);&#xD;
+</ClientEvent>
       <Property name="height">50</Property>
       <Property name="width">50</Property>
       <Property name="contentOverflow">hidden</Property>
@@ -279,6 +280,7 @@ arg.returnValue = false;&#xD;
 $sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);&#xD;
 $sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);&#xD;
 $sidePanel.css(&quot;margin-right&quot;, &quot;12px&quot;);&#xD;
+&#xD;
 </ClientEvent>
             <Property name="height">30</Property>
             <Property name="width">30</Property>
@@ -527,6 +529,10 @@ if (url.get(&quot;path&quot;)) {
 } else {
 	$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);
 	$sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);
+	setTimeout(function() {
+		$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;active&quot;);
+		$sidePanel.attr(&quot;data-disabled&quot;, &quot;active&quot;);
+	}, 300);
 }
 
 var node = self.get(&quot;currentNode&quot;);
@@ -538,7 +544,7 @@ if (node.get(&quot;expanded&quot;)) {
 </ClientEvent>
         <ClientEvent name="onDataRowDoubleClick">var url = self.get(&quot;currentEntity&quot;);
 if (url.get(&quot;path&quot;)) {
-	window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+	//window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
 }
 
 </ClientEvent>
