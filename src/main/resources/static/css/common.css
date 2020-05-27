@@ -1,5 +1,9 @@
 @CHARSET "UTF-8";
 
+.d-view.basic-view {
+	background: #f2f6ff;
+}
+
 /* 按钮样式 */
 .d-button.sure,
 .d-button.simple {

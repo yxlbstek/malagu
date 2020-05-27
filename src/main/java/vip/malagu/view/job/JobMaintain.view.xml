@@ -316,9 +316,7 @@
   </Model>
   <View>
     <Property name="packages">font-awesome,colors</Property>
-    <Property name="style">
-      <Property name="background">#f2f6ff</Property>
-    </Property>
+    <Property name="className">basic-view</Property>
     <DataSet id="dsJob">
       <Property name="dataType">[JobInfo]</Property>
       <Property name="pageSize">10</Property>
