@@ -78,10 +78,15 @@
 }
 
 .d-text-box .editor,
-.d-form-element .form-content .form-editor .editor,
-.d-form-element .form-content .d-text-area .textarea {
+.d-form-element .form-content .form-editor .editor {
     padding: 0px 0px 0px 14px !important;
     width: calc(100% - 16px) !important;
+}
+
+.d-form-element .form-content .d-text-area .textarea {
+	padding: 5px 0px 5px 14px !important;
+    width: calc(100% - 16px) !important;
+    height: calc(100% - 10px) !important;
 }
 
 .editor.blank-text,
@@ -121,6 +126,7 @@
 	margin: 6px 3px 0px 0px !important;
 }
 
+.d-text-area:hover,
 .d-text-box:hover,
 .d-text-box.d-focused {
 	border-color: #00c1de !important;
@@ -539,6 +545,36 @@ a {
 .d-tag-editor .d-icon-button:hover {
 	border: 1px solid #FFF;
 	color: #5AA2F7;
+}
+
+/* 树 */
+.d-tree,
+.d-tree > div {
+	-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.d-tree .row {
+	height: 35px !important;
+	color: #000;
+}
+
+.d-tree .row:hover {
+	background-color: #d1ecff;
+}
+
+.d-tree .current-row {
+	background-color: #d1ecff;
+}
+
+.d-tree .selected-row .node-icon, 
+.d-tree .current-row .node-icon {
+	color: #000 !important;
+}
+
+.d-tree-node .node-button {
+	border: 0px solid #fff;
 }
 
 /* Main页面侧面板-用户信息 */

@@ -231,6 +231,7 @@ if (picture) {&#xD;
           <Control id="homePage">
             <ClientEvent name="onClick">window.location.href = &quot;${configure['bdf3.loginSuccessPage']}&quot;;&#xD;
 </ClientEvent>
+            <ClientEvent name="onCreateDom">$(arg.dom).attr(&quot;title&quot;, &quot;首页&quot;);</ClientEvent>
             <Property name="height">22</Property>
             <Property name="width">22</Property>
           </Control>
@@ -239,6 +240,7 @@ if (picture) {&#xD;
 	window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;;&#xD;
 });&#xD;
 </ClientEvent>
+            <ClientEvent name="onCreateDom">$(arg.dom).attr(&quot;title&quot;, &quot;退出系统&quot;);</ClientEvent>
             <Property name="height">20</Property>
             <Property name="width">20</Property>
           </Control>
@@ -268,6 +270,7 @@ Chat.show(function() {&#xD;
 });&#xD;
 arg.returnValue = false;&#xD;
 </ClientEvent>
+            <ClientEvent name="onCreateDom">$(arg.dom).attr(&quot;title&quot;, &quot;消息&quot;);</ClientEvent>
             <Property name="height">20</Property>
             <Property name="width">20</Property>
           </Control>
