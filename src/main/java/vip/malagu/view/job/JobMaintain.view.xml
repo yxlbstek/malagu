@@ -653,9 +653,6 @@ if (job.validate() == &quot;ok&quot;) {&#xD;
           <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="className">simple</Property>
-          <Property name="style">
-            <Property name="margin-left">10px</Property>
-          </Property>
         </Button>
       </Buttons>
       <Children>
@@ -725,9 +722,6 @@ dialogCron.hide();</ClientEvent>
           <ClientEvent name="onClick">view.id(&quot;dialogCron&quot;).hide();</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="className">simple</Property>
-          <Property name="style">
-            <Property name="margin-left">10px</Property>
-          </Property>
         </Button>
       </Buttons>
       <Children>
@@ -2278,9 +2272,6 @@ if (calendar.validate() == &quot;ok&quot;) {&#xD;
           <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="className">simple</Property>
-          <Property name="style">
-            <Property name="margin-left">10px</Property>
-          </Property>
         </Button>
       </Buttons>
       <Children>
@@ -2330,9 +2321,6 @@ if (calendarDate.validate() == &quot;ok&quot;) {&#xD;
           <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="className">simple</Property>
-          <Property name="style">
-            <Property name="margin-left">10px</Property>
-          </Property>
         </Button>
       </Buttons>
       <Children>
@@ -2392,9 +2380,6 @@ if (currentJob.get(&quot;state&quot;) != &quot;running&quot;) {&#xD;
           <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="className">simple</Property>
-          <Property name="style">
-            <Property name="margin-left">10px</Property>
-          </Property>
         </Button>
       </Buttons>
       <Children>

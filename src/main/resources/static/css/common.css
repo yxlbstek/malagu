@@ -6,6 +6,10 @@
 	padding: 16px 12px;
 }
 
+.d-button.simple {
+	margin-left: 10px !important;
+}
+
 .d-button.simple .button-left,
 .d-button.sure .button-left {
 	margin: -12px 3px 0 3px;

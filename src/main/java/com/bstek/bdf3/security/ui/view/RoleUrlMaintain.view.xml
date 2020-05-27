@@ -463,9 +463,6 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="className">simple</Property>
-          <Property name="style">
-            <Property name="margin-left">10px</Property>
-          </Property>
         </Button>
       </Buttons>
       <Children>
