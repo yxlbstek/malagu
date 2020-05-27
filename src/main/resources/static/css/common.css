@@ -619,3 +619,21 @@ a {
 .sidePanel-closeBtn:hover {
 	color: #318BF5;
 }
+
+/* 滚动条 */
+.d-modern-scroller.d-modern-scroller-expand {
+	width: 10px !important;
+}
+
+.d-modern-scroller-expand .track,
+.d-modern-scroller .track {
+	height: 100% !important;
+    background: #dee7fa !important;
+    opacity: 0.8;
+}
+
+.d-modern-scroller-expand .slider,
+.d-modern-scroller .slider {
+	height: 50% !important;
+    background: #03d3f2 !important;
+}
