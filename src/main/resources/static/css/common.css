@@ -456,6 +456,10 @@
 	background: #FFF;
 }
 
+.d-message-box .info-icon:before {
+	display: none !important;
+}
+
 /* 静默提示 */
 .d-tip.d-tip-floating {
 	/* top: calc(100% - 140px) !important; */
