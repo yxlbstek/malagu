@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Role">
+      <Property name="creationType">com.bstek.bdf3.security.orm.Role</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">角色名称</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property></Property>
+        <Property name="label">描述</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Query">
+      <PropertyDef name="name">
+        <Property></Property>
+        <Property name="label">角色名称</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome-new</Property>
+    <DataSet id="dsRole">
+      <Property name="dataType">[Role]</Property>
+      <Property name="dataProvider">roleController#load</Property>
+      <Property name="pageSize">10</Property>
+    </DataSet>
+    <Panel>
+      <Property name="caption">角色查询</Property>
+      <Property name="height">100</Property>
+      <Property name="style">
+        <Property name="border-bottom">1px solid #e5e5e5</Property>
+      </Property>
+      <Buttons/>
+      <Children>
+        <Container>
+          <Property name="style">
+            <Property name="padding-left">8px</Property>
+          </Property>
+          <AutoForm id="searchForm" layoutConstraint="left">
+            <Property name="cols">*</Property>
+            <Property name="dataType">Query</Property>
+            <Property name="createPrivateDataSet">true</Property>
+            <Property name="width">28%</Property>
+            <Property name="labelWidth">60</Property>
+            <AutoFormElement>
+              <Property name="name">name</Property>
+              <Property name="property">name</Property>
+              <Property name="labelWidth">90</Property>
+              <Editor>
+                <TextEditor>
+                  <Property name="blankText">请输入</Property>
+                </TextEditor>
+              </Editor>
+            </AutoFormElement>
+          </AutoForm>
+          <Button layoutConstraint="left">
+            <ClientEvent name="onClick" signature="self,arg,dgRole,searchForm">window.clearTimeout(self.urlQueryTimeout);&#xD;
+self.urlQueryTimeout = window.setTimeout(function() {&#xD;
+	var key = searchForm.get(&quot;entity.name&quot;);&#xD;
+	if (!key) {&#xD;
+		dgRole.filter();&#xD;
+	} else {&#xD;
+		dgRole.filter([{&#xD;
+			junction: &quot;or&quot;,&#xD;
+			criterions: [{&#xD;
+				property: &quot;name&quot;,&#xD;
+				operator: &quot;like&quot;,&#xD;
+				value: key&#xD;
+			}]&#xD;
+		}]);&#xD;
+	}&#xD;
+}, 250);</ClientEvent>
+            <Property name="caption">查询</Property>
+            <Property name="className">sure</Property>
+            <Property name="style">
+              <Property name="margin-top">8px</Property>
+            </Property>
+          </Button>
+          <Button>
+            <ClientEvent name="onClick" signature="self,arg,searchForm">searchForm.set(&quot;entity&quot;, {});</ClientEvent>
+            <Property name="caption">重置</Property>
+            <Property name="className">simple</Property>
+            <Property name="style">
+              <Property name="margin-top">8px</Property>
+              <Property name="margin-left">10px</Property>
+            </Property>
+          </Button>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <Panel layout="padding:8">
+      <Property name="caption">角色列表</Property>
+      <Buttons/>
+      <Children>
+        <Container layout="hbox align:center;pack:end">
+          <Property name="height">40</Property>
+          <Property name="contentOverflow">hidden</Property>
+          <Button id="addBtn">
+            <ClientEvent name="onClick" signature="self,arg,dsRole,dialogRole">dsRole.insert();&#xD;
+dialogRole.show();</ClientEvent>
+            <Property name="caption">添加角色</Property>
+            <Property name="className">sure</Property>
+          </Button>
+        </Container>
+        <DataGrid id="dgRole">
+          <Property name="dataSet">dsRole</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="sortMode">serverSide</Property>
+          <Property name="filterMode">serverSide</Property>
+          <RowNumColumn>
+            <ClientEvent name="onRenderHeaderCell">arg.dom.innerHTML = &quot;&lt;span>序号&lt;/span>&quot;;</ClientEvent>
+            <Property name="width">60</Property>
+            <Property name="align">center</Property>
+          </RowNumColumn>
+          <DataColumn name="name">
+            <Property name="property">name</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn name="description">
+            <Property name="property">description</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn>
+            <ClientEvent name="onRenderCell" signature="self,arg,dialogRole,updateAction,dgRole">var btns = [];&#xD;
+&#xD;
+//if (window['modifyBtn']) {&#xD;
+	var mb = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;commonLabel&quot;,&#xD;
+		content: &quot;修改&quot;,&#xD;
+		onclick: function() {&#xD;
+			dialogRole.show();&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(mb);&#xD;
+//}&#xD;
+&#xD;
+//if (window['deleteBtn']) {&#xD;
+	var db = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;delLabel&quot;,&#xD;
+		content: &quot;删除&quot;,&#xD;
+		onclick: function() {&#xD;
+			var entity = dgRole.get(&quot;currentEntity&quot;);&#xD;
+			dorado.MessageBox.confirm(&quot;确认删除？&quot;, function() {&#xD;
+				entity.remove();&#xD;
+				updateAction.execute();&#xD;
+			});&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(db);&#xD;
+//}&#xD;
+&#xD;
+$(arg.dom).empty().xCreate(btns);&#xD;
+&#xD;
+</ClientEvent>
+            <Property name="property">op</Property>
+            <Property name="name">op</Property>
+            <Property name="width">180</Property>
+            <Property name="caption">操作</Property>
+            <Property name="align">center</Property>
+            <Editor/>
+          </DataColumn>
+        </DataGrid>
+        <Container id="pageControl" layout="hbox align:center;pack:end" layoutConstraint="bottom">
+          <ClientEvent name="onReady">window.initPage(view.get(&quot;#dsRole&quot;), self);</ClientEvent>
+        </Container>
+      </Children>
+      <Tools/>
+    </Panel>
+    <UpdateAction id="updateAction">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogRole">dialogRole.hide()
+</ClientEvent>
+      <Property name="dataResolver">roleController#save</Property>
+      <Property name="successMessage">保存成功。</Property>
+      <Property name="executingMessage">正在执行……</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsRole</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Dialog id="dialogRole">
+      <ClientEvent name="onHide" signature="self,arg,dsRole">dsRole.getData().cancel();
+</ClientEvent>
+      <Property name="iconClass">fa fa-users</Property>
+      <Property name="width">500</Property>
+      <Property name="height">300</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="minimizeable">false</Property>
+      <Property name="showCaptionBar">false</Property>
+      <Buttons>
+        <Button>
+          <Property name="caption">保存</Property>
+          <Property name="action">updateAction</Property>
+          <Property name="className">sure</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide()
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="className">simple</Property>
+          <Property name="style">
+            <Property name="margin-left">10px</Property>
+          </Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Panel>
+          <Property name="caption">角色信息</Property>
+          <Buttons/>
+          <Children>
+            <AutoForm>
+              <Property name="dataSet">dsRole</Property>
+              <Property name="cols">*</Property>
+              <Property name="labelPosition">left</Property>
+              <Property name="labelAlign">right</Property>
+              <AutoFormElement>
+                <Property name="name">name</Property>
+                <Property name="property">name</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">description</Property>
+                <Property name="property">description</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="height">100</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </Children>
+          <Tools/>
+        </Panel>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>
