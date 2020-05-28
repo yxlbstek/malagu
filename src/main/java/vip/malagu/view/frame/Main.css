@@ -91,31 +91,31 @@
 
 /* 菜单 */
 #d_dtUrl {
-	background: #303538;
+	background: #fff;
 }
 
 #d_dtUrl .row {
-	background: #303538;
-	height: 55px !important;
-    font-size: 17px;
+	background: #fff;
+	height: 45px !important;
+    font-size: 14px;
     font-family: monospace;
-    color: #f7f7f7;
+    color: #666;
     cursor: pointer;
 }
 
 #d_dtUrl .row.current-row {
-	background: #272b2e;
+	background: #f2f6ff;
 }
 
 #d_dtUrl .row:hover {
-	background: #272b2e;
+	background: #f2f6ff;
 }
 
 #d_dtUrl .row .d-tree-node .node-icon {
 	cursor: pointer;
 	margin-left: 5px;
 	font-size: 1em;
-	color: #f7f7f7 !important;
+	color: #000 !important;
 }
 
 #d_dtUrl .row .d-tree-node .node-label {

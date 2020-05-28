@@ -314,10 +314,11 @@ $.ajax(options);*/</ClientEvent>
             <Container layout="hbox align:center;pack:center">
               <Property name="height">30</Property>
               <Property name="style">
-                <Property name="background">#303538</Property>
-                <Property name="border-bottom">1px solid #1b1d1e</Property>
+                <Property name="background">#fff</Property>
+                <Property name="border-bottom">1px solid #e5e5e5</Property>
               </Property>
               <Property name="contentOverflow">hidden</Property>
+              <Property name="ignored">true</Property>
               <Control>
                 <ClientEvent name="onClick" signature="self,arg,splitPanel">if (window.urlShow) {&#xD;
 	$(&quot;.side-panel&quot;).removeClass(&quot;urlShow&quot;);&#xD;
