@@ -3,11 +3,17 @@ package vip.malagu.util;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.springframework.util.StringUtils;
 
+import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.dorado.core.Configure;
 import com.bstek.dorado.web.DoradoContext;
+
+import vip.malagu.orm.FileInfo;
 
 /**
  * 文件相关工具类
@@ -63,6 +69,59 @@ public final class FileUtils {
 			return true;
 		}
 		return false;
+	}
+	
+	@Transactional
+	public static void deleteModuleFile(String businessId, String module) {
+		List<FileInfo> files = JpaUtil
+			.linq(FileInfo.class)
+			.equal("module", module)
+			.equal("businessId", businessId)
+			.list();
+		if (!files.isEmpty()) {
+			for (FileInfo f : files) {
+				File file = new File(f.getPath());
+				if (file.exists()) {
+					file.delete();
+				}
+			}
+			JpaUtil
+				.lind(FileInfo.class)
+				.equal("module", module)
+				.equal("businessId", businessId)
+				.delete();
+		}
+	}
+	
+	@Transactional
+	public static void deleteFile(String fileId) {
+		List<FileInfo> files = JpaUtil
+			.linq(FileInfo.class)
+			.equal("id", fileId)
+			.list();
+		if (!files.isEmpty()) {
+			FileInfo fileInfo = files.get(0);
+			File file = new File(fileInfo.getPath());
+			if (file.exists()) {
+				file.delete();
+			}
+			JpaUtil
+				.lind(FileInfo.class)
+				.equal("id", fileInfo.getId())
+				.delete();
+		}
+	}
+	
+	@Transactional
+	public static void deleteFile(FileInfo fileInfo) {
+		File file = new File(fileInfo.getPath());
+		if (file.exists()) {
+			file.delete();
+		}
+		JpaUtil
+			.lind(FileInfo.class)
+			.equal("id", fileInfo.getId())
+			.delete();
 	}
 	
 }
