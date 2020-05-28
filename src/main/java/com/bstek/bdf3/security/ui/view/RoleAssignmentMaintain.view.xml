@@ -293,7 +293,7 @@ self.urlQueryTimeout = window.setTimeout(function() {
           <Button>
             <Property name="caption">移除</Property>
             <Property name="action">actionRemoveUser</Property>
-            <Property name="className">simple</Property>
+            <Property name="className">sure</Property>
           </Button>
         </Container>
         <Container layout="padding:5;regionPadding:10" layoutConstraint="left">

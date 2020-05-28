@@ -671,3 +671,23 @@ a {
 .d-menu .group-content .menu-item-separator {
 	border-color: #03d3f2;
 }
+
+/* 普通Dialog弹框 */
+.d-dialog .d-dialog-caption-bar {
+	background-color: #ffffff !important;
+}
+
+.d-dialog .d-dialog-caption-bar .button-group .d-close-button,
+.d-dialog .d-dialog-caption-bar .button-group .d-restore-button,
+.d-dialog .d-dialog-caption-bar .button-group .d-maximize-button {
+	font-size: 18px;
+    margin: 2px 5px !important;
+    border: 1px solid #fff !important;
+}
+
+.d-dialog .d-dialog-caption-bar .button-group .d-close-button:hover,
+.d-dialog .d-dialog-caption-bar .button-group .d-restore-button:hover,
+.d-dialog .d-dialog-caption-bar .button-group .d-maximize-button:hover {
+	color: #5AA2F7;
+    border: 1px solid #fff !important;
+}

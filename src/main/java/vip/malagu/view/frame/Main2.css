@@ -70,6 +70,48 @@ html, body {
 	background-image: url(static/img/homePage-hover.png);
 }
 
+/* 站内邮件按钮 */
+#d_email {
+	background-image: url(static/img/email.png);
+	background-repeat: no-repeat;
+	background-size: 100%;
+	margin-right: 20px;
+    margin-top: 0px;
+    cursor: pointer;
+}
+
+#d_email:hover {
+	background-image: url(static/img/email-hover.png);
+}
+
+/* 邮件数量提示 */
+#d_emailCount {
+	position: absolute;
+    right: 77px;
+    background: #ff6a00;
+    color: #e5e5e5;
+    top: 0px;
+    line-height: 15px !important;
+    width: auto !important;
+    height: 15px !important;
+    font-size: 9px;
+    text-align: center;
+    min-width: 15px !important;
+}
+
+/* 消息提示红点 */
+#d_count {
+	position: absolute;
+    right: 136px;
+    background: #ff6a00;
+    color: #e5e5e5;
+    top: 8px;
+    line-height: 15px !important;
+    width: 5px !important;
+    height: 5px !important;
+    border-radius: 60px;
+}
+
 /* 消息按钮 */
 #d_msg {
 	background-image: url(static/img/msg.png);
@@ -197,19 +239,6 @@ html, body {
 .urlShow .d-tree .row .node-button,
 .urlShow .d-tree .row .node-label {
 	display: inline-block !important;
-}
-
-/* 消息提示红点 */
-#d_count {
-	position: absolute;
-    right: 87px;
-    background: #fc3408;
-    color: #e5e5e5;
-    top: 8px;
-    line-height: 15px !important;
-    width: 5px !important;
-    height: 5px !important;
-    border-radius: 60px;
 }
 
 /* 分隔栏 */
@@ -809,9 +838,3 @@ html, body {
     top: 0px !important;
     pointer-events: none;
 }
-
-
-
-
-
-
