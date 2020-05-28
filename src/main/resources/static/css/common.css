@@ -637,3 +637,37 @@ a {
 	height: 50% !important;
     background: #03d3f2 !important;
 }
+
+/* Menu按钮 */
+.d-menu {
+	-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.d-menu .group-content .menu-item .menu-item-content {
+	height: 34px !important;
+}
+
+.d-menu .group-content .menu-item .menu-item-content .d-icon {
+	margin-top: 7px !important;
+	color: #555;
+}
+
+.d-menu .group-content .menu-item .menu-item-content .caption {
+	line-height: 32px;
+	color: #555;
+}
+
+.d-menu .group-content .menu-item-hover {
+    color: #ff6a00;
+    border-color: #15a4fa;
+    background-color: #d1ecff;
+    -webkit-box-shadow: inset 0 0 0 #15a4fa;
+    -moz-box-shadow: inset 0 0 0 #15a4fa;
+    box-shadow: inset 0 0 0 #15a4fa;
+}
+
+.d-menu .group-content .menu-item-separator {
+	border-color: #03d3f2;
+}
