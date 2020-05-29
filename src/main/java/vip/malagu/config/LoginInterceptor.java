@@ -33,9 +33,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	@Value("${bdf3.LoginInterceptorAnonymous}")
 	private String anonymousPaths;
 	
+	@Value("${file.prefixPath}")
+	private String filePath;
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		if (StringUtils.isNotBlank(filePath)) {
+			int index = filePath.indexOf("/");
+			if (index != -1 && request.getServletPath().indexOf(filePath.substring(index + 1, filePath.length())) != -1) {
+				return true;
+			}
+		}
 		if ((StringUtils.isNotBlank(anonymousPaths) && Arrays.asList(anonymousPaths.split(",")).contains(request.getServletPath()))
 				|| request.getServletPath().indexOf("static") != -1) {
 			System.out.println(request.getServletPath());
