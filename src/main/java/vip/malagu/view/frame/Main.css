@@ -11,6 +11,35 @@
     margin-top: 3px;
 }
 
+/* 站内邮件按钮 */
+#d_email {
+	background-image: url(static/img/email.png);
+	background-repeat: no-repeat;
+	background-size: 100%;
+	margin-right: 20px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+#d_email:hover {
+	background-image: url(static/img/email-hover.png);
+}
+
+/* 邮件数量提示 */
+#d_emailCount {
+	position: absolute;
+    right: 77px;
+    background: #ff6a00;
+    color: #e5e5e5;
+    top: 8px;
+    line-height: 15px !important;
+    width: auto !important;
+    height: 15px !important;
+    font-size: 9px;
+    text-align: center;
+    min-width: 15px !important;
+}
+
 /* 菜单收缩展开图标 */
 .lrBtn {
 	background-image: url(static/img/zuoyou.png);
@@ -158,8 +187,8 @@
 /* 消息提示红点 */
 #d_count {
 	position: absolute;
-    right: 87px;
-    background: #fc3408;
+    right: 136px;
+    background: #ff6a00;
     color: #e5e5e5;
     top: 15px;
     line-height: 15px !important;

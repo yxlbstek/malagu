@@ -26,4 +26,6 @@ public interface MessageService {
 
 	Integer getNotReadMsgNumber();
 
+	void loadUsers(Page<User> page, Criteria criteria);
+
 }

@@ -22,7 +22,6 @@ import vip.malagu.orm.FileInfo;
 import vip.malagu.orm.Message;
 import vip.malagu.orm.MessageUserLink;
 import vip.malagu.service.MessageService;
-import vip.malagu.util.FileUtils;
 import vip.malagu.util.RedisUtils;
 
 @Service
@@ -34,6 +33,7 @@ public class MessageServiceImpl implements MessageService {
 		JpaUtil
 			.linq(Message.class)
 			.where(criteria)
+			.equal("status", 1)
 			.equal("creator", ContextUtils.getLoginUsername())
 			.desc("createDate")
 			.paging(page);
@@ -52,7 +52,7 @@ public class MessageServiceImpl implements MessageService {
 			.desc("createDate")
 			.paging(page);
 		if (!page.getEntities().isEmpty()) {
-			Set<String> msgIds = JpaUtil.collectId(page.getEntities());
+			Set<String> msgIds = JpaUtil.collect(page.getEntities(), "id");
 			List<MessageUserLink> links = JpaUtil
 				.linq(MessageUserLink.class)
 				.equal("userId", ContextUtils.getLoginUsername())
@@ -62,7 +62,7 @@ public class MessageServiceImpl implements MessageService {
 			for (Message msg : page.getEntities()) {
 				MessageUserLink link = linkMap.get(msg.getId());
 				if (link != null) {
-					msg.setRead(link.isRead());
+					msg.setRead(link.isRead() ? "已读" : "未读");
 				}
 			}
 		}
@@ -71,20 +71,31 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	@Transactional(readOnly = true)
 	public void loadReceiveUsers(Page<User> page, Map<String, Object> param) {
-		Integer msgId = Integer.valueOf(param.get("msgId").toString());
+		String msgId = (String) param.get("msgId");
 		String searchKey = (String) param.get("searchKey");
 		JpaUtil
 			.linq(User.class)
 			.addIf(searchKey)
 				.or()
-					.like("useranme", "%" + searchKey + "%")
+					.like("username", "%" + searchKey + "%")
 					.like("nickname", "%" + searchKey + "%")
 				.end()
 			.endIf()
 			.exists(MessageUserLink.class)
-				.equalProperty("userId", "id")
+				.equalProperty("userId", "username")
 				.equal("messageId", msgId)
 			.end()
+			.paging(page);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public void loadUsers(Page<User> page, Criteria criteria) {
+		JpaUtil
+			.linq(User.class)
+			.where(criteria)
+			.equal("enabled", true)
+			.notEqual("username", ContextUtils.getLoginUsername())
 			.paging(page);
 	}
 
@@ -118,23 +129,50 @@ public class MessageServiceImpl implements MessageService {
 					msg.setId(UUID.randomUUID().toString());
 					msg.setCreator(user.getUsername());
 					msg.setCreatorName(user.getNickname());
+					msg.setStatus(1);
 				} else if (context.getEntity() instanceof User) {
 					User user = context.getEntity();
 					Message msg = context.getParent();
-					MessageUserLink link = new MessageUserLink();
-					link.setId(UUID.randomUUID().toString());
-					link.setUserId(user.getUsername());
-					link.setMessageId(msg.getId());
-					link.setRead(false);
-					JpaUtil.persist(link);
-					
-					String key = CacheConstant.CACHE_USER_NOT_READ_MSG + MultitenantUtils.getLoginOrgId() + "_" +  user.getUsername();
-					Integer number = 1;
-					Object notReadNum = RedisUtils.get(key);
-					if (notReadNum != null) {
-						number += Integer.valueOf(notReadNum.toString());
+					if (user.getUsername().equals("所有人")) {
+						List<User> users = JpaUtil
+							.linq(User.class)
+							.equal("enabled", true)
+							.notEqual("username", ContextUtils.getLoginUsername())
+							.list();
+						if (!users.isEmpty()) {
+							for (User u : users) {
+								MessageUserLink link = new MessageUserLink();
+								link.setId(UUID.randomUUID().toString());
+								link.setUserId(u.getUsername());
+								link.setMessageId(msg.getId());
+								link.setRead(false);
+								JpaUtil.persist(link);
+								
+								String key = CacheConstant.CACHE_USER_NOT_READ_MSG + MultitenantUtils.getLoginOrgId() + "_" +  u.getUsername();
+								Integer number = 1;
+								Object notReadNum = RedisUtils.get(key);
+								if (notReadNum != null) {
+									number += Integer.valueOf(notReadNum.toString());
+								}
+								RedisUtils.set(key, number);
+							}
+						}
+					} else {
+						MessageUserLink link = new MessageUserLink();
+						link.setId(UUID.randomUUID().toString());
+						link.setUserId(user.getUsername());
+						link.setMessageId(msg.getId());
+						link.setRead(false);
+						JpaUtil.persist(link);
+						
+						String key = CacheConstant.CACHE_USER_NOT_READ_MSG + MultitenantUtils.getLoginOrgId() + "_" +  user.getUsername();
+						Integer number = 1;
+						Object notReadNum = RedisUtils.get(key);
+						if (notReadNum != null) {
+							number += Integer.valueOf(notReadNum.toString());
+						}
+						RedisUtils.set(key, number);
 					}
-					RedisUtils.set(key, number);
 					return false;
 				} else if (context.getEntity() instanceof FileInfo) {
 					FileInfo fileInfo = context.getEntity();
@@ -153,27 +191,21 @@ public class MessageServiceImpl implements MessageService {
 			public boolean beforeDelete(SaveContext context) {
 				if (context.getEntity() instanceof Message) {
 					Message msg = context.getEntity();
-					JpaUtil
-						.lind(MessageUserLink.class)
-						.equal("userId", ContextUtils.getLoginUsername())
-						.equal("messageId", msg.getId())
-						.delete();
-					FileUtils.deleteModuleFile(msg.getId(), "message");
-				} else if (context.getEntity() instanceof User) {
-					User user = context.getEntity();
-					Message msg = context.getParent();
-					JpaUtil
-						.lind(MessageUserLink.class)
-						.equal("userId", user.getUsername())
-						.equal("messageId", msg.getId())
-						.delete();
-					return false;
-				} else if (context.getEntity() instanceof FileInfo) {
-					FileInfo fileInfo = context.getEntity();
-					FileUtils.deleteFile(fileInfo);
-					return false;
+					if (msg.getCreator().equals(ContextUtils.getLoginUsername())) {
+						JpaUtil
+							.linu(Message.class)
+							.set("status", 0)
+							.equal("id", msg.getId())
+							.update();
+					} else {
+						JpaUtil
+							.lind(MessageUserLink.class)
+							.equal("userId", ContextUtils.getLoginUsername())
+							.equal("messageId", msg.getId())
+							.delete();
+					}
 				}
-				return true;
+				return false;
 			}
 			
 		});

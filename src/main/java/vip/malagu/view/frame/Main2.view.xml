@@ -166,7 +166,9 @@ $(function() {
 			}
         }
     });
-});</ClientEvent>
+});
+
+</ClientEvent>
     <Property name="packages">font-awesome,colors</Property>
     <Property name="javaScriptFile">static/js/FrameMain.js,static/js/simpler-sidebar.min.js</Property>
     <Property name="contentOverflow">hidden</Property>
@@ -275,6 +277,12 @@ arg.returnValue = false;&#xD;
             <Property name="height">20</Property>
             <Property name="width">20</Property>
           </Control>
+          <Control id="email">
+            <ClientEvent name="onCreateDom">$(arg.dom).attr(&quot;title&quot;, &quot;站内邮件&quot;);</ClientEvent>
+            <ClientEvent name="onClick" signature="self,arg,dialogMsg">dialogMsg.show();</ClientEvent>
+            <Property name="height">25</Property>
+            <Property name="width">25</Property>
+          </Control>
           <Control id="userImg">
             <ClientEvent name="onClick" signature="self,arg,dialogUser">var $sidePanel = $(&quot;#d_userInfoSidePanel&quot;);&#xD;
 $sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);&#xD;
@@ -291,6 +299,11 @@ $sidePanel.css(&quot;margin-right&quot;, &quot;12px&quot;);&#xD;
           <Label id="count">
             <Property name="height">2</Property>
             <Property name="width">2</Property>
+          </Label>
+          <Label id="emailCount">
+            <Property name="height">2</Property>
+            <Property name="width">2</Property>
+            <Property name="visible">false</Property>
           </Label>
         </Container>
         <Container layout="hbox align:center;pack:start" layoutConstraint="left">
@@ -637,5 +650,34 @@ if (entity.get(&quot;oldPassword&quot;) &amp;&amp; entity.get(&quot;newPassword&
       <Tools/>
     </FloatPanel>
     <Import src="com.bstek.bdf3.notice.ui.view.Chat#Chat"/>
+    <Dialog id="dialogMsg">
+      <Property name="width">1000</Property>
+      <Property name="height">560</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="caption">站内邮件</Property>
+      <Buttons/>
+      <Children>
+        <IFrame>
+          <Property name="path">vip.malagu.view.message.MessageMaintain.d</Property>
+        </IFrame>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <AjaxAction id="ajaxActionMsgCount">
+      <ClientEvent name="onSuccess" signature="self,arg,emailCount">arg.result&#xD;
+if (arg.result > 0) {&#xD;
+	emailCount.set(&quot;text&quot;, arg.result + &quot;&quot;);&#xD;
+	emailCount.set(&quot;visible&quot;, true);&#xD;
+} else {&#xD;
+	emailCount.set(&quot;visible&quot;, false);&#xD;
+}&#xD;
+</ClientEvent>
+      <ClientEvent name="onReady">self.execute();&#xD;
+setInterval(function() {&#xD;
+	self.execute();&#xD;
+}, 5000);</ClientEvent>
+      <Property name="service">messageController#getNotReadMsgNumber</Property>
+      <Property name="async">false</Property>
+    </AjaxAction>
   </View>
 </ViewConfig>

@@ -1,0 +1,293 @@
+@CHARSET "UTF-8";
+
+/* 写邮件按钮 */
+#d_msgBtn {
+    background: #FFF !important;
+    margin-right: 3px;
+}
+
+#d_msgBtn .d-icon {
+	background-size: 70% 70% !important;
+}
+
+#d_msgBtn .caption {
+	margin-left: 5px;
+	color: #666;
+}
+
+#d_msgBtn:hover .caption {
+	color: #318BF5 !important;
+}
+
+/* 搜索框 */
+.basic-search {
+	height: 33px;
+	margin-left: 242px;
+	border-radius: 60px;
+}
+
+.basic-search .editor {
+	height: 33px !important;
+    width: 470px !important;
+    font-size: 14px;
+    color: #555;
+}
+
+.basic-search:before {
+	position: absolute;
+    top: 11px;
+    left: 12px;
+    color: #555;
+    opacity: 0.7;
+}
+
+.basic-search .editor-wrapper {
+	width: calc(100% - 50px) !important;
+    margin-left: 22px;
+}
+
+.basic-search .editor-wrapper .editor {
+	width: calc(100% - 10px) !important;
+    color: #555;
+}
+
+.basic-search .editor-wrapper .blank-text {
+	font-size: 13px;
+}
+
+/* 发送弹框 */
+.send-msg-form {
+	height: 70% !important;
+}
+
+.send-msg-form .d-form-layout-row:last-child,
+.send-msg-form .d-form-layout-row:last-child .d-form-element,
+.send-msg-form .d-form-layout-row:last-child .d-form-element .d-text-area {
+	height: 176px !important;
+}
+
+.send-msg-form .d-form-layout-region {
+	padding-bottom: 0px !important;
+}
+
+.send-msg-form .d-form-layout-row .d-text-box,
+.send-msg-form .d-form-layout-row .d-text-area {
+	border-top: 0px !important;
+    border-bottom: 0px !important;
+    border-right: 0px !important;
+}
+
+.send-msg-form .d-text-box {
+	-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.d-text-area,
+.d-text-box,
+.d-text-area.d-text-area-focused,
+.d-text-area:hover, 
+.d-text-box:hover, 
+.d-text-box.d-focused {
+	border-color: #e5e5e5 !important;
+}
+
+.send-msg-form .d-form-element {
+	border: 1px solid #e5e5e5;
+}
+
+.send-msg-form .d-form-layout-row {
+	background: #f2f6ff40;
+}
+
+.d-form-element .form-hint {
+	display: none;
+}
+
+.d-form-element .form-content .form-editor {
+	margin-right: -5px !important;
+}
+
+.fileTitle {
+	width: 767px !important;
+    background: #f2f6ff40;
+    margin-left: 8px;
+    height: 35px;
+    border: 1px solid #f0f0f0;
+}
+
+.file-icon {
+	position: absolute;
+	left: 310px !important;
+    top: 10px !important;
+    width: 14px !important;
+    height: 14px !important;
+	background-image: url(static/img/file-icon.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+.file-name {
+	left: 330px !important;
+    top: 5px !important;
+    color: #555;
+    font-size: 13px;
+    font-family: monospace;
+}
+
+
+.filesCon {
+	width: 769px !important;
+    margin-left: 8px;
+}
+
+.uploadBtn {
+	width: 45px !important;
+    height: 45px !important;
+    border: 1px solid #e5e5e5;
+    cursor: pointer;
+    margin-left: 8px;
+    margin-top: 6px;
+}
+
+.uploadBtn:hover {
+	border-color: #bfbfbf;
+}
+
+.uploadBtn:hover .add-icon {
+	background-image: url(static/img/add-file-hover.png);
+}
+
+.d-icon-button.d-click {
+	background-color: #fff !important;
+}
+
+.add-icon {
+	background-image: url(static/img/add-file.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 35px !important;
+    height: 35px !important;
+    margin-left: 5px;
+    margin-top: 5px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    border: 1px solid #fff !important;
+}
+
+.basic-bv {
+	width: calc(100% - 52px) !important;
+}
+
+.basic-bv > div > div {
+	height: 58px !important;
+	display: flex !important;
+}
+
+.d-block-view .block-decorator {
+	width: 130px !important;
+    height: 45px !important;
+    left: 8px !important;
+    top: 8px !important;
+}
+
+.basic-bv .block {
+	width: 130px !important;
+    height: 45px !important;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    position: relative !important;
+    left: 0px !important;
+    margin-left: 8px;
+    border: 1px solid #f7f7f7;
+    background: #f2f6ff40;
+}
+
+.basic-bv .block:hover {
+	background: #f2f6ff40;
+}
+
+.d-block-view .block-current {
+	background: #f2f6ff40;
+}
+
+.ready-file-icon-img,
+.ready-file-icon-file {
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 45px !important;
+    height: 45px !important;
+}
+ 
+.ready-file-icon-img {
+	background-image: url(static/img/ready-img.png);
+}
+
+.ready-file-icon-file {
+	background-image: url(static/img/ready-file.png);
+}
+
+.file-name-span {
+	position: absolute;
+    left: 48px;
+    top: 4px;
+    color: #555;
+}
+
+.ready-file-btns {
+	position: absolute;
+    top: 24px;
+    left: 48px;
+}
+
+.ready-file-btns > a {
+	margin-left: 0px !important;
+    font-size: 11px !important;
+}
+
+.ready-file-btns .file-download-span {
+	color: #2196ff;
+    font-size: 11px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.select-icon {
+	background-image: url(static/img/select-right-icon.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 18px !important;
+    height: 35px !important;
+    top: 185px !important;
+}
+
+.msg-content {
+	width: 750px !important;
+    height: 182px !important;
+    padding: 8px !important;
+    background: #f2f6ff40;
+    border: 1px solid #f0f0f0 !important;
+}
+
+.msg-content .textarea {
+	font-size: 13px;
+    color: #555;
+}
+
+.msg-users-btn {
+	background-image: url(static/img/many-users-icon.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 15px !important;
+    height: 16px !important;
+    opacity: 0.8;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.msg-users-btn:hover {
+	background-image: url(static/img/many-users-icon-hover.png);
+}
+

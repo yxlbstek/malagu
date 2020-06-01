@@ -673,6 +673,17 @@ a {
 }
 
 /* 普通Dialog弹框 */
+.d-dialog .d-dialog-caption-bar .caption {
+	margin-top: 8px;
+    border-left: 2px solid #318BF5;
+    height: 14px;
+    font-size: 14px;
+    padding: 0px 8px;
+    color: #333;
+    margin-left: 10px !important;
+    line-height: 14px !important;
+}
+
 .d-dialog .d-dialog-caption-bar {
 	background-color: #ffffff !important;
 }
@@ -683,6 +694,8 @@ a {
 	font-size: 18px;
     margin: 2px 5px !important;
     border: 1px solid #fff !important;
+    color: #333;
+    opacity: 0.75;
 }
 
 .d-dialog .d-dialog-caption-bar .button-group .d-close-button:hover,

@@ -62,7 +62,7 @@ public class Message implements Serializable {
 	
 	@Transient
 	@PropertyDef(label = "是否已读")
-	private boolean isRead;
+	private String read;
 	
 	@Transient
 	private List<User> users;
@@ -158,12 +158,13 @@ public class Message implements Serializable {
 		this.fileInfos = fileInfos;
 	}
 
-	public boolean isRead() {
-		return isRead;
+	public String getRead() {
+		return read;
 	}
 
-	public void setRead(boolean isRead) {
-		this.isRead = isRead;
+	public void setRead(String read) {
+		this.read = read;
 	}
+
 
 }

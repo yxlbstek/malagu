@@ -39,6 +39,11 @@ public class MessageController {
 	}
 	
 	@DataProvider
+	public void loadUsers(Page<User> page, Criteria criteria) {
+		messageService.loadUsers(page, criteria);
+	}
+	
+	@DataProvider
 	public List<FileInfo> loadFileInfosByMsgId(String msgId) {
 		return messageService.loadFileInfosByMsgId(msgId);
 	}

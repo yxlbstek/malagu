@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Message">
+      <Property name="creationType">vip.malagu.orm.Message</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="businessId">
+        <Property></Property>
+        <Property name="label">业务ID</Property>
+      </PropertyDef>
+      <PropertyDef name="type">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">消息类型</Property>
+      </PropertyDef>
+      <PropertyDef name="title">
+        <Property></Property>
+        <Property name="label">主题</Property>
+        <Property name="required">true</Property>
+        <Validator name="validator1" type="required"/>
+      </PropertyDef>
+      <PropertyDef name="content">
+        <Property></Property>
+        <Property name="label">内容</Property>
+        <Property name="required">true</Property>
+        <Validator name="validator1" type="required"/>
+      </PropertyDef>
+      <PropertyDef name="creator">
+        <Property></Property>
+        <Property name="label">发送人ID</Property>
+      </PropertyDef>
+      <PropertyDef name="creatorName">
+        <Property></Property>
+        <Property name="label">发送人</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">发送日期</Property>
+      </PropertyDef>
+      <PropertyDef name="status">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">消息状态</Property>
+      </PropertyDef>
+      <PropertyDef name="read">
+        <Property name="label">是否已读</Property>
+      </PropertyDef>
+      <PropertyDef name="op">
+        <Property name="submittable">false</Property>
+      </PropertyDef>
+      <PropertyDef name="names">
+        <Property name="label">收件人</Property>
+        <Property name="required">true</Property>
+        <Validator name="validator1" type="required"/>
+      </PropertyDef>
+      <Reference name="users">
+        <ClientEvent name="beforeLoadData" signature="self,arg,dsSendMessage">var param = {&#xD;
+	msgId: dsSendMessage.getData(&quot;#.id&quot;),&#xD;
+	searchKey: null&#xD;
+}&#xD;
+self.set(&quot;parameter&quot;, param);</ClientEvent>
+        <Property name="dataType">[User]</Property>
+        <Property name="pageSize">20</Property>
+        <Property name="parameter"/>
+        <Property name="dataProvider">messageController#loadReceiveUsers</Property>
+      </Reference>
+      <Reference name="fileInfos">
+        <Property name="parameter">$${this.id}</Property>
+        <Property name="dataType">[FileInfo]</Property>
+        <Property name="dataProvider">messageController#loadFileInfosByMsgId</Property>
+      </Reference>
+    </DataType>
+    <DataType name="User">
+      <Property name="creationType">com.bstek.bdf3.security.orm.User</Property>
+      <PropertyDef name="username">
+        <Property></Property>
+        <Property name="label">用户名</Property>
+      </PropertyDef>
+      <PropertyDef name="nickname">
+        <Property></Property>
+        <Property name="label">昵称</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property></Property>
+      </PropertyDef>
+      <PropertyDef name="administrator">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="accountNonExpired">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="accountNonLocked">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="credentialsNonExpired">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="FileInfo">
+      <Property name="creationType">vip.malagu.orm.FileInfo</Property>
+      <PropertyDef name="id">
+        <Property></Property>
+        <Property name="label">ID</Property>
+      </PropertyDef>
+      <PropertyDef name="catagoryId">
+        <Property></Property>
+        <Property name="label">业务分类ID</Property>
+      </PropertyDef>
+      <PropertyDef name="businessId">
+        <Property></Property>
+        <Property name="label">业务数据ID</Property>
+      </PropertyDef>
+      <PropertyDef name="module">
+        <Property></Property>
+        <Property name="label">所属模块</Property>
+      </PropertyDef>
+      <PropertyDef name="position">
+        <Property></Property>
+        <Property name="label">位置</Property>
+      </PropertyDef>
+      <PropertyDef name="fileName">
+        <Property></Property>
+        <Property name="label">文件名称</Property>
+      </PropertyDef>
+      <PropertyDef name="path">
+        <Property></Property>
+        <Property name="label">文件路径</Property>
+      </PropertyDef>
+      <PropertyDef name="type">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">文件类型</Property>
+      </PropertyDef>
+      <PropertyDef name="size">
+        <Property name="dataType">Double</Property>
+        <Property name="label">文件大小</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">上传日期</Property>
+      </PropertyDef>
+      <PropertyDef name="username">
+        <Property></Property>
+        <Property name="label">上传人用户名</Property>
+      </PropertyDef>
+      <PropertyDef name="creator">
+        <Property></Property>
+        <Property name="label">上传人</Property>
+      </PropertyDef>
+      <PropertyDef name="remark">
+        <Property></Property>
+        <Property name="label">备注</Property>
+        <Validator name="validator1" type="length">
+          <Property name="maxLength">100</Property>
+          <Property name="resultMessage">输入内容过长、不能超过100字</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="op">
+        <Property name="submittable">false</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Query">
+      <PropertyDef name="searchKey">
+        <Property></Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="QueryUser">
+      <PropertyDef name="searchKey">
+        <Property></Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View layout="padding:8">
+    <Property name="packages">font-awesome,colors</Property>
+    <DataSet id="dsSendMessage">
+      <Property name="dataType">[Message]</Property>
+      <Property name="pageSize">10</Property>
+      <Property name="dataProvider">messageController#loadSendMsg</Property>
+    </DataSet>
+    <DataSet id="dsReceiveMessage">
+      <Property name="dataType">[Message]</Property>
+      <Property name="pageSize">10</Property>
+      <Property name="dataProvider">messageController#loadReceiveMsg</Property>
+    </DataSet>
+    <DataSet id="dsUser">
+      <Property name="dataType">[User]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataProvider">messageController#loadUsers</Property>
+    </DataSet>
+    <DataSet id="dsReceiveUser">
+      <ClientEvent name="beforeLoadData" signature="self,arg,searchUsersKey,dsSendMessage">var searchKey = searchUsersKey.get(&quot;value&quot;);&#xD;
+var param = {&#xD;
+	msgId: dsSendMessage.getData(&quot;#.id&quot;),&#xD;
+	searchKey: searchKey&#xD;
+}&#xD;
+self.set(&quot;parameter&quot;, param);</ClientEvent>
+      <Property name="dataType">[User]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataProvider">messageController#loadReceiveUsers</Property>
+    </DataSet>
+    <Container>
+      <Property name="height">38</Property>
+      <TextEditor id="search" layoutConstraint="center">
+        <ClientEvent name="onKeyDown" signature="self,arg,msgTab,dgReceiveMsg,dgSendMsg">if (arg.keyCode === 13) {&#xD;
+	return;&#xD;
+}&#xD;
+window.clearTimeout(self.urlQueryTimeout);&#xD;
+self.urlQueryTimeout = window.setTimeout(function() {&#xD;
+	var index = msgTab.get(&quot;currentIndex&quot;);&#xD;
+	var key = self.get(&quot;value&quot;);&#xD;
+	if (index == 0) {&#xD;
+		if (!key) {&#xD;
+			dgReceiveMsg.filter();&#xD;
+		} else {&#xD;
+			dgReceiveMsg.filter([{&#xD;
+				junction: &quot;or&quot;,&#xD;
+				criterions: [{&#xD;
+					property: &quot;title&quot;,&#xD;
+					operator: &quot;like&quot;,&#xD;
+					value: key&#xD;
+				}, {&#xD;
+					property: &quot;creatorName&quot;,&#xD;
+					operator: &quot;like&quot;,&#xD;
+					value: key&#xD;
+				}]&#xD;
+			}]);&#xD;
+		}&#xD;
+	} else {&#xD;
+		if (!key) {&#xD;
+			dgSendMsg.filter();&#xD;
+		} else {&#xD;
+			dgSendMsg.filter([{&#xD;
+				junction: &quot;or&quot;,&#xD;
+				criterions: [{&#xD;
+					property: &quot;title&quot;,&#xD;
+					operator: &quot;like&quot;,&#xD;
+					value: key&#xD;
+				}]&#xD;
+			}]);&#xD;
+		}&#xD;
+	}&#xD;
+	&#xD;
+}, 250);</ClientEvent>
+        <Property name="width">500</Property>
+        <Property name="blankText">搜索...</Property>
+        <Property name="exClassName">fa fa-search</Property>
+        <Property name="className">basic-search</Property>
+      </TextEditor>
+      <Button id="msgBtn" layoutConstraint="right">
+        <ClientEvent name="onClick" signature="self,arg,dialogInsertMsg,dsSendMessage">dsSendMessage.insert();&#xD;
+dialogInsertMsg.show();</ClientEvent>
+        <Property name="caption">写邮件</Property>
+        <Property name="className">simple</Property>
+        <Property name="icon">/static/img/info-modify.png</Property>
+      </Button>
+    </Container>
+    <TabControl id="msgTab">
+      <ClientEvent name="onTabChange" signature="self,arg,dsReceiveMessage,receivePage,dsSendMessage,sendPage">if (arg.newTab.get(&quot;caption&quot;) == &quot;收件箱&quot;) {&#xD;
+	sendPage.removeAllChildren();&#xD;
+	dsReceiveMessage.flushAsync();&#xD;
+	setTimeout(function() {&#xD;
+		window.initPage(dsReceiveMessage, receivePage);&#xD;
+	}, 350);&#xD;
+} else {&#xD;
+	receivePage.removeAllChildren();&#xD;
+	dsSendMessage.flushAsync();&#xD;
+	setTimeout(function() {&#xD;
+		window.initPage(dsSendMessage, sendPage);&#xD;
+	}, 350);&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+      <ControlTab>
+        <Property name="caption">收件箱</Property>
+        <Panel>
+          <Buttons/>
+          <Children>
+            <DataGrid id="dgReceiveMsg">
+              <ClientEvent name="onRenderRow">if (arg.data.get(&quot;read&quot;) == &quot;已读&quot;) {&#xD;
+	$(arg.dom).css(&quot;color&quot;, &quot;#000&quot;);&#xD;
+	$(arg.dom).css(&quot;font-weight&quot;, &quot;unset&quot;);&#xD;
+} else {&#xD;
+	$(arg.dom).css(&quot;color&quot;, &quot;#ff6a00&quot;);&#xD;
+	$(arg.dom).css(&quot;font-weight&quot;, &quot;bold&quot;);&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
+              <Property name="dataSet">dsReceiveMessage</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="filterMode">serverSide</Property>
+              <RowNumColumn>
+                <ClientEvent name="onRenderHeaderCell">arg.dom.innerHTML = &quot;&lt;span>序号&lt;/span>&quot;;</ClientEvent>
+                <Property name="width">60</Property>
+                <Property name="align">center</Property>
+              </RowNumColumn>
+              <DataColumn name="title">
+                <Property name="property">title</Property>
+                <Property name="align">center</Property>
+              </DataColumn>
+              <DataColumn name="content">
+                <Property name="property">content</Property>
+                <Property name="align">center</Property>
+              </DataColumn>
+              <DataColumn name="creatorName">
+                <Property name="property">creatorName</Property>
+                <Property name="align">center</Property>
+                <Property name="width">120</Property>
+              </DataColumn>
+              <DataColumn name="createDate">
+                <Property name="property">createDate</Property>
+                <Property name="align">center</Property>
+                <Property name="width">120</Property>
+              </DataColumn>
+              <DataColumn>
+                <ClientEvent name="onRenderCell" signature="self,arg,dgReceiveMsg,updateActionReceive,dialogReceiveMsgInfo,ajaxActionRead">var btns = [];&#xD;
+&#xD;
+//if (window['downloadBtn']) {&#xD;
+	var mb = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;commonLabel&quot;,&#xD;
+		content: &quot;查看&quot;,&#xD;
+		onclick: function() {&#xD;
+			var entity = dgReceiveMsg.get(&quot;currentEntity&quot;);&#xD;
+			if (entity.get(&quot;read&quot;) == &quot;未读&quot;) {&#xD;
+				entity.set(&quot;read&quot;, &quot;已读&quot;);&#xD;
+				ajaxActionRead.set(&quot;parameter&quot;, entity.get(&quot;id&quot;)).execute();&#xD;
+			}&#xD;
+			dialogReceiveMsgInfo.show();&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(mb);&#xD;
+//}&#xD;
+//if (window['deleteBtn']) {&#xD;
+	var db = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;delLabel&quot;,&#xD;
+		content: &quot;删除&quot;,&#xD;
+		onclick: function() {&#xD;
+			var entity = dgReceiveMsg.get(&quot;currentEntity&quot;);&#xD;
+			dorado.MessageBox.confirm(&quot;确认删除？&quot;, function() {&#xD;
+				entity.remove();&#xD;
+				updateActionReceive.execute();&#xD;
+			});&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(db);&#xD;
+//}&#xD;
+&#xD;
+$(arg.dom).empty().xCreate(btns);&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="property">op</Property>
+                <Property name="name">op</Property>
+                <Property name="width">180</Property>
+                <Property name="caption">操作</Property>
+                <Property name="align">center</Property>
+                <Editor/>
+              </DataColumn>
+            </DataGrid>
+            <Container id="receivePage" layout="hbox align:center;pack:end" layoutConstraint="bottom"/>
+          </Children>
+          <Tools/>
+        </Panel>
+      </ControlTab>
+      <ControlTab>
+        <Property name="caption">已发邮件</Property>
+        <Panel>
+          <Buttons/>
+          <Children>
+            <DataGrid id="dgSendMsg">
+              <Property name="dataSet">dsSendMessage</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="filterMode">serverSide</Property>
+              <RowNumColumn>
+                <ClientEvent name="onRenderHeaderCell">arg.dom.innerHTML = &quot;&lt;span>序号&lt;/span>&quot;;</ClientEvent>
+                <Property name="width">60</Property>
+                <Property name="align">center</Property>
+              </RowNumColumn>
+              <DataColumn name="title">
+                <Property name="property">title</Property>
+                <Property name="align">center</Property>
+              </DataColumn>
+              <DataColumn name="content">
+                <Property name="property">content</Property>
+                <Property name="align">center</Property>
+              </DataColumn>
+              <DataColumn name="createDate">
+                <Property name="property">createDate</Property>
+                <Property name="align">center</Property>
+                <Property name="width">120</Property>
+              </DataColumn>
+              <DataColumn>
+                <ClientEvent name="onRenderCell" signature="self,arg,updateActionSend,dgSendMsg,dialogSendMsgInfo">var btns = [];&#xD;
+&#xD;
+//if (window['downloadBtn']) {&#xD;
+	var mb = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;commonLabel&quot;,&#xD;
+		content: &quot;查看&quot;,&#xD;
+		onclick: function() {&#xD;
+			dialogSendMsgInfo.show();&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(mb);&#xD;
+//}&#xD;
+//if (window['deleteBtn']) {&#xD;
+	var db = {&#xD;
+		tagName: &quot;label&quot;,&#xD;
+		className: &quot;delLabel&quot;,&#xD;
+		content: &quot;删除&quot;,&#xD;
+		onclick: function() {&#xD;
+			var entity = dgSendMsg.get(&quot;currentEntity&quot;);&#xD;
+			dorado.MessageBox.confirm(&quot;确认删除？&quot;, function() {&#xD;
+				entity.remove();&#xD;
+				updateActionSend.execute();&#xD;
+			});&#xD;
+		}&#xD;
+	}&#xD;
+	btns.push(db);&#xD;
+//}&#xD;
+&#xD;
+$(arg.dom).empty().xCreate(btns);&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="property">op</Property>
+                <Property name="name">op</Property>
+                <Property name="width">180</Property>
+                <Property name="caption">操作</Property>
+                <Property name="align">center</Property>
+                <Editor/>
+              </DataColumn>
+            </DataGrid>
+            <Container id="sendPage" layout="hbox align:center;pack:end" layoutConstraint="bottom"/>
+          </Children>
+          <Tools/>
+        </Panel>
+      </ControlTab>
+    </TabControl>
+    <UpdateAction id="updateActionSend">
+      <ClientEvent name="onSuccess" signature="self,arg,dialogInsertMsg">dialogInsertMsg.hide();</ClientEvent>
+      <Property name="successMessage">保存成功.</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="dataResolver">messageController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsSendMessage</Property>
+        <Property name="validateData">false</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="updateActionReceive">
+      <Property name="successMessage">保存成功.</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="dataResolver">messageController#save</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsReceiveMessage</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UploadAction id="uploadAction">
+      <ClientEvent name="beforeFileUpload" signature="self,arg,dialogUploadTip,dsSendMessage">self.set(&quot;parameter&quot;, {&#xD;
+	module: &quot;message&quot;&#xD;
+});&#xD;
+&#xD;
+dialogUploadTip.show();&#xD;
+</ClientEvent>
+      <ClientEvent name="onFileUploaded" signature="self,arg,dialogUploadTip,dsSendMessage,uploadIconBtn,dsSendMessage">var file = arg.returnValue;&#xD;
+file.fileName = arg.file.name;&#xD;
+dsSendMessage.getData(&quot;#.fileInfos&quot;).insert(file);&#xD;
+dialogUploadTip.hide();&#xD;
+&#xD;
+var fileInfos = dsSendMessage.getData(&quot;#.fileInfos&quot;);&#xD;
+if (fileInfos.entityCount >= 5) {&#xD;
+	$(&quot;#d_uploadBtn&quot;).css(&quot;display&quot;, &quot;none&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+      <ClientEvent name="onError" signature="self,arg,dialogUploadTip">dialogUploadTip.hide();</ClientEvent>
+      <Property name="fileResolver">uploader#upload</Property>
+      <Property name="successMessage">上传成功.</Property>
+      <Property name="maxFileSize">6000MB</Property>
+      <Filters/>
+    </UploadAction>
+    <DownloadAction id="downloadAction">
+      <Property name="fileProvider">uploader#download</Property>
+      <Property name="successMessage">下载成功.</Property>
+    </DownloadAction>
+    <AjaxAction id="ajaxActionFile">
+      <Property name="service">fileInfoController#exist</Property>
+    </AjaxAction>
+    <Dialog id="dialogUploadTip">
+      <Property name="closeable">false</Property>
+      <Property name="width">280</Property>
+      <Property name="height">70</Property>
+      <Property name="showCaptionBar">false</Property>
+      <Property name="contentOverflow">hidden</Property>
+      <Buttons/>
+      <Children>
+        <Container id="upTipIcon" layoutConstraint="left">
+          <Property name="width">60</Property>
+          <Property name="height">60</Property>
+        </Container>
+        <Label id="upTipLabel" layoutConstraint="left">
+          <Property name="text">文件上传中...</Property>
+        </Label>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogInsertMsg">
+      <ClientEvent name="onHide" signature="self,arg,dsSendMessage">dsSendMessage.getData().cancel();&#xD;
+$(&quot;#d_uploadBtn&quot;).css(&quot;display&quot;, &quot;unset&quot;);</ClientEvent>
+      <Property name="showCaptionBar">false</Property>
+      <Property name="width">80%</Property>
+      <Property name="height">95%</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick" signature="self,arg,dsSendMessage,updateActionSend">var msg = dsSendMessage.getData(&quot;#&quot;);&#xD;
+if (msg.validate() == &quot;ok&quot;) {&#xD;
+	updateActionSend.execute();&#xD;
+} else {&#xD;
+	window.tip(&quot;有必填项未填写.&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+          <Property name="caption">发送</Property>
+          <Property name="className">sure</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">self.get(&quot;parent&quot;).hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="className">simple</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Panel>
+          <Property name="caption">邮件信息</Property>
+          <Buttons/>
+          <Children>
+            <Container>
+              <AutoForm>
+                <Property name="cols">*</Property>
+                <Property name="dataSet">dsSendMessage</Property>
+                <Property name="labelWidth">70</Property>
+                <Property name="className">send-msg-form</Property>
+                <AutoFormElement>
+                  <ClientEvent name="onClick" signature="self,arg,dialogUser">dialogUser.show();</ClientEvent>
+                  <ClientEvent name="onFocus" signature="self,arg,dialogUser">dialogUser.show();</ClientEvent>
+                  <Property name="name">names</Property>
+                  <Property name="property">names</Property>
+                  <Property name="trigger">triggerSelect</Property>
+                  <Property name="editable">false</Property>
+                  <Editor>
+                    <TextEditor>
+                      <Property name="blankText">请选择接收人</Property>
+                    </TextEditor>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">title</Property>
+                  <Property name="property">title</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">content</Property>
+                  <Property name="property">content</Property>
+                  <Property name="editorType">TextArea</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <Panel>
+                <Property name="style">
+                  <Property name="margin-top">-7px</Property>
+                </Property>
+                <Buttons/>
+                <Children>
+                  <Container>
+                    <Property name="className">fileTitle</Property>
+                    <Control>
+                      <Property name="className">file-icon</Property>
+                    </Control>
+                    <Label>
+                      <Property name="text">附件（最多上传5个）</Property>
+                      <Property name="width">0</Property>
+                      <Property name="className">file-name</Property>
+                    </Label>
+                  </Container>
+                  <Container>
+                    <Property name="className">filesCon</Property>
+                    <DataBlockView id="sendBV" layoutConstraint="left">
+                      <ClientEvent name="onRenderBlock" signature="self,arg,ajaxActionFile,downloadAction">$(arg.dom).empty();&#xD;
+&#xD;
+var path = arg.data.get(&quot;path&quot;);&#xD;
+var fileName = arg.data.get(&quot;fileName&quot;) || &quot;&quot;;&#xD;
+var showName = &quot;&quot;;&#xD;
+if (fileName.length > 5) {&#xD;
+	showName = fileName.substring(0, 5) + &quot;...&quot;;&#xD;
+} else {&#xD;
+	showName = fileName;&#xD;
+}&#xD;
+&#xD;
+var iconSufx = &quot;&quot;;&#xD;
+var index = fileName.lastIndexOf(&quot;.&quot;);&#xD;
+var suf = fileName.substring(index + 1, fileName.length);&#xD;
+if (suf == &quot;doc&quot;&#xD;
+		|| suf == &quot;docx&quot; || suf == &quot;xls&quot;&#xD;
+		|| suf == &quot;xlsx&quot; || suf == &quot;ppt&quot;) {&#xD;
+	var pathIndex = path.lastIndexOf(&quot;.&quot;);&#xD;
+	path = path.substring(0, pathIndex + 1) + &quot;pdf&quot;;&#xD;
+	iconSufx = &quot;file&quot;;&#xD;
+} else {&#xD;
+	path = path.substring(2, path.length);&#xD;
+	iconSufx = &quot;img&quot;;&#xD;
+}&#xD;
+&#xD;
+var iconDiv = &quot;&lt;div class='ready-file-icon-&quot; + iconSufx + &quot;'>&lt;/div>&quot;;&#xD;
+var fileNameSpan = &quot;&lt;span class='file-name-span' title='&quot; + fileName + &quot;'>&quot; + showName + &quot;&lt;/span>&quot;;&#xD;
+var btnsDiv = &quot;&lt;div class='ready-file-btns'>&lt;/div>&quot;;&#xD;
+&#xD;
+var showBtn = &quot;&lt;a href='&quot; + path + &quot;' target='_Blank'>查看&lt;/a>&quot;;&#xD;
+var downloadBtn = &quot;&lt;span class='file-download-span'>下载&lt;/span>&quot;;&#xD;
+&#xD;
+$(iconDiv).appendTo(arg.dom);&#xD;
+$(fileNameSpan).appendTo(arg.dom);&#xD;
+var $btns = $(btnsDiv).appendTo(arg.dom);&#xD;
+&#xD;
+$(showBtn).appendTo($btns);&#xD;
+var $downloadBtn = $(downloadBtn).appendTo($btns);&#xD;
+$downloadBtn.click(function() {&#xD;
+	ajaxActionFile.set(&quot;parameter&quot;, arg.data.get(&quot;path&quot;)).execute(function(result) {&#xD;
+		if (result) {&#xD;
+			downloadAction.set(&quot;parameter&quot;, {&#xD;
+				path: arg.data.get(&quot;path&quot;),&#xD;
+				fileName: fileName&#xD;
+			}).execute();&#xD;
+		} else {&#xD;
+			window.tip(&quot;文件不存在.&quot;);&#xD;
+		}&#xD;
+	});&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
+                      <Property name="dataSet">dsSendMessage</Property>
+                      <Property name="dataPath">#.fileInfos</Property>
+                      <Property name="blockDecoratorSize">5</Property>
+                      <Property name="className">basic-bv</Property>
+                    </DataBlockView>
+                    <Container id="uploadBtn" layoutConstraint="right">
+                      <Property name="className">uploadBtn</Property>
+                      <SimpleIconButton>
+                        <Property name="className">add-icon</Property>
+                        <Property name="action">uploadAction</Property>
+                      </SimpleIconButton>
+                    </Container>
+                  </Container>
+                </Children>
+                <Tools/>
+              </Panel>
+            </Container>
+          </Children>
+          <Tools/>
+        </Panel>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogSendMsgInfo">
+      <ClientEvent name="beforeShow" signature="self,arg,dsSendMessage,sendMsgUsers,sendMsgDate">var msg = dsSendMessage.getData(&quot;#&quot;);&#xD;
+var us = [];&#xD;
+var users = msg.get(&quot;users&quot;);&#xD;
+users.each(function(u) {&#xD;
+	if (us.length &lt;= 5) {&#xD;
+		us.push(u.get(&quot;nickname&quot;));&#xD;
+	}&#xD;
+});&#xD;
+sendMsgUsers.set(&quot;text&quot;, &quot;发送至 &quot; + us.join(&quot;;&quot;));&#xD;
+sendMsgDate.set(&quot;text&quot;, window.formatDate(msg.get(&quot;createDate&quot;), &quot;Y-m-d H:i:s&quot;));&#xD;
+</ClientEvent>
+      <Property name="caption">已发邮件</Property>
+      <Property name="height">95%</Property>
+      <Property name="width">80%</Property>
+      <Buttons/>
+      <Children>
+        <Container layout="padding:8">
+          <Container>
+            <Property name="height">35</Property>
+            <Label>
+              <Property name="className">msg-title</Property>
+              <Property name="width">0</Property>
+              <Property name="dataSet">dsSendMessage</Property>
+              <Property name="property">title</Property>
+              <Property name="height">0</Property>
+              <Property name="style">
+                <Property name="font-size">18px</Property>
+                <Property name="margin-left">3px</Property>
+              </Property>
+            </Label>
+          </Container>
+          <Container layout="hbox align:center;pack:start">
+            <Property name="height">25</Property>
+            <Property name="contentOverflow">hidden</Property>
+            <Label>
+              <Property name="className">msg-creator</Property>
+              <Property name="width">0</Property>
+              <Property name="text">我</Property>
+              <Property name="style">
+                <Property name="font-weight">bold</Property>
+                <Property name="font-size">13px</Property>
+              </Property>
+              <Property name="height">0</Property>
+            </Label>
+            <Label id="sendMsgUsers">
+              <Property name="width">auto</Property>
+              <Property name="style">
+                <Property name="font-size">13px</Property>
+                <Property name="margin-left">5px</Property>
+                <Property name="color">#555</Property>
+              </Property>
+              <Property name="height">0</Property>
+            </Label>
+            <Label>
+              <ClientEvent name="onClick" signature="self,arg,dialogReceiveUsers">dialogReceiveUsers.show();</ClientEvent>
+              <Property name="className">msg-users-btn</Property>
+              <Property name="width">0</Property>
+              <Property name="height">0</Property>
+            </Label>
+          </Container>
+          <Container>
+            <Property name="height">25</Property>
+            <Label id="sendMsgDate">
+              <Property name="className">msg-date</Property>
+              <Property name="width">0</Property>
+              <Property name="height">0</Property>
+              <Property name="style">
+                <Property name="font-size">13px</Property>
+                <Property name="color">#555</Property>
+                <Property name="margin-left">3px</Property>
+              </Property>
+            </Label>
+          </Container>
+          <Container>
+            <Property name="height">200</Property>
+            <TextArea>
+              <Property name="dataSet">dsSendMessage</Property>
+              <Property name="property">content</Property>
+              <Property name="className">msg-content</Property>
+              <Property name="editable">false</Property>
+            </TextArea>
+          </Container>
+        </Container>
+        <Container>
+          <Property name="className">fileTitle</Property>
+          <Control>
+            <Property name="className">file-icon</Property>
+            <Property name="style">
+              <Property name="margin-left">40px</Property>
+            </Property>
+          </Control>
+          <Label>
+            <Property name="text">附件</Property>
+            <Property name="width">0</Property>
+            <Property name="className">file-name</Property>
+            <Property name="style">
+              <Property name="margin-left">40px</Property>
+            </Property>
+          </Label>
+        </Container>
+        <Container>
+          <Property name="className">filesCon</Property>
+          <DataBlockView layoutConstraint="left">
+            <ClientEvent name="onRenderBlock" signature="self,arg,ajaxActionFile,downloadAction">$(arg.dom).empty();&#xD;
+&#xD;
+var path = arg.data.get(&quot;path&quot;);&#xD;
+var fileName = arg.data.get(&quot;fileName&quot;) || &quot;&quot;;&#xD;
+var showName = &quot;&quot;;&#xD;
+if (fileName.length > 5) {&#xD;
+	showName = fileName.substring(0, 5) + &quot;...&quot;;&#xD;
+} else {&#xD;
+	showName = fileName;&#xD;
+}&#xD;
+&#xD;
+var iconSufx = &quot;&quot;;&#xD;
+var index = fileName.lastIndexOf(&quot;.&quot;);&#xD;
+var suf = fileName.substring(index + 1, fileName.length);&#xD;
+if (suf == &quot;doc&quot;&#xD;
+		|| suf == &quot;docx&quot; || suf == &quot;xls&quot;&#xD;
+		|| suf == &quot;xlsx&quot; || suf == &quot;ppt&quot;) {&#xD;
+	var pathIndex = path.lastIndexOf(&quot;.&quot;);&#xD;
+	path = path.substring(0, pathIndex + 1) + &quot;pdf&quot;;&#xD;
+	iconSufx = &quot;file&quot;;&#xD;
+} else {&#xD;
+	path = path.substring(2, path.length);&#xD;
+	iconSufx = &quot;img&quot;;&#xD;
+}&#xD;
+&#xD;
+var iconDiv = &quot;&lt;div class='ready-file-icon-&quot; + iconSufx + &quot;'>&lt;/div>&quot;;&#xD;
+var fileNameSpan = &quot;&lt;span class='file-name-span' title='&quot; + fileName + &quot;'>&quot; + showName + &quot;&lt;/span>&quot;;&#xD;
+var btnsDiv = &quot;&lt;div class='ready-file-btns'>&lt;/div>&quot;;&#xD;
+&#xD;
+var showBtn = &quot;&lt;a href='&quot; + path + &quot;' target='_Blank'>查看&lt;/a>&quot;;&#xD;
+var downloadBtn = &quot;&lt;span class='file-download-span'>下载&lt;/span>&quot;;&#xD;
+&#xD;
+$(iconDiv).appendTo(arg.dom);&#xD;
+$(fileNameSpan).appendTo(arg.dom);&#xD;
+var $btns = $(btnsDiv).appendTo(arg.dom);&#xD;
+&#xD;
+$(showBtn).appendTo($btns);&#xD;
+var $downloadBtn = $(downloadBtn).appendTo($btns);&#xD;
+$downloadBtn.click(function() {&#xD;
+	ajaxActionFile.set(&quot;parameter&quot;, arg.data.get(&quot;path&quot;)).execute(function(result) {&#xD;
+		if (result) {&#xD;
+			downloadAction.set(&quot;parameter&quot;, {&#xD;
+				path: arg.data.get(&quot;path&quot;),&#xD;
+				fileName: fileName&#xD;
+			}).execute();&#xD;
+		} else {&#xD;
+			window.tip(&quot;文件不存在.&quot;);&#xD;
+		}&#xD;
+	});&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
+            <Property name="blockDecoratorSize">5</Property>
+            <Property name="className">basic-bv</Property>
+            <Property name="dataSet">dsSendMessage</Property>
+            <Property name="dataPath">#.fileInfos</Property>
+          </DataBlockView>
+        </Container>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogReceiveMsgInfo">
+      <ClientEvent name="beforeShow" signature="self,arg,dsReceiveMessage,receiveMsgDate">var msg = dsReceiveMessage.getData(&quot;#&quot;);&#xD;
+receiveMsgDate.set(&quot;text&quot;, window.formatDate(msg.get(&quot;createDate&quot;), &quot;Y-m-d H:i:s&quot;));&#xD;
+</ClientEvent>
+      <Property name="caption">收件箱</Property>
+      <Property name="height">95%</Property>
+      <Property name="width">80%</Property>
+      <Buttons/>
+      <Children>
+        <Container layout="padding:8">
+          <Container>
+            <Property name="height">35</Property>
+            <Label>
+              <Property name="className">msg-title</Property>
+              <Property name="width">0</Property>
+              <Property name="dataSet">dsReceiveMessage</Property>
+              <Property name="property">title</Property>
+              <Property name="height">0</Property>
+              <Property name="style">
+                <Property name="font-size">18px</Property>
+                <Property name="margin-left">3px</Property>
+              </Property>
+            </Label>
+          </Container>
+          <Container layout="hbox align:center;pack:start">
+            <Property name="height">25</Property>
+            <Property name="contentOverflow">hidden</Property>
+            <Label>
+              <Property name="className">msg-creator</Property>
+              <Property name="width">0</Property>
+              <Property name="style">
+                <Property name="font-weight">bold</Property>
+                <Property name="font-size">13px</Property>
+              </Property>
+              <Property name="height">0</Property>
+              <Property name="dataSet">dsReceiveMessage</Property>
+              <Property name="property">creatorName</Property>
+            </Label>
+            <Label>
+              <Property name="width">auto</Property>
+              <Property name="style">
+                <Property name="font-size">13px</Property>
+                <Property name="margin-left">5px</Property>
+                <Property name="color">#555</Property>
+              </Property>
+              <Property name="height">0</Property>
+              <Property name="text">发送至 我</Property>
+            </Label>
+          </Container>
+          <Container>
+            <Property name="height">25</Property>
+            <Label id="receiveMsgDate">
+              <Property name="className">msg-date</Property>
+              <Property name="width">0</Property>
+              <Property name="height">0</Property>
+              <Property name="style">
+                <Property name="font-size">13px</Property>
+                <Property name="color">#555</Property>
+                <Property name="margin-left">3px</Property>
+              </Property>
+            </Label>
+          </Container>
+          <Container>
+            <Property name="height">200</Property>
+            <TextArea>
+              <Property name="dataSet">dsReceiveMessage</Property>
+              <Property name="property">content</Property>
+              <Property name="className">msg-content</Property>
+              <Property name="editable">false</Property>
+            </TextArea>
+          </Container>
+        </Container>
+        <Container>
+          <Property name="className">fileTitle</Property>
+          <Control>
+            <Property name="className">file-icon</Property>
+            <Property name="style">
+              <Property name="margin-left">40px</Property>
+            </Property>
+          </Control>
+          <Label>
+            <Property name="text">附件</Property>
+            <Property name="width">0</Property>
+            <Property name="className">file-name</Property>
+            <Property name="style">
+              <Property name="margin-left">40px</Property>
+            </Property>
+          </Label>
+        </Container>
+        <Container>
+          <Property name="className">filesCon</Property>
+          <DataBlockView layoutConstraint="left">
+            <ClientEvent name="onRenderBlock" signature="self,arg,ajaxActionFile,downloadAction">$(arg.dom).empty();&#xD;
+&#xD;
+var path = arg.data.get(&quot;path&quot;);&#xD;
+var fileName = arg.data.get(&quot;fileName&quot;) || &quot;&quot;;&#xD;
+var showName = &quot;&quot;;&#xD;
+if (fileName.length > 5) {&#xD;
+	showName = fileName.substring(0, 5) + &quot;...&quot;;&#xD;
+} else {&#xD;
+	showName = fileName;&#xD;
+}&#xD;
+&#xD;
+var iconSufx = &quot;&quot;;&#xD;
+var index = fileName.lastIndexOf(&quot;.&quot;);&#xD;
+var suf = fileName.substring(index + 1, fileName.length);&#xD;
+if (suf == &quot;doc&quot;&#xD;
+		|| suf == &quot;docx&quot; || suf == &quot;xls&quot;&#xD;
+		|| suf == &quot;xlsx&quot; || suf == &quot;ppt&quot;) {&#xD;
+	var pathIndex = path.lastIndexOf(&quot;.&quot;);&#xD;
+	path = path.substring(0, pathIndex + 1) + &quot;pdf&quot;;&#xD;
+	iconSufx = &quot;file&quot;;&#xD;
+} else {&#xD;
+	path = path.substring(2, path.length);&#xD;
+	iconSufx = &quot;img&quot;;&#xD;
+}&#xD;
+&#xD;
+var iconDiv = &quot;&lt;div class='ready-file-icon-&quot; + iconSufx + &quot;'>&lt;/div>&quot;;&#xD;
+var fileNameSpan = &quot;&lt;span class='file-name-span' title='&quot; + fileName + &quot;'>&quot; + showName + &quot;&lt;/span>&quot;;&#xD;
+var btnsDiv = &quot;&lt;div class='ready-file-btns'>&lt;/div>&quot;;&#xD;
+&#xD;
+var showBtn = &quot;&lt;a href='&quot; + path + &quot;' target='_Blank'>查看&lt;/a>&quot;;&#xD;
+var downloadBtn = &quot;&lt;span class='file-download-span'>下载&lt;/span>&quot;;&#xD;
+&#xD;
+$(iconDiv).appendTo(arg.dom);&#xD;
+$(fileNameSpan).appendTo(arg.dom);&#xD;
+var $btns = $(btnsDiv).appendTo(arg.dom);&#xD;
+&#xD;
+$(showBtn).appendTo($btns);&#xD;
+var $downloadBtn = $(downloadBtn).appendTo($btns);&#xD;
+$downloadBtn.click(function() {&#xD;
+	ajaxActionFile.set(&quot;parameter&quot;, arg.data.get(&quot;path&quot;)).execute(function(result) {&#xD;
+		if (result) {&#xD;
+			downloadAction.set(&quot;parameter&quot;, {&#xD;
+				path: arg.data.get(&quot;path&quot;),&#xD;
+				fileName: fileName&#xD;
+			}).execute();&#xD;
+		} else {&#xD;
+			window.tip(&quot;文件不存在.&quot;);&#xD;
+		}&#xD;
+	});&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
+            <Property name="blockDecoratorSize">5</Property>
+            <Property name="className">basic-bv</Property>
+            <Property name="dataSet">dsReceiveMessage</Property>
+            <Property name="dataPath">#.fileInfos</Property>
+          </DataBlockView>
+        </Container>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Trigger id="triggerSelect">
+      <ClientEvent name="onExecute" signature="self,arg,dialogUser">dialogUser.show();</ClientEvent>
+      <Property name="iconClass">fa fa-ellipsis-h</Property>
+    </Trigger>
+    <Dialog id="dialogUser">
+      <Property name="showCaptionBar">false</Property>
+      <Property name="height">95%</Property>
+      <Property name="width">50%</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick" signature="self,arg,dsSendMessage,updateActionSend,dsUser">var users = dsUser.getData();&#xD;
+if (!users.isEmpty()) {&#xD;
+	var msg = dsSendMessage.getData(&quot;#&quot;);&#xD;
+	var allUser = {&#xD;
+		username: &quot;所有人&quot;,&#xD;
+		nickname: &quot;所有人&quot;&#xD;
+	}&#xD;
+	dsSendMessage.getData(&quot;#.users&quot;).clear();&#xD;
+	dsSendMessage.getData(&quot;#.users&quot;).insert(allUser);&#xD;
+	msg.set(&quot;names&quot;, &quot;所有人&quot;);&#xD;
+	self.get(&quot;parent&quot;).hide();&#xD;
+} else {&#xD;
+	window.tip(&quot;暂无用户.&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+          <Property name="caption">发给所有人</Property>
+          <Property name="className">sure</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick" signature="self,arg,dsSendMessage,updateActionSend">var msg = dsSendMessage.getData(&quot;#&quot;);&#xD;
+var users = msg.get(&quot;users&quot;);&#xD;
+if (!users.isEmpty()) {&#xD;
+	var names = [];&#xD;
+	users.each(function(user) {&#xD;
+		names.push(user.get(&quot;nickname&quot;));&#xD;
+	});&#xD;
+	msg.set(&quot;names&quot;, names.join(&quot;;&quot;));&#xD;
+	self.get(&quot;parent&quot;).hide();&#xD;
+} else {&#xD;
+	window.tip(&quot;请选择至少一个收件人.&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="className">sure</Property>
+          <Property name="style">
+            <Property name="margin-left">10px</Property>
+          </Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick" signature="self,arg,dsSendMessage">var msg = dsSendMessage.getData(&quot;#&quot;);&#xD;
+msg.set(&quot;names&quot;, null);&#xD;
+dsSendMessage.getData(&quot;#.users&quot;).cancel();&#xD;
+self.get(&quot;parent&quot;).hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="className">simple</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Panel layout="padding:8" layoutConstraint="left">
+          <Property name="caption">用户列表</Property>
+          <Property name="width">48%</Property>
+          <Buttons/>
+          <Children>
+            <Container>
+              <Property name="height">30</Property>
+              <TextEditor>
+                <ClientEvent name="onKeyDown" signature="self,arg,dgSelectUser">window.clearTimeout(self.urlQueryTimeout);&#xD;
+self.urlQueryTimeout = window.setTimeout(function() {&#xD;
+	var key = self.get(&quot;value&quot;);&#xD;
+	if (!key) {&#xD;
+		dgSelectUser.filter();&#xD;
+	} else {&#xD;
+		dgSelectUser.filter([{&#xD;
+			junction: &quot;or&quot;,&#xD;
+			criterions: [{&#xD;
+				property: &quot;username&quot;,&#xD;
+				operator: &quot;like&quot;,&#xD;
+				value: key&#xD;
+			}, {&#xD;
+				property: &quot;nickname&quot;,&#xD;
+				operator: &quot;like&quot;,&#xD;
+				value: key&#xD;
+			}]&#xD;
+		}]);&#xD;
+	}&#xD;
+}, 250);</ClientEvent>
+                <Property name="blankText">搜索...</Property>
+              </TextEditor>
+            </Container>
+            <DataGrid id="dgSelectUser">
+              <ClientEvent name="onDataRowClick" signature="self,arg,dsSendMessage">var currentUser = self.get(&quot;currentEntity&quot;);&#xD;
+dsSendMessage.getData(&quot;#.users&quot;).insert(currentUser);</ClientEvent>
+              <Property name="dataSet">dsUser</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="filterMode">serverSide</Property>
+              <DataColumn name="username">
+                <Property name="property">username</Property>
+                <Property name="align">center</Property>
+              </DataColumn>
+              <DataColumn name="nickname">
+                <Property name="property">nickname</Property>
+                <Property name="align">center</Property>
+              </DataColumn>
+            </DataGrid>
+            <ToolBar layoutConstraint="bottom">
+              <DataPilot>
+                <Property name="itemCodes">|&lt;,&lt;</Property>
+                <Property name="dataSet">dsUser</Property>
+              </DataPilot>
+              <Fill/>
+              <DataPilot>
+                <Property name="itemCodes">>,>|</Property>
+                <Property name="dataSet">dsUser</Property>
+              </DataPilot>
+            </ToolBar>
+          </Children>
+          <Tools/>
+        </Panel>
+        <Container layoutConstraint="left">
+          <Property name="width">4%</Property>
+          <Property name="style">
+            <Property name="background">#f2f6ff40</Property>
+          </Property>
+          <Control>
+            <Property name="className">select-icon</Property>
+          </Control>
+        </Container>
+        <Panel layout="padding:8">
+          <Property name="width">48%</Property>
+          <Property name="caption">收件人</Property>
+          <Buttons/>
+          <Children>
+            <DataGrid id="dgTargetUser">
+              <ClientEvent name="onDataRowClick" signature="self,arg,dsUser">var currentUser = self.get(&quot;currentEntity&quot;);&#xD;
+dsUser.insert(currentUser);</ClientEvent>
+              <Property name="dataSet">dsSendMessage</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="dataPath">#.users</Property>
+              <DataColumn name="username">
+                <Property name="property">username</Property>
+                <Property name="align">center</Property>
+              </DataColumn>
+              <DataColumn name="nickname">
+                <Property name="property">nickname</Property>
+                <Property name="align">center</Property>
+              </DataColumn>
+            </DataGrid>
+            <ToolBar layoutConstraint="bottom">
+              <DataPilot>
+                <Property name="itemCodes">|&lt;,&lt;</Property>
+                <Property name="dataSet">dsSendMessage</Property>
+                <Property name="dataPath">#.users</Property>
+              </DataPilot>
+              <Fill/>
+              <DataPilot>
+                <Property name="itemCodes">>,>|</Property>
+                <Property name="dataSet">dsSendMessage</Property>
+                <Property name="dataPath">#.users</Property>
+              </DataPilot>
+            </ToolBar>
+          </Children>
+          <Tools/>
+        </Panel>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogReceiveUsers" layout="padding:8">
+      <Property name="height">95%</Property>
+      <Property name="width">40%</Property>
+      <Property name="caption">收件人</Property>
+      <Buttons/>
+      <Children>
+        <Container>
+          <Property name="height">50</Property>
+          <AutoForm>
+            <Property name="cols">*</Property>
+            <Property name="dataType">QueryUser</Property>
+            <Property name="createPrivateDataSet">true</Property>
+            <Property name="labelWidth">1</Property>
+            <AutoFormElement id="searchUsersKey">
+              <ClientEvent name="onKeyDown" signature="self,arg,dsReceiveUser">if (arg.keyCode == 13) {&#xD;
+	return;&#xD;
+}&#xD;
+window.clearTimeout(self.urlQueryTimeout);&#xD;
+self.urlQueryTimeout = window.setTimeout(function() {&#xD;
+	dsReceiveUser.flush();&#xD;
+}, 250);</ClientEvent>
+              <Property name="name">searchKey</Property>
+              <Property name="property">searchKey</Property>
+              <Property name="label"> </Property>
+              <Editor>
+                <TextEditor>
+                  <Property name="blankText">收件人搜索...</Property>
+                </TextEditor>
+              </Editor>
+            </AutoFormElement>
+          </AutoForm>
+        </Container>
+        <DataGrid>
+          <Property name="dataSet">dsReceiveUser</Property>
+          <Property name="readOnly">true</Property>
+          <DataColumn name="username">
+            <Property name="property">username</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+          <DataColumn name="nickname">
+            <Property name="property">nickname</Property>
+            <Property name="align">center</Property>
+          </DataColumn>
+        </DataGrid>
+        <ToolBar layoutConstraint="bottom">
+          <DataPilot>
+            <Property name="itemCodes">|&lt;,&lt;</Property>
+            <Property name="dataSet">dsReceiveUser</Property>
+          </DataPilot>
+          <Fill/>
+          <DataPilot>
+            <Property name="itemCodes">>,>|</Property>
+            <Property name="dataSet">dsReceiveUser</Property>
+          </DataPilot>
+        </ToolBar>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <AjaxAction id="ajaxActionRead">
+      <Property name="service">messageController#isRead</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>
