@@ -64,7 +64,7 @@
 self.set(&quot;parameter&quot;, param);</ClientEvent>
         <Property name="dataType">[User]</Property>
         <Property name="pageSize">20</Property>
-        <Property name="parameter"/>
+        <Property name="parameter"></Property>
         <Property name="dataProvider">messageController#loadReceiveUsers</Property>
       </Reference>
       <Reference name="fileInfos">
@@ -260,19 +260,26 @@ dialogInsertMsg.show();</ClientEvent>
       </Button>
     </Container>
     <TabControl id="msgTab">
-      <ClientEvent name="onTabChange" signature="self,arg,dsReceiveMessage,receivePage,dsSendMessage,sendPage">if (arg.newTab.get(&quot;caption&quot;) == &quot;收件箱&quot;) {&#xD;
-	sendPage.removeAllChildren();&#xD;
-	dsReceiveMessage.flushAsync();&#xD;
-	setTimeout(function() {&#xD;
-		window.initPage(dsReceiveMessage, receivePage);&#xD;
-	}, 350);&#xD;
-} else {&#xD;
-	receivePage.removeAllChildren();&#xD;
-	dsSendMessage.flushAsync();&#xD;
-	setTimeout(function() {&#xD;
-		window.initPage(dsSendMessage, sendPage);&#xD;
-	}, 350);&#xD;
-}&#xD;
+      <ClientEvent name="onTabChange" signature="self,arg,dsReceiveMessage,receivePage,dsSendMessage,sendPage">setTimeout(function() {&#xD;
+	if (arg.newTab.get(&quot;caption&quot;) == &quot;收件箱&quot;) {&#xD;
+		sendPage.removeAllChildren();&#xD;
+		dsReceiveMessage.flushAsync();&#xD;
+		if (dsReceiveMessage.get(&quot;dataLoaded&quot;)) {&#xD;
+			setTimeout(function() {&#xD;
+				window.initPage(dsReceiveMessage, receivePage);&#xD;
+			}, 100);&#xD;
+		}&#xD;
+	} else {&#xD;
+		receivePage.removeAllChildren();&#xD;
+		dsSendMessage.flushAsync();&#xD;
+		if (dsReceiveMessage.get(&quot;dataLoaded&quot;)) {&#xD;
+			setTimeout(function() {&#xD;
+				window.initPage(dsSendMessage, sendPage);&#xD;
+			}, 100);&#xD;
+		}&#xD;
+	}&#xD;
+}, 350);&#xD;
+&#xD;
 &#xD;
 </ClientEvent>
       <ControlTab>
@@ -744,7 +751,7 @@ sendMsgDate.set(&quot;text&quot;, window.formatDate(msg.get(&quot;createDate&quo
             <TextArea>
               <Property name="dataSet">dsSendMessage</Property>
               <Property name="property">content</Property>
-              <Property name="className">msg-content</Property>
+              <Property name="className">email-msg-content</Property>
               <Property name="editable">false</Property>
             </TextArea>
           </Container>
@@ -897,7 +904,7 @@ receiveMsgDate.set(&quot;text&quot;, window.formatDate(msg.get(&quot;createDate&
             <TextArea>
               <Property name="dataSet">dsReceiveMessage</Property>
               <Property name="property">content</Property>
-              <Property name="className">msg-content</Property>
+              <Property name="className">email-msg-content</Property>
               <Property name="editable">false</Property>
             </TextArea>
           </Container>
