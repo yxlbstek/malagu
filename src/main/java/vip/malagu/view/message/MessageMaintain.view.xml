@@ -181,11 +181,13 @@ self.set(&quot;parameter&quot;, param);</ClientEvent>
       <Property name="dataType">[Message]</Property>
       <Property name="pageSize">10</Property>
       <Property name="dataProvider">messageController#loadSendMsg</Property>
+      <Property name="loadMode">manual</Property>
     </DataSet>
     <DataSet id="dsReceiveMessage">
       <Property name="dataType">[Message]</Property>
       <Property name="pageSize">10</Property>
       <Property name="dataProvider">messageController#loadReceiveMsg</Property>
+      <Property name="loadMode">manual</Property>
     </DataSet>
     <DataSet id="dsUser">
       <Property name="dataType">[User]</Property>
@@ -260,28 +262,20 @@ dialogInsertMsg.show();</ClientEvent>
       </Button>
     </Container>
     <TabControl id="msgTab">
-      <ClientEvent name="onTabChange" signature="self,arg,dsReceiveMessage,receivePage,dsSendMessage,sendPage">setTimeout(function() {&#xD;
+      <ClientEvent name="onTabChange" signature="self,arg,dsReceiveMessage,receivePage,dsSendMessage,sendPage">//setTimeout(function() {&#xD;
 	if (arg.newTab.get(&quot;caption&quot;) == &quot;收件箱&quot;) {&#xD;
-		sendPage.removeAllChildren();&#xD;
 		dsReceiveMessage.flushAsync();&#xD;
-		if (dsReceiveMessage.get(&quot;dataLoaded&quot;)) {&#xD;
-			setTimeout(function() {&#xD;
-				window.initPage(dsReceiveMessage, receivePage);&#xD;
-			}, 100);&#xD;
-		}&#xD;
+		window.initPage(dsReceiveMessage, receivePage);&#xD;
 	} else {&#xD;
-		receivePage.removeAllChildren();&#xD;
 		dsSendMessage.flushAsync();&#xD;
-		if (dsReceiveMessage.get(&quot;dataLoaded&quot;)) {&#xD;
-			setTimeout(function() {&#xD;
-				window.initPage(dsSendMessage, sendPage);&#xD;
-			}, 100);&#xD;
-		}&#xD;
+		window.initPage(dsSendMessage, sendPage);&#xD;
 	}&#xD;
-}, 350);&#xD;
+//}, 100);&#xD;
 &#xD;
 &#xD;
 </ClientEvent>
+      <ClientEvent name="beforeTabChange" signature="self,arg,sendPage,receivePage">sendPage.removeAllChildren();&#xD;
+receivePage.removeAllChildren();</ClientEvent>
       <ControlTab>
         <Property name="caption">收件箱</Property>
         <Panel>
