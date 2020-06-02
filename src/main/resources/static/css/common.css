@@ -461,10 +461,36 @@
 }
 
 /* 静默提示 */
+.d-tip {
+	-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
 .d-tip.d-tip-floating {
 	/* top: calc(100% - 140px) !important; */
-	margin-top: -25px !important;
-    background: #539ff8;
+	margin-top: -5px !important;
+    background-color: #f6ffed;
+    border: 1px solid #b7eb8f;
+    padding: 15px;
+}
+
+.d-tip.d-tip-floating .caption {
+	color: #000000d9;
+	font-size: 13px;
+}
+
+.d-tip.d-tip-floating .tip-content {
+	color: #000000a6;
+}
+
+.d-tip.d-tip-floating .close {
+	border: 0px solid transparent !important;
+	right: 10px !important;
+    top: 8px !important;
+    font-size: 17px;
+    line-height: 17px;
+    color: #000000a6 !important;
 }
 
 /* a标签 */
