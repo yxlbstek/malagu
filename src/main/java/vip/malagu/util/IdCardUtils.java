@@ -41,42 +41,44 @@ public class IdCardUtils {
 		if (isNumber(cardNo) == false) {
 			return "身份证15位号码都应为数字、18位号码除最后一位外、都应为数字";
 		}
+		if (cardNo != null) {
+			GregorianCalendar gc = new GregorianCalendar();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String year = cardNo.substring(6, 10);
+			String month = cardNo.substring(10, 12);
+			String day = cardNo.substring(12, 14);
+			if (isDate(year + "-" + month + "-" + day) == false
+					|| (gc.get(Calendar.YEAR) - Integer.parseInt(year)) > 150
+					|| (gc.getTime().getTime() - dateFormat.parse(year + "-" + month + "-" + day).getTime()) < 0) {
+				return "身份证出生日期无效";
+			}
+			if (Integer.parseInt(month) > 12 || Integer.parseInt(month) == 0) {
+				return "身份证月份无效";
+			}
+			if (Integer.parseInt(day) > 31 || Integer.parseInt(day) == 0) {
+				return "身份证日期无效";
+			}
 
-		GregorianCalendar gc = new GregorianCalendar();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String year = cardNo.substring(6, 10);
-		String month = cardNo.substring(10, 12);
-		String day = cardNo.substring(12, 14);
-		if (isDate(year + "-" + month + "-" + day) == false
-				|| (gc.get(Calendar.YEAR) - Integer.parseInt(year)) > 150
-				|| (gc.getTime().getTime() - dateFormat.parse(year + "-" + month + "-" + day).getTime()) < 0) {
-			return "身份证出生日期无效";
-		}
-		if (Integer.parseInt(month) > 12 || Integer.parseInt(month) == 0) {
-			return "身份证月份无效";
-		}
-		if (Integer.parseInt(day) > 31 || Integer.parseInt(day) == 0) {
-			return "身份证日期无效";
-		}
+			Hashtable<String, String> codes = getAreaCode();
+			if (codes.get(cardNo.substring(0, 2)) == null) {
+				return "身份证地区编码错误";
+			}
 
-		Hashtable<String, String> codes = getAreaCode();
-		if (codes.get(cardNo.substring(0, 2)) == null) {
-			return "身份证地区编码错误";
-		}
+			//身份证最后一位
+			int totalmulAiWi = 0;
+			for (int i = 0; i < 17; i++) {
+				totalmulAiWi = totalmulAiWi + Integer.parseInt(String.valueOf(cardNo.charAt(i))) * Integer.parseInt(wi[i]);
+			}
+			int modValue = totalmulAiWi % 11;
+			String lastOneCode = valCodeArr[modValue];
+			cardNo = cardNo + lastOneCode;
 
-		//身份证最后一位
-		int totalmulAiWi = 0;
-		for (int i = 0; i < 17; i++) {
-			totalmulAiWi = totalmulAiWi + Integer.parseInt(String.valueOf(cardNo.charAt(i))) * Integer.parseInt(wi[i]);
+			if (IDStr.length() == 18 && !cardNo.equals(IDStr)) {
+				return "身份证无效，不是合法的身份证号码";
+			}
+			return "ok";
 		}
-		int modValue = totalmulAiWi % 11;
-		String lastOneCode = valCodeArr[modValue];
-		cardNo = cardNo + lastOneCode;
-
-		if (IDStr.length() == 18 && !cardNo.equals(IDStr)) {
-			return "身份证无效，不是合法的身份证号码";
-		}
-		return "ok";
+		return "身份证号码无效，请检查";
 	}
 
 	/**

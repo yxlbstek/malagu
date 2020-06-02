@@ -78,24 +78,36 @@ public class AliyunOSSFileUtils {
 	 * @param fileName 文件名称
 	 * @param urlPrefix 路径前缀
 	 * @return
+	 * @throws Exception 
 	 */
-	public static boolean downloadFile(String fileName, String urlPrefix) {
+	public static boolean downloadFile(String fileName, String urlPrefix) throws Exception {
+		OutputStream os = null;
+		InputStream is = null;
+		OSSClient ossClient = null;
 		try {
-			OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+			ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 			OSSObject ossObject = ossClient.getObject(bucketName, urlPrefix + fileName);
-			InputStream is = ossObject.getObjectContent();
+			is = ossObject.getObjectContent();
 			byte[] bs = new byte[4096];
 			int len;
-			OutputStream os = new FileOutputStream(DOWNLOAD_FILE_PATH + fileName);
+			os = new FileOutputStream(DOWNLOAD_FILE_PATH + fileName);
 			while ((len = is.read(bs)) != -1) {
 				os.write(bs, 0, len);
 			}
-			os.close();
-			is.close();
-			ossClient.shutdown();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		} finally {
+			if (os != null) {
+				os.close();
+			}
+			if (is != null) {
+				is.close();
+			}
+			if (ossClient != null) {
+				ossClient.shutdown();
+			}
 		}
 		return true;
 	}

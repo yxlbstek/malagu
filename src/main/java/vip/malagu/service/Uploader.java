@@ -18,6 +18,8 @@ import com.bstek.dorado.uploader.UploadFile;
 import com.bstek.dorado.uploader.annotation.FileProvider;
 import com.bstek.dorado.uploader.annotation.FileResolver;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.orm.FileInfo;
 import vip.malagu.util.DateUtils;
 import vip.malagu.util.FileUtils;
@@ -62,7 +64,7 @@ public class Uploader {
 			try {
 			    converter.convert(existFile).to(new File(newFilePath)).execute();
 			} catch (Exception e) {
-			    e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.FAIL);
 			}
 		}
 		return fileInfo;

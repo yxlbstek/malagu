@@ -60,7 +60,7 @@ public class AppLoginController {
 		String username = loginDto.getUsername();
 		AssertUtils.isNotEmptyParam(username, ErrorTipConstant.LOGIN_USERNAME_NOT_EMPTY);
 		String password = loginDto.getPassword();
-		AssertUtils.isNotEmptyParam(password, ErrorTipConstant.LOGIN_PASSWORD_NOT_EMPTY);
+		AssertUtils.isNotEmptyParam(password, ErrorTipConstant.LOGIN_PSW_NOT_EMPTY);
 		List<Organization> orgs = MultitenantUtils.doQuery(() -> {
 			return JpaUtil.linq(Organization.class).equal("id", orgId).list();
 		});

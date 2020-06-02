@@ -3,7 +3,6 @@ package vip.malagu.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -16,6 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bstek.dorado.core.Configure;
+
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
 
 /**
  * 数据库相关工具类
@@ -44,39 +46,27 @@ public final class DatabaseUtils {
 		if (!saveFile.exists()) {
 			saveFile.mkdirs();
 		}
-		PrintWriter printWriter = null;
-		BufferedReader bufferedReader = null;
-		try {
-			Runtime runtime = Runtime.getRuntime();
-			URL url = new URL("file:" + mysqlPath);
-			String path = url.getPath();
-			String cmd = "mysqldump -h" + hostIP + " -u" + userName + " -P" + hostPort + " -p" + password + " "
-					+ databaseName;
-			cmd = path + File.separator + cmd;
-			Process process = runtime.exec(cmd);
-			InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream(), "utf8");
-			bufferedReader = new BufferedReader(inputStreamReader);
-			printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(savePath + fileName), "utf8"));
-			String line;
-			while ((line = bufferedReader.readLine()) != null) {
-				printWriter.println(line);
-			}
-			printWriter.flush();
-			result.put("path", savePath + fileName);
-			result.put("fileName", fileName);
-		} catch (IOException e) {
-			throw new Exception("连接错误、请联系管理员. " + e.getMessage());
-		} finally {
-			try {
-				if (bufferedReader != null) {
-					bufferedReader.close();
+		Runtime runtime = Runtime.getRuntime();
+		URL url = new URL("file:" + mysqlPath);
+		String path = url.getPath();
+		String cmd = "mysqldump -h" + hostIP + " -u" + userName + " -P" + hostPort + " -p" + password + " "
+				+ databaseName;
+		cmd = path + File.separator + cmd;
+		Process process = runtime.exec(cmd);
+		try (InputStreamReader inputStreamReader = new InputStreamReader(process.getInputStream(), "utf8")) {
+			try (BufferedReader bufferedReader = new BufferedReader(inputStreamReader)) {
+				try (PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(savePath + fileName), "utf8"))) {
+					String line;
+					while ((line = bufferedReader.readLine()) != null) {
+						printWriter.println(line);
+					}
+					printWriter.flush();
+					result.put("path", savePath + fileName);
+					result.put("fileName", fileName);
 				}
-				if (printWriter != null) {
-					printWriter.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.DATABASE_CONNECTION_ERROR);
 		}
 		return result;
 	}
@@ -99,9 +89,9 @@ public final class DatabaseUtils {
 				conn.close();
 			}
 		} catch (SQLException e) {
-			throw new Exception("数据库连接失败、请检查配置是否填写错误或联系管理员.");
+			throw new CustomException(SystemErrorEnum.DATABASE_CONNECTION_ERROR_TIP);
 		}
-		return "数据库连接成功.";
+		return "数据库连接成功";
 	}
 	
 

@@ -26,7 +26,7 @@ public class ErrorTipConstant {
 	/**
 	 * 登录密码不能为空
 	 */
-	public static final String LOGIN_PASSWORD_NOT_EMPTY = "登录密码不能为空";
+	public static final String LOGIN_PSW_NOT_EMPTY = "登录密码不能为空";
 
 	/**
 	 * 验证码类型不能为空

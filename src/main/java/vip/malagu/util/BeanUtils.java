@@ -43,7 +43,7 @@ public final class BeanUtils {
 		Field field = null;
 		for (int i = 0; i < ps.length; i++) {
 			field = doGetField(cls, ps[i]);
-			cls = field.getType();
+			cls = field != null ? field.getType() : null;
 		}
 
 		return field;
@@ -81,14 +81,15 @@ public final class BeanUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getFieldValue(Object bean, Field field) {
-		T result = null;
 		try {
-			field.setAccessible(true);
-			result = (T) field.get(bean);
+			if (field != null && bean != null) {
+				field.setAccessible(true);
+				return (T) field.get(bean);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		return result;
+		return null;
 	}
 	
 	/**
@@ -100,8 +101,10 @@ public final class BeanUtils {
 	public static void setFieldValue(Object bean, String property, Object value) {
 		try {
 			Field field = getField(bean.getClass(), property);
-			field.setAccessible(true);
-			field.set(bean, value);
+			if (field != null) {
+				field.setAccessible(true);
+				field.set(bean, value);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

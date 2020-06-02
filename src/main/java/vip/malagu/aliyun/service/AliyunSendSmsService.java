@@ -37,7 +37,7 @@ public class AliyunSendSmsService {
 	/**
 	 * 修改密码
 	 */
-	public final static String PASSWORD_TEMPLATECODE = "SMS_170450794"; 
+	public final static String MODIFY_PSW_TEMPLATECODE = "SMS_170450794"; 
 
 	/**
 	 * 信息变更
@@ -67,7 +67,7 @@ public class AliyunSendSmsService {
 	/**
 	 * 用户密码验证码key前缀
 	 */
-	public static final String USER_PASSWORD_PREX = "password_";
+	public static final String USER_PSW_PREX = "password_";
 	
 	/**
 	 * 用户重要信息验证码key前缀
@@ -113,7 +113,7 @@ public class AliyunSendSmsService {
 				return true;
 			}
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.FAIL.getMessage(), SystemErrorEnum.FAIL.getStatus());
+			throw new CustomException(SystemErrorEnum.FAIL);
 		}
 		return false;
 	}
@@ -132,7 +132,7 @@ public class AliyunSendSmsService {
 			case 3:
 				return IDCATD_TEMPLATECODE;
 			case 4:
-				return PASSWORD_TEMPLATECODE;
+				return MODIFY_PSW_TEMPLATECODE;
 			default:
 				return MESSAGE_TEMPLATECODE;
 		}
@@ -152,7 +152,7 @@ public class AliyunSendSmsService {
 			case 3:
 				return USER_IDCARD_PREX;
 			case 4:
-				return USER_PASSWORD_PREX;
+				return USER_PSW_PREX;
 			default:
 				return USER_MESSAGE_PREX;
 		}
