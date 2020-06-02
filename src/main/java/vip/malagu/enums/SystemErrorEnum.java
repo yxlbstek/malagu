@@ -77,7 +77,12 @@ public enum SystemErrorEnum implements ICustomException {
 	/**
 	 * 500  对不起，系统发生异常
 	 */
-	SYSTEM_ANOMALY("500", "对不起，系统异常");
+	SYSTEM_ANOMALY("500", "对不起，系统异常"),
+	
+	/**
+	 * 600 Redis链接失败,请检查
+	 */
+	REDIS_NOT_CONNECTION("500", "Redis链接失败,请检查");
 
 	/**
 	 * 错误状态值

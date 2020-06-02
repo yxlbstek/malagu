@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
+
 /**
  * Redis操作工具类
  * @author Lynn -- 2020年5月21日 下午5:13:59
@@ -35,7 +38,11 @@ public final class RedisUtils {
 	 * @param value 值
 	 */
 	public static void set(Object key, Object value) {
-		redisTemplate.opsForValue().set(key, value);
+		try {
+			redisTemplate.opsForValue().set(key, value);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -46,7 +53,11 @@ public final class RedisUtils {
 	 * @param unit 时间粒度
 	 */
 	public static void setAndTimeout(Object key, Object value, long time, TimeUnit unit) {
-		redisTemplate.opsForValue().set(key, value, time, unit);
+		try {
+			redisTemplate.opsForValue().set(key, value, time, unit);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -55,7 +66,11 @@ public final class RedisUtils {
 	 * @return 
 	 */
 	public static Object get(Object key) {
-		return redisTemplate.opsForValue().get(key);
+		try {
+			return redisTemplate.opsForValue().get(key);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -65,7 +80,11 @@ public final class RedisUtils {
 	 * @return 
 	 */
 	public static Object getAndSet(Object key, Object value) {
-		return redisTemplate.opsForValue().getAndSet(key, value);
+		try {
+			return redisTemplate.opsForValue().getAndSet(key, value);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -74,7 +93,11 @@ public final class RedisUtils {
 	 * @param value 值
 	 */
 	public static void append(Object key, String value) {
-		redisTemplate.opsForValue().append(key, value);
+		try {
+			redisTemplate.opsForValue().append(key, value);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -83,7 +106,11 @@ public final class RedisUtils {
 	 * @param entity 对象
 	 */
 	public static <T> void setEntity(Object key, T entity) {
-		redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entity));
+		try {
+			redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entity));
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -94,7 +121,11 @@ public final class RedisUtils {
 	 * @param unit 时间粒度
 	 */
 	public static <T> void setEntityAndTimeout(Object key, T value, long time, TimeUnit unit) {
-		redisTemplate.opsForValue().set(key, JSONObject.toJSONString(value), time, unit);
+		try {
+			redisTemplate.opsForValue().set(key, JSONObject.toJSONString(value), time, unit);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -103,7 +134,11 @@ public final class RedisUtils {
 	 * @param value 集合对象
 	 */
 	public static <T> void setEntityList(Object key, List<T> entityList) {
-		redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entityList));
+		try {
+			redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entityList));
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -114,7 +149,11 @@ public final class RedisUtils {
 	 * @param unit 时间粒度
 	 */
 	public static <T> void setEntityListAndTimeout(Object key, List<T> entityList, long time, TimeUnit unit) {
-		redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entityList), time, unit);
+		try {
+			redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entityList), time, unit);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -123,11 +162,15 @@ public final class RedisUtils {
 	 * @return 
 	 */
 	public static <T> T getEntity(Object key, Class<T> clz) {
-		Object obj = redisTemplate.opsForValue().get(key);
-		if (obj != null) {
-			return jsonToEntity((String) obj, clz);
+		try {
+			Object obj = redisTemplate.opsForValue().get(key);
+			if (obj != null) {
+				return jsonToEntity((String) obj, clz);
+			}
+			return null;
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
 		}
-		return null;
 	}
 	
 	/**
@@ -136,11 +179,15 @@ public final class RedisUtils {
 	 * @return 
 	 */
 	public static <T> List<T> getEntityList(Object key, Class<T> clz) {
-		Object obj = redisTemplate.opsForValue().get(key);
-		if (obj != null) {
-			return jsonToList((String) obj, clz);
+		try {
+			Object obj = redisTemplate.opsForValue().get(key);
+			if (obj != null) {
+				return jsonToList((String) obj, clz);
+			}
+			return null;
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
 		}
-		return null;
 	}
 	
 	/**
@@ -150,11 +197,15 @@ public final class RedisUtils {
 	 * @return 
 	 */
 	public static <T> T getEntityAndSet(Object key, T newEntity, Class<T> clz) {
-		Object obj = redisTemplate.opsForValue().getAndSet(key, JSONObject.toJSONString(newEntity));
-		if (obj != null) {
-			return jsonToEntity((String) obj, clz);
+		try {
+			Object obj = redisTemplate.opsForValue().getAndSet(key, JSONObject.toJSONString(newEntity));
+			if (obj != null) {
+				return jsonToEntity((String) obj, clz);
+			}
+			return null;
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
 		}
-		return null;
 	}
 	
 	/**
@@ -164,11 +215,15 @@ public final class RedisUtils {
 	 * @return 
 	 */
 	public static <T> List<T> getEntityListAndSet(Object key, List<T> newEntityList, Class<T> clz) {
-		Object obj = redisTemplate.opsForValue().getAndSet(key, JSONObject.toJSONString(newEntityList));
-		if (obj != null) {
-			return jsonToList((String) obj, clz);
+		try {
+			Object obj = redisTemplate.opsForValue().getAndSet(key, JSONObject.toJSONString(newEntityList));
+			if (obj != null) {
+				return jsonToList((String) obj, clz);
+			}
+			return null;
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
 		}
-		return null;
 	}
 	
 	/**
@@ -178,7 +233,11 @@ public final class RedisUtils {
 	 * @return
 	 */
 	public static <T> T jsonToEntity(String text, Class<T> clz) {
-		return JSONArray.parseObject(text, clz);
+		try {
+			return JSONArray.parseObject(text, clz);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -188,7 +247,11 @@ public final class RedisUtils {
 	 * @return
 	 */
 	public static <T> List<T> jsonToList(String text, Class<T> clz) {
-		return JSONArray.parseArray(text, clz);
+		try {
+			return JSONArray.parseArray(text, clz);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -197,7 +260,11 @@ public final class RedisUtils {
 	 * @return
 	 */
 	public static Boolean exist(Object key) {
-		return redisTemplate.hasKey(key);
+		try {
+			return redisTemplate.hasKey(key);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -205,7 +272,11 @@ public final class RedisUtils {
 	 * @param key 键
 	 */
 	public static void delete(Object key) {
-		redisTemplate.delete(key);
+		try {
+			redisTemplate.delete(key);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -215,7 +286,11 @@ public final class RedisUtils {
 	 * @param value Map的value
 	 */
 	public static void put(Object key, Object hashKey, Object hashValue) {
-		redisTemplate.opsForHash().put(key, hashKey, hashValue);;
+		try {
+			redisTemplate.opsForHash().put(key, hashKey, hashValue);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -224,7 +299,11 @@ public final class RedisUtils {
 	 * @param map
 	 */
 	public static void putAll(Object key, Map<? extends Object, ? extends Object> map) {
-		redisTemplate.opsForHash().putAll(key, map);
+		try {
+			redisTemplate.opsForHash().putAll(key, map);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -232,7 +311,11 @@ public final class RedisUtils {
 	 * @param key 键
 	 */
 	public static Map<? extends Object, ? extends Object> getMap(Object key) {
-		return redisTemplate.opsForHash().entries(key);
+		try {
+			return redisTemplate.opsForHash().entries(key);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -242,7 +325,11 @@ public final class RedisUtils {
 	 * @return
 	 */
 	public static Object getMapValue(Object key, Object hashKey) {
-		return redisTemplate.opsForHash().get(key, hashKey);
+		try {
+			return redisTemplate.opsForHash().get(key, hashKey);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -251,7 +338,11 @@ public final class RedisUtils {
 	 * @return
 	 */
 	public static Set<Object> getMapKeys(Object key) {
-		return redisTemplate.opsForHash().keys(key);
+		try {
+			return redisTemplate.opsForHash().keys(key);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -260,7 +351,11 @@ public final class RedisUtils {
 	 * @return
 	 */
 	public static List<Object> getMapValues(Object key) {
-		return redisTemplate.opsForHash().values(key);
+		try {
+			return redisTemplate.opsForHash().values(key);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -269,7 +364,11 @@ public final class RedisUtils {
 	 * @return
 	 */
 	public static long getMapSize(Object key) {
-		return redisTemplate.opsForHash().size(key);
+		try {
+			return redisTemplate.opsForHash().size(key);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -279,7 +378,11 @@ public final class RedisUtils {
 	 * @return
 	 */
 	public static Boolean existMapKey(Object key, Object hashKey) {
-		return redisTemplate.opsForHash().hasKey(key, hashKey);
+		try {
+			return redisTemplate.opsForHash().hasKey(key, hashKey);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -288,7 +391,26 @@ public final class RedisUtils {
 	 * @param hashKey Map的key
 	 */
 	public static void deleteMapKey(Object key, Object hashKey) {
-		redisTemplate.opsForHash().delete(key, hashKey);
+		try {
+			redisTemplate.opsForHash().delete(key, hashKey);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
+	}
+	
+	/**
+	 * 获取自增数字
+	 * @param key 可当做数据库 表 的分类标识
+	 * @param delta 递增的基数
+	 * @return
+	 */
+	public static long getOnlyNumber(String key, long delta) {
+		try {
+			RedisAtomicLong counter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
+			return counter.addAndGet(delta);
+		} catch (Exception e) {
+			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+		}
 	}
 	
 	/**
@@ -297,7 +419,7 @@ public final class RedisUtils {
 	 * @param delta 递增的基数
 	 * @return
 	 */
-	public static long getOnlyNumber(String key, long delta) {
+	public static long getOnlyNumberId(String key, long delta) {
 		try {
 			RedisAtomicLong counter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
 			return counter.addAndGet(delta);
