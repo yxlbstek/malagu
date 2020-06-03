@@ -13,7 +13,7 @@ public final class ColorIconUtils {
 
 	public static List<String> getColorsBy(Integer number) {
 		
-		String colors[] = {"fb0223", "6199bc", "940c4b", "083cb2",
+		String[] colors = {"fb0223", "6199bc", "940c4b", "083cb2",
 				"0b7973", "0f2153", "0f4b9b", "0f5bc2", "0f72f6",
 				"1195db", "1258f8", "1296db", "1aaba8", "1afa29",
 				"1b3b98", "2aa515", "32cacd", "36ab60", "39579c",

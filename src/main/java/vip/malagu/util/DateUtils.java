@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
+
 /**
  * 日期工具类
  * @author Lynn -- 2020年5月21日 下午5:11:28
@@ -102,21 +105,6 @@ public final class DateUtils {
 		calendar.setTime(date);
 		long millis = calendar.getTimeInMillis() + mill * 1000;
 		return new Date(millis);
-	}
-	
-	/**
-	 * 返回清空时、分、秒的 date
-	 * @param date
-	 * @return
-	 */
-	public static Date clearTime(Date date) {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		return calendar.getTime();
 	}
 
 	/**
@@ -262,7 +250,7 @@ public final class DateUtils {
 		try {
 			date = dateFormat.parse(source);
 		} catch (ParseException e) {
-			
+			throw new CustomException("转换失败", SystemErrorEnum.FAIL.getStatus());
 		}
 		return date;
 	}
@@ -274,10 +262,7 @@ public final class DateUtils {
 	 * @return
 	 */
 	public static boolean ge(Date firstDate, Date lastDate) {
-		if (!firstDate.before(lastDate)) {
-			return true;
-		}
-		return false;
+		return !firstDate.before(lastDate);
 	}
 	
 	/**
@@ -287,10 +272,7 @@ public final class DateUtils {
 	 * @return
 	 */
 	public static boolean gt(Date firstDate, Date lastDate) {
-		if (firstDate.after(lastDate)) {
-			return true;
-		}
-		return false;
+		return firstDate.after(lastDate);
 	}
 	
 	/**
@@ -300,10 +282,7 @@ public final class DateUtils {
 	 * @return
 	 */
 	public static boolean le(Date firstDate, Date lastDate) {
-		if (!firstDate.after(lastDate)) {
-			return true;
-		}
-		return false;
+		return !firstDate.after(lastDate);
 	}
 	
 	/**
@@ -313,10 +292,7 @@ public final class DateUtils {
 	 * @return
 	 */
 	public static boolean lt(Date firstDate, Date lastDate) {
-		if (firstDate.before(lastDate)) {
-			return true;
-		}
-		return false;
+		return firstDate.before(lastDate);
 	}
 	
 	/**
@@ -326,10 +302,7 @@ public final class DateUtils {
 	 * @return
 	 */
 	public static boolean eq(Date firstDate, Date lastDate) {
-		if (org.apache.commons.lang.time.DateUtils.isSameDay(firstDate, lastDate)) {
-			return true;
-		}
-		return false;
+		return org.apache.commons.lang.time.DateUtils.isSameDay(firstDate, lastDate);
 	}
 	
 	/**

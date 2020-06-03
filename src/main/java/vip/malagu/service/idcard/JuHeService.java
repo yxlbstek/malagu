@@ -36,7 +36,6 @@ public class JuHeService {
 	public boolean verify(String idCard, String realName) throws IOException {
 		boolean result = false;
 		HttpURLConnection conn = null;
-		BufferedReader bufferedReader = null;
 		try {
 			StringBuilder params = new StringBuilder();
 			params.append("key=").append(URLEncoder.encode(juHeConfig.getAppKey(), PropertyConstant.UTF_8)).append("&");
@@ -54,30 +53,30 @@ public class JuHeService {
 			conn.setReadTimeout(30000);
 			conn.setInstanceFollowRedirects(false);
 			conn.connect();
-			DataOutputStream outputStream = new DataOutputStream(conn.getOutputStream());
-			outputStream.writeBytes(params.toString());
-			InputStream inputStream = conn.getInputStream();
-			bufferedReader = new BufferedReader(new InputStreamReader(inputStream, PropertyConstant.UTF_8));
-			String strRead = null;
-			while ((strRead = bufferedReader.readLine()) != null) {
-				sb.append(strRead);
-			}
-			JSONObject object = JSONObject.parseObject(sb.toString());
-			if (object != null) {
-				JSONObject obj = (JSONObject) object.get("result");
-				if (obj != null) {
-					String res = obj.get("res").toString();
-					if (!StringUtils.isEmpty(res) && res.equals("1")) {
-						result = true;
+			try (DataOutputStream outputStream = new DataOutputStream(conn.getOutputStream())) {
+				outputStream.writeBytes(params.toString());
+				InputStream inputStream = conn.getInputStream();
+				
+				try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, PropertyConstant.UTF_8))) {
+					String strRead = null;
+					while ((strRead = bufferedReader.readLine()) != null) {
+						sb.append(strRead);
+					}
+					JSONObject object = JSONObject.parseObject(sb.toString());
+					if (object != null) {
+						JSONObject obj = (JSONObject) object.get("result");
+						if (obj != null) {
+							String res = obj.get("res").toString();
+							if (!StringUtils.isEmpty(res) && res.equals("1")) {
+								result = true;
+							}
+						}
 					}
 				}
 			}
 		} catch (Exception e) {
 			throw new CustomException("实名认证失败", SystemErrorEnum.FAIL.getStatus());
 		} finally {
-			if (bufferedReader != null) {
-				bufferedReader.close();
-			}
 			if (conn != null) {
 				conn.disconnect();
 			}

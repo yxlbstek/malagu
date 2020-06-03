@@ -7,7 +7,7 @@ package vip.malagu.constants;
 public class PropertyConstant {
 
 	private PropertyConstant() {}
-	
+
 	/**
 	 * token
 	 */
@@ -52,6 +52,12 @@ public class PropertyConstant {
 	 * username
 	 */
 	public static final String USERNAME = "username";
+	
+	/**
+	 * Windows NT
+	 */
+	public static final String WINDOWS_NT = "Windows NT";
+	
 	
 	
 	

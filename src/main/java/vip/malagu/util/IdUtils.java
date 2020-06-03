@@ -2,6 +2,9 @@ package vip.malagu.util;
 
 import java.util.UUID;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
+
 /**
  * ID相关工具类
  * @author Lynn -- 2020年5月21日 下午5:13:39
@@ -20,10 +23,10 @@ public final class IdUtils {
 	private static final long SEQUENCE_MASK = -1L ^ (-1L << 12L);
 	
 	//毫秒内序列(0~4095)
-	private static long SEQUENCE = 0L;
+	private static long sequence = 0L;
 	
 	//上次生成 ID 的时间截 
-	private static long LAST_TIMESTAMP = -1L;
+	private static long lastTimestamp = -1L;
 	
 	/**
 	 * 获取UUID
@@ -40,22 +43,22 @@ public final class IdUtils {
 	public static synchronized long getOnlyNumberId() {
 		long timestamp = System.currentTimeMillis();
 		// 如果当前时间小于上一次 ID 生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
-		if (timestamp < LAST_TIMESTAMP) {
-			throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", LAST_TIMESTAMP - timestamp));
+		if (timestamp < lastTimestamp) {
+			throw new CustomException("系统时钟回退", SystemErrorEnum.FAIL.getStatus());
 		}
 		// 如果是同一时间生成的，则进行毫秒内序列
-		if (LAST_TIMESTAMP == timestamp) {
-			SEQUENCE = (SEQUENCE + 1) & SEQUENCE_MASK;
+		if (lastTimestamp == timestamp) {
+			sequence = (sequence + 1) & SEQUENCE_MASK;
 			// 毫秒内序列溢出
-			if (SEQUENCE == 0) {
+			if (sequence == 0) {
 				// 阻塞到下一个毫秒,获得新的时间戳
-				timestamp = tilNextMillis(LAST_TIMESTAMP);
+				timestamp = tilNextMillis(lastTimestamp);
 			}
 		} else {
-			SEQUENCE = 0L; // 时间戳改变，毫秒内序列重置
+			sequence = 0L; // 时间戳改变，毫秒内序列重置
 		}
 		// 上次生成 ID 的时间截
-		LAST_TIMESTAMP = timestamp;
+		lastTimestamp = timestamp;
 		// 移位并通过或运算拼到一起组成 64 位的 ID
 		return ((timestamp - TWEPOCH) << TIMESTAMP_LEFT_SHIFT);
 	}

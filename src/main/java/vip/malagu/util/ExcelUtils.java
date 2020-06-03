@@ -1,5 +1,6 @@
 package vip.malagu.util;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -20,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -45,34 +47,20 @@ public final class ExcelUtils {
 	 * @param columnMap 属性与单元格标题关系
 	 * @param clazz 导入对象类型
 	 * @return 
-	 * @throws Exception
+	 * @throws IOException 
+	 * @throws InvalidFormatException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
-	public static <T> List<T> importExcel(MultipartFile file, Map<String, String> columnMap, Class<T> clazz) throws Exception {		
-		List<T> result = new ArrayList<T>();
+	public static <T> List<T> importExcel(MultipartFile file, Map<String, String> columnMap, Class<T> clazz) throws InvalidFormatException, IOException, InstantiationException, IllegalAccessException  {		
+		List<T> result = new ArrayList<>();
 		Workbook workbook = WorkbookFactory.create(file.getInputStream());
-		List<Map<String, Object>> entityList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> entityList = new ArrayList<>();
 		int sheetSize = workbook.getNumberOfSheets();
 		for (int i = 0; i < sheetSize; i++) {
 			Sheet sheet = workbook.getSheetAt(i);
 			int rowSize = sheet.getLastRowNum() + 1;
-			for (int j = 1; j < rowSize; j++) {	// 遍历行  从1开始略过第一行标题行
-				Row row = sheet.getRow(j);
-				if (row == null) {
-					continue;
-				}
-				Map<String, Object> entityMap = new HashMap<String, Object>();// 对应一个数据行
-				int columnNum = 0;
-				for (Entry<String, String> cm : columnMap.entrySet()) {
-					Cell cell = row.getCell(columnNum);
-					String value = null;
-					if (cell != null) {
-						value = getCellValue(cell);
-					}
-					entityMap.put(cm.getKey(), value);
-					columnNum++;
-				}
-				entityList.add(entityMap);
-			}
+			buildEntityList(columnMap, entityList, sheet, rowSize);
 		}
 		
 		if (!entityList.isEmpty()) {
@@ -90,9 +78,30 @@ public final class ExcelUtils {
 		}
 		return result;
 	}
+
+	private static void buildEntityList(Map<String, String> columnMap, List<Map<String, Object>> entityList,
+			Sheet sheet, int rowSize) {
+		for (int j = 1; j < rowSize; j++) {	// 遍历行  从1开始略过第一行标题行
+			Row row = sheet.getRow(j);
+			if (row == null) {
+				continue;
+			}
+			Map<String, Object> entityMap = new HashMap<>();// 对应一个数据行
+			int columnNum = 0;
+			for (Entry<String, String> cm : columnMap.entrySet()) {
+				Cell cell = row.getCell(columnNum);
+				String value = null;
+				if (cell != null) {
+					value = getCellValue(cell);
+				}
+				entityMap.put(cm.getKey(), value);
+				columnNum++;
+			}
+			entityList.add(entityMap);
+		}
+	}
 	
 	private static String getCellValue(Cell cell) {
-		String cellvalue = null;
 		switch (cell.getCellType()) {
 			case HSSFCell.CELL_TYPE_NUMERIC: 
 				short format = cell.getCellStyle().getDataFormat();
@@ -100,28 +109,19 @@ public final class ExcelUtils {
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					double value = cell.getNumericCellValue();
 					Date date = DateUtil.getJavaDate(value);
-					cellvalue = sdf.format(date);
+					return sdf.format(date);
 				} else if (HSSFDateUtil.isCellDateFormatted(cell)) {
 					Date date = cell.getDateCellValue();
 					DateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					cellvalue = formater.format(date);
+					return formater.format(date);
 				} else {
-					cellvalue = NumberToTextConverter.toText(cell.getNumericCellValue());
-				}	
-			break;
-		
+					return NumberToTextConverter.toText(cell.getNumericCellValue());
+				}
 			case HSSFCell.CELL_TYPE_STRING:
-				cellvalue = cell.getStringCellValue().replaceAll("'", "''");
-			break;
-			
-			case HSSFCell.CELL_TYPE_BLANK:
-				cellvalue = null;
-			break;
-			default: {
-				cellvalue = null;
-			}
+				return cell.getStringCellValue().replaceAll("'", "''");
+			default:
+				return null;
 		}
-		return cellvalue;
 	}
 
 	
@@ -131,9 +131,9 @@ public final class ExcelUtils {
 	 * @param columnMap 导出列与属性的映射
 	 * @param objs 导出的数据
 	 * @param response
-	 * @throws Exception
+	 * @throws IOException 
 	 */
-	public static <T> void exportExcel(String fileName, Map<String, String> columnMap, List<T> objs, HttpServletResponse response) throws Exception {
+	public static <T> void exportExcel(String fileName, Map<String, String> columnMap, List<T> objs, HttpServletResponse response) throws IOException  {
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		HSSFSheet sheet = workbook.createSheet("数据详情");
 		sheet.setDefaultColumnWidth(20);
@@ -148,30 +148,7 @@ public final class ExcelUtils {
 			index++;
 		}
 		if (!objs.isEmpty()) {	
-			for (int i = 0; i < objs.size(); i++) {
-				row = sheet.createRow(i + 1);
-				row.setHeightInPoints(20);
-				HSSFCellStyle cellStyle = createCellStyle(workbook);
-				int columnIndex = 0;
-				for (Entry<String, String> cloumn : columnMap.entrySet()) {
-					HSSFCell dataCell = row.createCell(columnIndex);
-					dataCell.setCellStyle(cellStyle);
-					Field[] fs = objs.get(i).getClass().getDeclaredFields();
-					for (Field field : fs) {
-						if (cloumn.getKey().equals(field.getName())) {
-							String cellValue = "";
-							Object fieldValue = BeanUtils.getFieldValue(objs.get(i), field);
-							if (field.getType().getName().indexOf("Date") != -1) {
-								cellValue = fieldValue != null ? DateUtils.dateToString((Date) fieldValue, "yyyy-MM-dd HH:mm:ss") : "";
-							} else {
-								cellValue = fieldValue != null ? fieldValue.toString() : "";
-							}
-							dataCell.setCellValue(cellValue);
-						}
-					}
-					columnIndex++;
-				}
-			}
+			setCellValue(columnMap, objs, workbook, sheet);
 		}
 		String fName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
 		response.setContentType("application/x-msdownload");  
@@ -180,6 +157,45 @@ public final class ExcelUtils {
     	OutputStream out = response.getOutputStream();
     	workbook.write(out);
     	out.close();
+	}
+
+	private static <T> void setCellValue(Map<String, String> columnMap, List<T> objs, HSSFWorkbook workbook,
+			HSSFSheet sheet) {
+		HSSFRow row;
+		for (int i = 0; i < objs.size(); i++) {
+			row = sheet.createRow(i + 1);
+			row.setHeightInPoints(20);
+			HSSFCellStyle cellStyle = createCellStyle(workbook);
+			int columnIndex = 0;
+			eachColumnMap(columnMap, objs, row, i, cellStyle, columnIndex);
+		}
+	}
+
+	private static <T> void eachColumnMap(Map<String, String> columnMap, List<T> objs, HSSFRow row, int i,
+			HSSFCellStyle cellStyle, int columnIndex) {
+		for (Entry<String, String> cloumn : columnMap.entrySet()) {
+			HSSFCell dataCell = row.createCell(columnIndex);
+			dataCell.setCellStyle(cellStyle);
+			Field[] fs = objs.get(i).getClass().getDeclaredFields();
+			buildCellValue(objs, i, cloumn, dataCell, fs);
+			columnIndex++;
+		}
+	}
+
+	private static <T> void buildCellValue(List<T> objs, int i, Entry<String, String> cloumn, HSSFCell dataCell,
+			Field[] fs) {
+		for (Field field : fs) {
+			if (cloumn.getKey().equals(field.getName())) {
+				String cellValue = "";
+				Object fieldValue = BeanUtils.getFieldValue(objs.get(i), field);
+				if (field.getType().getName().indexOf("Date") != -1) {
+					cellValue = fieldValue != null ? DateUtils.dateToString((Date) fieldValue, "yyyy-MM-dd HH:mm:ss") : "";
+				} else {
+					cellValue = fieldValue != null ? fieldValue.toString() : "";
+				}
+				dataCell.setCellValue(cellValue);
+			}
+		}
 	}
 	
 	public static HSSFCellStyle createStyle(HSSFWorkbook workbook) {

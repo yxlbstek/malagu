@@ -17,20 +17,19 @@ import vip.malagu.enums.SystemErrorEnum;
 
 public class AliyunOSSFileUtils {
 	
+	/**
+	 * private static final String bucketUrl = "http://XXX.oss-cn-beijing.aliyuncs.com";
+	 */
 	private AliyunOSSFileUtils() {}
 
-	private static final String DOWNLOAD_FILE_PATH = "C:/tmp/";
+	private static final String ACCESS_KEY_ID = "XXX";
 	
-	private static final String accessKeyId = "XXX";
+	private static final String ACCESS_KEY_SECRET = "XXX";
 	
-	private static final String accessKeySecret = "XXX";
+	private static final String ENDPOINT = "http://oss-cn-beijing.aliyuncs.com";
 	
-	private static final String endpoint = "http://oss-cn-beijing.aliyuncs.com";
+	private static final String BUCKET_NAME = "XXX";
 	
-	private static final String bucketName = "XXX";
-	
-	//private static final String bucketUrl = "http://XXX.oss-cn-beijing.aliyuncs.com";
-
 	/**
 	 * 文件上传
 	 * @param multipartFile 文件
@@ -41,9 +40,9 @@ public class AliyunOSSFileUtils {
 	 */
 	public static String uploadFile(MultipartFile multipartFile, String userId, String urlPrefix) throws IOException {
 		String fileName = urlPrefix + userId + "-" + new Date().getTime() + "-" + multipartFile.getOriginalFilename();
-		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+		OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
 		InputStream inputStream = multipartFile.getInputStream();
-		ossClient.putObject(bucketName, fileName, inputStream);
+		ossClient.putObject(BUCKET_NAME, fileName, inputStream);
 		ossClient.shutdown();
 		return fileName;
 	}
@@ -56,9 +55,9 @@ public class AliyunOSSFileUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String uploadFile(InputStream inputStream, String userId, String path) throws IOException {
-		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-		ossClient.putObject(bucketName, path, inputStream);
+	public static String uploadFile(InputStream inputStream, String path) throws IOException {
+		OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+		ossClient.putObject(BUCKET_NAME, path, inputStream);
 		ossClient.shutdown();
 		return path;
 	}
@@ -71,9 +70,9 @@ public class AliyunOSSFileUtils {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String uploadFile(File file, String userId, String path) throws IOException {
-		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-		ossClient.putObject(bucketName, path, file);
+	public static String uploadFile(File file, String path) throws IOException {
+		OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+		ossClient.putObject(BUCKET_NAME, path, file);
 		ossClient.shutdown();
 		return path;
 	}
@@ -82,30 +81,28 @@ public class AliyunOSSFileUtils {
 	 * 文件下载
 	 * @param fileName 文件名称
 	 * @param urlPrefix 路径前缀
+	 * @param downloadPath 文件下载路径
 	 * @return
-	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public static boolean downloadFile(String fileName, String urlPrefix) throws Exception {
-		OutputStream os = null;
+	public static boolean downloadFile(String fileName, String urlPrefix, String downloadPath) throws IOException {
 		InputStream is = null;
 		OSSClient ossClient = null;
 		try {
-			ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-			OSSObject ossObject = ossClient.getObject(bucketName, urlPrefix + fileName);
+			ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+			OSSObject ossObject = ossClient.getObject(BUCKET_NAME, urlPrefix + fileName);
 			is = ossObject.getObjectContent();
 			byte[] bs = new byte[4096];
 			int len;
-			os = new FileOutputStream(DOWNLOAD_FILE_PATH + fileName);
-			while ((len = is.read(bs)) != -1) {
-				os.write(bs, 0, len);
-			}
 			
+			try (OutputStream os = new FileOutputStream(downloadPath + fileName)) {
+				while ((len = is.read(bs)) != -1) {
+					os.write(bs, 0, len);
+				}
+			}
 		} catch (Exception e) {
 			throw new CustomException("文件下载失败", SystemErrorEnum.FAIL.getStatus());
 		} finally {
-			if (os != null) {
-				os.close();
-			}
 			if (is != null) {
 				is.close();
 			}
@@ -122,8 +119,8 @@ public class AliyunOSSFileUtils {
 	 * @return
 	 */
 	public static boolean exist(String fileName) {
-		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-		boolean result = ossClient.doesObjectExist(bucketName, fileName);
+		OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+		boolean result = ossClient.doesObjectExist(BUCKET_NAME, fileName);
 		ossClient.shutdown();
 		return result;
 	}
@@ -133,8 +130,8 @@ public class AliyunOSSFileUtils {
 	 * @param fileName 文件路径
 	 */
 	public static void deleteFile(String fileName) {
-		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-		ossClient.deleteObject(bucketName, fileName);
+		OSSClient ossClient = new OSSClient(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+		ossClient.deleteObject(BUCKET_NAME, fileName);
 		ossClient.shutdown();
 	}
 	

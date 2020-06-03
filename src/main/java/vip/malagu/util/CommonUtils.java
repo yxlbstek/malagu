@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.springframework.util.CollectionUtils;
 
+import vip.malagu.constants.PropertyConstant;
+
 /**
  * 工具类
  * @see 1. 将 集合数据 转换成 树形结构数据
@@ -35,8 +37,8 @@ public final class CommonUtils {
 	 * @return
 	 */
 	public static <T> List<T> buildTree(List<T> datas, String idProperty, String parentIdProperty, String childrenProperty) {
-		List<T> result = new ArrayList<T>();
-		Map<Object, List<T>> childrenMap = new HashMap<Object, List<T>>();
+		List<T> result = new ArrayList<>();
+		Map<Object, List<T>> childrenMap = new HashMap<>();
 		
 		for (T entity : datas) {
 			Object entityId = BeanUtils.getFieldValue(entity, idProperty);
@@ -48,14 +50,14 @@ public final class CommonUtils {
 				childrenMap.put(entityId, BeanUtils.getFieldValue(entity, childrenProperty));
 			}
 
-			if (entityParentId == null || (entityParentId != null && entityParentId.toString().equals("0"))) {
+			if (entityParentId == null || "0".equals((String) entityParentId)) {
 				result.add(entity);
 			} else {
 				List<T> children;
 				if (childrenMap.containsKey(entityParentId)) {
 					children = childrenMap.get(entityParentId);
 				} else {
-					children = new ArrayList<T>();
+					children = new ArrayList<>();
 					childrenMap.put(entityParentId, children);
 				}
 				children.add(entity);
@@ -71,7 +73,7 @@ public final class CommonUtils {
 	 * @return
 	 */
 	public static <T> List<T> cancelTree(List<T> datas, String childrenProperty) {
-		List<T> result = new ArrayList<T>();
+		List<T> result = new ArrayList<>();
 		analysisTree(datas, childrenProperty, result);
 		return result;
 	}
@@ -97,7 +99,7 @@ public final class CommonUtils {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <T> Set<T> collect(Collection<?> source, String propertyName) {
 		if (CollectionUtils.isEmpty(source)) {
-			return Collections.EMPTY_SET;
+			return Collections.emptySet();
 		}
 		Set result = new HashSet(source.size());
 		for (Object obj : source) {
@@ -127,7 +129,7 @@ public final class CommonUtils {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static <K, V> Map<K, V> index(Collection<V> source, String propertyName) {
 		if (CollectionUtils.isEmpty(source)) {
-			return Collections.EMPTY_MAP;
+			return Collections.emptyMap();
 		}
 		Map result = new HashMap();
 
@@ -155,13 +157,13 @@ public final class CommonUtils {
 	 */
 	public static boolean checkAgentIsMobile(String userAgent) {
 		boolean result = false;
-		if (!userAgent.contains("Windows NT") || (userAgent.contains("Windows NT") && userAgent.contains("compatible; MSIE 9.0;"))) {
-			if (!userAgent.contains("Windows NT") && !userAgent.contains("Macintosh")) {
-				for (String item : agent) {
-					if (userAgent.contains(item)) {
-						result = true;
-						break;
-					}
+		if ((!userAgent.contains(PropertyConstant.WINDOWS_NT) || (userAgent.contains(PropertyConstant.WINDOWS_NT) && userAgent.contains("compatible; MSIE 9.0;"))) 
+				&& !userAgent.contains(PropertyConstant.WINDOWS_NT) 
+				&& !userAgent.contains("Macintosh")) {
+			for (String item : agent) {
+				if (userAgent.contains(item)) {
+					result = true;
+					break;
 				}
 			}
 		}

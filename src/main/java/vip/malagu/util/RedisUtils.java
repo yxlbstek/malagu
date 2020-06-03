@@ -1,5 +1,6 @@
 package vip.malagu.util;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -186,7 +187,7 @@ public final class RedisUtils {
 			if (obj != null) {
 				return jsonToList((String) obj, clz);
 			}
-			return null;
+			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
 		}
@@ -222,7 +223,7 @@ public final class RedisUtils {
 			if (obj != null) {
 				return jsonToList((String) obj, clz);
 			}
-			return null;
+			return Collections.emptyList();
 		} catch (Exception e) {
 			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
 		}
@@ -312,7 +313,7 @@ public final class RedisUtils {
 	 * 获取Map
 	 * @param key 键
 	 */
-	public static Map<? extends Object, ? extends Object> getMap(Object key) {
+	public static Map<Object, Object> getMap(Object key) {
 		try {
 			return redisTemplate.opsForHash().entries(key);
 		} catch (Exception e) {

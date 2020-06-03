@@ -39,7 +39,7 @@ public class LogisticsService {
 		param.append("}");
 		params.put("param", param.toString());
 		params.put("customer", logisticsConfig.getCustomer());
-		String sign = EncryptUtils.MD5Encode(param + logisticsConfig.getKey() + logisticsConfig.getCustomer());
+		String sign = EncryptUtils.encodeByMD5(param + logisticsConfig.getKey() + logisticsConfig.getCustomer());
 		params.put("sign", sign);
 		return execute(params);
 	}

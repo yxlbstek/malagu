@@ -25,7 +25,7 @@ public final class BeanUtils {
 		if (clazz == null) {
 			throw new IllegalArgumentException("The class must not be null");
 		}
-		List<Field> fieldList = new ArrayList<Field>();
+		List<Field> fieldList = new ArrayList<>();
 		while (clazz != null) {
 			Field[] fields = clazz.getDeclaredFields();
 			for (Field field : fields) {
@@ -137,34 +137,31 @@ public final class BeanUtils {
 	 * @return
 	 */
 	public static Object convertType(Class<?> clz, String value) {
-		Object result = null;
 		String type = clz.getSimpleName();
 		if (type.equals("long")) {
-			result = Long.parseLong(value);
+			return Long.parseLong(value);
 		} else if (type.equals("Long")) {
-			result = Long.valueOf(value);
+			return Long.valueOf(value);
 		} else if (type.equals("int")) {
-			result = Integer.parseInt(value);
+			return Integer.parseInt(value);
 		} else if (type.equals("Integer")) {
-			result = Integer.valueOf(value);
+			return Integer.valueOf(value);
 		} else if (type.equals("float")) {
-			result = Float.parseFloat(value);
+			return Float.parseFloat(value);
 		} else if (type.equals("Float")) {
-			result = Float.valueOf(value);
+			return Float.valueOf(value);
 		} else if (type.equals("double")) {
-			result = Double.parseDouble(value);
+			return Double.parseDouble(value);
 		} else if (type.equals("Double")) {
-			result = Double.valueOf(value);
+			return Double.valueOf(value);
 		} else if (type.equals("BigDecimal")) {
-			result = new BigDecimal(value);
+			return new BigDecimal(value);
 		} else if (type.equals("boolean") || type.equals("Boolean")) {
-			result = value.equals("0") || value.equals("true") ? true : false;
+			return value.equals("0") || value.equals("true") ? Boolean.TRUE : Boolean.FALSE;
 		} else if (type.equals("Date")) {
-			result = DateUtils.stringToDate(value, "yyyy-MM-dd HH:mm:ss");
-		} else {
-			result = value;
+			return DateUtils.stringToDate(value, "yyyy-MM-dd HH:mm:ss");
 		}
-		return result;
+		return value;
 	}
 	
 }

@@ -20,7 +20,7 @@ public final class EncryptUtils {
 	
 	private EncryptUtils() {}
 	
-	private static final char digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	private static final char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 	
 	private static final String COMMON_KEY = "_weiyuwangluoweiqiandai_";
 	
@@ -33,7 +33,7 @@ public final class EncryptUtils {
 	 * @param password
 	 * @return
 	 */
-	public static String MD5Encode(String password) {
+	public static String encodeByMD5(String password) {
 		try {
 			if (password != null && !"".equals(password)) {
 				MessageDigest mdigest = MessageDigest.getInstance("MD5");
@@ -41,7 +41,7 @@ public final class EncryptUtils {
 				mdigest.update(bytes);
 				byte[] md = mdigest.digest();
 				int j = md.length;
-				char str[] = new char[j * 2];
+				char[] str = new char[j * 2];
 				int k = 0;
 				for (int i = 0; i < j; i++) {
 					byte byte0 = md[i];
@@ -63,7 +63,7 @@ public final class EncryptUtils {
 	 * @return 加密后的字节数组，一般结合Base64编码使用
 	 * @throws Exception
 	 */
-	public static String DESEncode(String data) {
+	public static String encodeByDES(String data) {
 		if (data == null)
 			return null;
 		try {
@@ -89,7 +89,7 @@ public final class EncryptUtils {
 	 * @return 解密后的字节数组
 	 * @throws Exception 异常
 	 */
-	public static String DESDecode(String data) {
+	public static String decodeToDES(String data) {
 		if (data == null || data.length() < 8)
 			return null;
 		try {

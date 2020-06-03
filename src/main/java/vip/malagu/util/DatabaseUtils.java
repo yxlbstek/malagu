@@ -3,6 +3,7 @@ package vip.malagu.util;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -37,9 +38,9 @@ public final class DatabaseUtils {
 	 * @param databaseName 要导出数据库名
 	 * @param mysqlPath 数据库安装bin路径
 	 * @return
-	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public static Map<String, String> exportDatabase(String hostIP, String hostPort, String userName, String password, String databaseName, String mysqlPath) throws Exception {
+	public static Map<String, String> exportDatabase(String hostIP, String hostPort, String userName, String password, String databaseName, String mysqlPath) throws IOException {
 		Map<String, String> result = new HashMap<>();
 		String prefix = Configure.getString("file.prefixPath");
 		String savePath = prefix + File.separator + "backupsDb" + File.separator;
@@ -81,17 +82,20 @@ public final class DatabaseUtils {
 	 * @param username
 	 * @param password
 	 * @return
-	 * @throws Exception
+	 * @throws ClassNotFoundException 
+	 * @throws SQLException 
 	 */
-	public static String connectionDb(String driver, String url, String username, String password) throws Exception {
+	public static String connectionDb(String driver, String url, String username, String password) throws ClassNotFoundException, SQLException {
+		Connection conn = null;
 		try {
 			Class.forName(driver);
-			Connection conn = DriverManager.getConnection(url, username, password);
+			conn = DriverManager.getConnection(url, username, password);
+		} catch (SQLException e) {
+			throw new CustomException(SystemErrorEnum.DATABASE_CONNECTION_ERROR_TIP);
+		} finally {
 			if (conn != null) {
 				conn.close();
 			}
-		} catch (SQLException e) {
-			throw new CustomException(SystemErrorEnum.DATABASE_CONNECTION_ERROR_TIP);
 		}
 		return "数据库连接成功";
 	}
