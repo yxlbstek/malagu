@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.malagu.multitenant.MultitenantUtils;
@@ -32,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.bdf3.dorado.jpa.JpaUtil;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.orm.JobCalendar;
 import vip.malagu.orm.JobCalendarDate;
 import vip.malagu.orm.JobCalendarLink;
@@ -49,105 +52,137 @@ public class ScheduleTask implements SchedulingConfigurer {
 	@Autowired
 	private ApplicationContext applicationContext;
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	@Transactional(readOnly = true)
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-		List<Organization> orgs = MultitenantUtils.doQuery(() -> {
-			return JpaUtil.linq(Organization.class).list();
-		});
-		Set<String> orgIds = JpaUtil.collect(orgs, "id");
+		Set<String> orgIds = getOrgIds();
 		List<JobInfo> jobs = buildJobs(orgIds);
 		if (!jobs.isEmpty()) {
 			try {
-				Map<String, JobInfo> jobMap = new HashMap<>();
-				for (JobInfo jobInfo : jobs) {
-					String key = jobInfo.getBeanId() + "-" + jobInfo.getCompanyId() + "-" + jobInfo.getId();
-					if (jobMap.get(key) == null) {
-						jobMap.put(key, jobInfo);
-					}
-				}
+				Map<String, JobInfo> jobMap = buildJobMap(jobs);
 				scheduler.start();
-				for (String key : jobMap.keySet()) {
-					JobInfo jobInfo = jobMap.get(key);
-					
-					AnnualCalendar excludeDates = new AnnualCalendar();
-					List<JobCalendarDate> calendarDates = jobInfo.getJobCalendarDates();
-					if (calendarDates != null && !calendarDates.isEmpty()) {
-						for (JobCalendarDate jobCalendarDate : calendarDates) {
-							Date exDate = jobCalendarDate.getCalendarDate();
-							Calendar cal = new GregorianCalendar(DateUtils.getYear(exDate), DateUtils.getMonth(exDate) - 1, DateUtils.getDay(exDate));  
-							excludeDates.setDayExcluded(cal, true);
-						}
-					}
+				for (Entry<String, JobInfo> entry : jobMap.entrySet()) {
+					JobInfo jobInfo = entry.getValue();
+					AnnualCalendar excludeDates = buildCalendarDates(jobInfo);
 					scheduler.addCalendar("excludeDates", excludeDates, true, true);
 					Object obj = applicationContext.getBean(jobInfo.getBeanId());
-			        JobDetail jobDetail = JobBuilder
-			        		.newJob((Class<? extends Job>) obj.getClass())
-			        		.withIdentity(obj.getClass().getName() + "," + jobInfo.getId(), jobInfo.getCompanyId())
-			        		.build();
-			 
+			        JobDetail jobDetail = buildJobDetail(jobInfo, obj);
 			        CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(jobInfo.getCronExpression());
-			 
-			        CronTrigger trigger = TriggerBuilder
-			        		.newTrigger()
-			        		.withIdentity(obj.getClass().getName() + "," + jobInfo.getId(), jobInfo.getCompanyId())
-			                .withSchedule(scheduleBuilder)
-			                .modifiedByCalendar("excludeDates")
-			                .build();
-			        
+			        CronTrigger trigger = buildTrigger(jobInfo, obj, scheduleBuilder);
 			        scheduler.scheduleJob(jobDetail, trigger);
 			        if (!jobInfo.getState().equals("running")) {
 			        	scheduler.pauseJob(JobKey.jobKey(obj.getClass().getName() + "," + jobInfo.getId(), jobInfo.getCompanyId()));
 			        }
 				}
 			} catch (SchedulerException e) {
-				e.printStackTrace();
+				throw new CustomException("初始化定时任务失败", SystemErrorEnum.FAIL.getStatus());
 			}
 		}
+	}
+
+	private AnnualCalendar buildCalendarDates(JobInfo jobInfo) {
+		AnnualCalendar excludeDates = new AnnualCalendar();
+		List<JobCalendarDate> calendarDates = jobInfo.getJobCalendarDates();
+		if (calendarDates != null && !calendarDates.isEmpty()) {
+			for (JobCalendarDate jobCalendarDate : calendarDates) {
+				Date exDate = jobCalendarDate.getCalendarDate();
+				Calendar cal = new GregorianCalendar(DateUtils.getYear(exDate), DateUtils.getMonth(exDate) - 1, DateUtils.getDay(exDate));  
+				excludeDates.setDayExcluded(cal, true);
+			}
+		}
+		return excludeDates;
+	}
+
+	private CronTrigger buildTrigger(JobInfo jobInfo, Object obj, CronScheduleBuilder scheduleBuilder) {
+		return TriggerBuilder
+				.newTrigger()
+				.withIdentity(obj.getClass().getName() + "," + jobInfo.getId(), jobInfo.getCompanyId())
+		        .withSchedule(scheduleBuilder)
+		        .modifiedByCalendar("excludeDates")
+		        .build();
+	}
+
+	@SuppressWarnings("unchecked")
+	private JobDetail buildJobDetail(JobInfo jobInfo, Object obj) {
+		return JobBuilder
+				.newJob((Class<? extends Job>) obj.getClass())
+				.withIdentity(obj.getClass().getName() + "," + jobInfo.getId(), jobInfo.getCompanyId())
+				.build();
+	}
+
+	private Map<String, JobInfo> buildJobMap(List<JobInfo> jobs) {
+		Map<String, JobInfo> jobMap = new HashMap<>();
+		for (JobInfo jobInfo : jobs) {
+			String key = jobInfo.getBeanId() + "-" + jobInfo.getCompanyId() + "-" + jobInfo.getId();
+			if (jobMap.get(key) == null) {
+				jobMap.put(key, jobInfo);
+			}
+		}
+		return jobMap;
+	}
+
+	private Set<String> getOrgIds() {
+		List<Organization> orgs = MultitenantUtils.doQuery(() -> {
+			return JpaUtil.linq(Organization.class).list();
+		});
+		return JpaUtil.collect(orgs, "id");
 	}
 	
 	private List<JobInfo> buildJobs(Set<String> orgIds) {
 		List<JobInfo> jobs = new ArrayList<>();
 		for (String orgId : orgIds) {
-			List<JobInfo> jobInfos = MultitenantUtils.doQuery(orgId, () -> {
-				return JpaUtil
-						.linq(JobInfo.class)
-						.list();
-			});
-			
-			List<JobCalendar> calendars = MultitenantUtils.doQuery(orgId, () -> {
-				return JpaUtil
-						.linq(JobCalendar.class)
-						.list();
-			});
-			
+			List<JobInfo> jobInfos = getJobInfos(orgId);
+			List<JobCalendar> calendars = getJobCalendars(orgId);
 			if (!jobInfos.isEmpty() && !calendars.isEmpty()) {
-				Map<String, JobInfo> jobMap = JpaUtil.index(jobInfos, "id");
-				Map<String, JobCalendar> calendarMap = JpaUtil.index(calendars, "id");
-				List<JobCalendarLink> links = MultitenantUtils.doQuery(orgId, () -> {
-					return JpaUtil
-							.linq(JobCalendarLink.class)
-							.list();
-				});
-				if (!links.isEmpty()) {
-					Map<String, List<JobCalendarDate>> calendarDateMap = buildCalendarDateMap(orgId);
-					
-					for (JobCalendarLink link : links) {
-						JobInfo job = jobMap.get(link.getJobId());
-						JobCalendar calendar = calendarMap.get(link.getCalendarId());
-						if (job != null && calendar != null) {
-							List<JobCalendarDate> calendarDates = calendarDateMap.get(calendar.getId());
-							if (calendarDates != null && !calendarDates.isEmpty()) {
-								job.setJobCalendarDates(calendarDates);
-							}
-						}
-					}
-				}
+				setJobCalendarDates(orgId, jobInfos, calendars);
 			}
 			jobs.addAll(jobInfos);
 		}
 		return jobs;
+	}
+
+	private void setJobCalendarDates(String orgId, List<JobInfo> jobInfos, List<JobCalendar> calendars) {
+		Map<String, JobInfo> jobMap = JpaUtil.index(jobInfos, "id");
+		Map<String, JobCalendar> calendarMap = JpaUtil.index(calendars, "id");
+		List<JobCalendarLink> links = getCalendarLinks(orgId);
+		Map<String, List<JobCalendarDate>> calendarDateMap = buildCalendarDateMap(orgId);
+		if (!links.isEmpty()) {
+			for (JobCalendarLink link : links) {
+				JobInfo job = jobMap.get(link.getJobId());
+				JobCalendar calendar = calendarMap.get(link.getCalendarId());
+				if (job != null && calendar != null) {
+					List<JobCalendarDate> calendarDates = calendarDateMap.get(calendar.getId());
+					if (calendarDates != null && !calendarDates.isEmpty()) {
+						job.setJobCalendarDates(calendarDates);
+					}
+				}
+			}
+		}
+	}
+
+	private List<JobCalendarLink> getCalendarLinks(String orgId) {
+		return MultitenantUtils.doQuery(orgId, () -> {
+			return JpaUtil
+					.linq(JobCalendarLink.class)
+					.list();
+		});
+	}
+
+	private List<JobCalendar> getJobCalendars(String orgId) {
+		return MultitenantUtils.doQuery(orgId, () -> {
+			return JpaUtil
+					.linq(JobCalendar.class)
+					.list();
+		});
+	}
+
+	private List<JobInfo> getJobInfos(String orgId) {
+		return MultitenantUtils.doQuery(orgId, () -> {
+			return JpaUtil
+					.linq(JobInfo.class)
+					.list();
+		});
 	}
 
 	private Map<String, List<JobCalendarDate>> buildCalendarDateMap(String orgId) {
