@@ -2,6 +2,8 @@ package vip.malagu.service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -32,7 +34,7 @@ public class Uploader {
 
 	@FileResolver
 	@Transactional
-	public FileInfo upload(UploadFile file, Map<String, Object> param) throws Exception {
+	public FileInfo upload(UploadFile file, Map<String, Object> param) throws IOException {
 		FileInfo fileInfo = new FileInfo();
 		fileInfo.setId(UUID.randomUUID().toString());
 		fileInfo.setCatagoryId((String) param.get("catagoryId"));
@@ -53,31 +55,31 @@ public class Uploader {
 		JpaUtil.persist(fileInfo);
 		org.apache.commons.io.FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
 		//生成在线预览pdf文件
-		int nameIndex = fileName.lastIndexOf(".");
+		int nameIndex = fileName.lastIndexOf('.');
 		String suf = fileName.substring(nameIndex + 1, fileName.length());
 		if (suf.equals("doc") 
 				|| suf.equals("docx") || suf.equals("xls")
 				|| suf.equals("xlsx") || suf.equals("ppt")) {
 			File existFile = new File(fileInfo.getPath());
-			int index = fileInfo.getPath().lastIndexOf(".");
+			int index = fileInfo.getPath().lastIndexOf('.');
 			String newFilePath = fileInfo.getPath().substring(0, index) + ".pdf";
 			try {
 			    converter.convert(existFile).to(new File(newFilePath)).execute();
 			} catch (Exception e) {
-				throw new CustomException(SystemErrorEnum.FAIL);
+				throw new CustomException("生成预览文件失败", SystemErrorEnum.FAIL.getStatus());
 			}
 		}
 		return fileInfo;
 	}
 	
 	private String getFileSuf(String fileName) {
-		int index = fileName.lastIndexOf(".");
+		int index = fileName.lastIndexOf('.');
 		return fileName.substring(index, fileName.length());
 	}
 
 	@FileProvider
 	@Transactional(readOnly = true)
-	public DownloadFile download(Map<String, String> parameter) throws Exception {
+	public DownloadFile download(Map<String, String> parameter) throws FileNotFoundException {
 		String path = parameter.get("path");
 		String fileName = parameter.get("fileName");
 		return new DownloadFile(fileName, new FileInputStream(path));

@@ -1,6 +1,8 @@
 package vip.malagu.service.impl;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
 import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
 import com.bstek.dorado.data.provider.Page;
 
+import vip.malagu.constants.PropertyConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.orm.FileInfo;
@@ -27,7 +30,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 	public void load(Page<FileInfo> page, Map<String, Object> param) {
 		String fileName = (String) param.get("fileName"); 
 		String creator = (String) param.get("creator");
-		Date createDate = (Date) param.get("createDate");
+		Date createDate = (Date) param.get(PropertyConstant.CREATE_DATE);
 		Date startDate = null;
 		Date endDate = null;
 		if (createDate != null) {
@@ -47,9 +50,9 @@ public class FileInfoServiceImpl implements FileInfoService {
 				.end()
 			.endIf()
 			.addIf(startDate != null && endDate != null)
-				.between("createDate", startDate, endDate)
+				.between(PropertyConstant.CREATE_DATE, startDate, endDate)
 			.endIf()
-			.desc("createDate")
+			.desc(PropertyConstant.CREATE_DATE)
 			.paging(page);
 	}
 
@@ -61,21 +64,17 @@ public class FileInfoServiceImpl implements FileInfoService {
 			@Override
 			public boolean beforeDelete(SaveContext context) {
 				FileInfo fileInfo = context.getEntity();
-				File file = new File(fileInfo.getPath());
-				if (file.exists()) {
-					boolean result = file.delete();
-					if (!result) {
-						throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
-					}
+				try {
+					Files.deleteIfExists(Paths.get(fileInfo.getPath()));
+				} catch (IOException e) {
+					throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
 				}
-				int index = fileInfo.getPath().lastIndexOf(".");
+				int index = fileInfo.getPath().lastIndexOf('.');
 				String previewFilePath = fileInfo.getPath().substring(0, index) + ".pdf";
-				File previewFile = new File(previewFilePath);
-				if (previewFile.exists()) {
-					boolean result = previewFile.delete();
-					if (!result) {
-						throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
-					}
+				try {
+					Files.deleteIfExists(Paths.get(previewFilePath));
+				} catch (IOException e) {
+					throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
 				}
 				return true;
 			}

@@ -5,6 +5,8 @@ package vip.malagu.constants;
  * @author Lynn -- 2020年5月21日 下午4:59:21
  */
 public class ErrorTipConstant {
+	
+	private ErrorTipConstant() {}
 
 	/**
 	 * 登录公司ID不能为空

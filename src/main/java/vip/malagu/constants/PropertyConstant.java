@@ -6,9 +6,22 @@ package vip.malagu.constants;
  */
 public class PropertyConstant {
 
+	private PropertyConstant() {}
+	
 	/**
 	 * token
 	 */
 	public static final String TOKEN = "token";
+	
+	/**
+	 * UTF-8
+	 */
+	public static final String UTF_8 = "UTF-8";
+	
+	/**
+	 * createDate
+	 */
+	public static final String CREATE_DATE = "createDate";
+	
 
 }

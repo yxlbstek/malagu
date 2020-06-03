@@ -1,5 +1,6 @@
 package vip.malagu.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class JobInfoController {
 	}
 	
 	@DataProvider
-	public List<CronDate> loadCronDates(String cron) throws Exception {
+	public List<CronDate> loadCronDates(String cron) throws ParseException {
 		return jobInfoService.loadCronDates(cron);
 	}
 	

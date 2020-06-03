@@ -1,5 +1,6 @@
 package vip.malagu.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import com.bstek.dorado.data.provider.Page;
@@ -26,7 +27,7 @@ public interface JobInfoService {
 
 	List<BeanInfo> loadBeanIds();
 
-	List<CronDate> loadCronDates(String cron) throws Exception;
+	List<CronDate> loadCronDates(String cron) throws ParseException;
 
 	void startJob(JobInfo job);
 

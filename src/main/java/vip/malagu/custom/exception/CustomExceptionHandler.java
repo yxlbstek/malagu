@@ -11,7 +11,7 @@ public class CustomExceptionHandler {
 	
 	@ResponseBody
 	@ExceptionHandler(CustomException.class)
-	public JsonResult<Object> handlerException(CustomException exception) throws Exception {
+	public JsonResult<Object> handlerException(CustomException exception) {
 		return JsonResult.error(exception.getMessage(), exception.getStatus());
 	}
 	

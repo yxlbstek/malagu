@@ -13,7 +13,9 @@ public class JsonResult<T> implements Serializable {
     
     private T data;
 
-    public JsonResult() {}
+    public JsonResult() {
+    	//构造方法
+    }
 
     public SubJsonResult getSubJsonResult() {
 		return subJsonResult;
@@ -39,7 +41,7 @@ public class JsonResult<T> implements Serializable {
      * @return
      */
     public static <T> JsonResult<T> createResult(T data, SubJsonResult subJsonResult) {
-        JsonResult<T> jsonResult = new JsonResult<T>();
+        JsonResult<T> jsonResult = new JsonResult<>();
         jsonResult.setData(data);
         jsonResult.setSubJsonResult(subJsonResult);
         return jsonResult;

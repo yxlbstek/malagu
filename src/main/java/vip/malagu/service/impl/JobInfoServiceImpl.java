@@ -1,5 +1,6 @@
 package vip.malagu.service.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -173,7 +174,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<CronDate> loadCronDates(String cron) throws Exception {
+	public List<CronDate> loadCronDates(String cron) throws ParseException {
 		CronExpression expr = new CronExpression(cron);
 		List<CronDate> dates = new ArrayList<CronDate>();
 		Date startDate = new Date();

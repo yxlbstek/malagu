@@ -10,7 +10,9 @@ public class SubJsonResult implements Serializable {
     
     private String status;
 
-    public SubJsonResult() {}
+    public SubJsonResult() {
+    	//构造方法
+    }
 
     public static SubJsonResult createDefault(String message) {
         return createDefault(message, "200");

@@ -2,6 +2,7 @@ package vip.malagu.service.idcard;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 
 import vip.malagu.config.idcard.JuHeConfig;
+import vip.malagu.constants.PropertyConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
 
@@ -29,19 +31,19 @@ public class JuHeService {
 	 * @param idCard 身份证号
 	 * @param realName 姓名
 	 * @return
-	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public boolean verify(String idCard, String realName) throws Exception {
+	public boolean verify(String idCard, String realName) throws IOException {
 		boolean result = false;
 		HttpURLConnection conn = null;
 		BufferedReader bufferedReader = null;
 		try {
 			StringBuilder params = new StringBuilder();
-			params.append("key=").append(URLEncoder.encode(juHeConfig.getAppKey(), "UTF-8")).append("&");
-			params.append("idcard=").append(URLEncoder.encode(idCard, "UTF-8")).append("&");
-			params.append("realname=").append(URLEncoder.encode(realName, "UTF-8"));
+			params.append("key=").append(URLEncoder.encode(juHeConfig.getAppKey(), PropertyConstant.UTF_8)).append("&");
+			params.append("idcard=").append(URLEncoder.encode(idCard, PropertyConstant.UTF_8)).append("&");
+			params.append("realname=").append(URLEncoder.encode(realName, PropertyConstant.UTF_8));
 			
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			URL url = new URL(juHeConfig.getUrl());
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");
@@ -55,7 +57,7 @@ public class JuHeService {
 			DataOutputStream outputStream = new DataOutputStream(conn.getOutputStream());
 			outputStream.writeBytes(params.toString());
 			InputStream inputStream = conn.getInputStream();
-			bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+			bufferedReader = new BufferedReader(new InputStreamReader(inputStream, PropertyConstant.UTF_8));
 			String strRead = null;
 			while ((strRead = bufferedReader.readLine()) != null) {
 				sb.append(strRead);
