@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
+
 /**
  * Bean相关操作工具类
  * @author Lynn -- 2020年5月21日 下午5:10:36
@@ -87,7 +90,7 @@ public final class BeanUtils {
 				return (T) field.get(bean);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new CustomException("获取Field值失败", SystemErrorEnum.FAIL.getStatus());
 		} 
 		return null;
 	}
@@ -106,7 +109,7 @@ public final class BeanUtils {
 				field.set(bean, value);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new CustomException("获取属性【" + property + "】值失败", SystemErrorEnum.FAIL.getStatus());
 		} 
 	}
 	
@@ -119,10 +122,8 @@ public final class BeanUtils {
 		Object obj = null;
 		try {
 			obj = cls.newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new CustomException("实例化失败", SystemErrorEnum.FAIL.getStatus());
 		}
 		return obj;
 	}

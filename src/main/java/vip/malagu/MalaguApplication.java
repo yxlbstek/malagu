@@ -29,15 +29,13 @@ import com.bstek.urule.console.servlet.URuleServlet;
 @ImportResource({"classpath:ureport-console-context.xml", "classpath:uflo-console-context.xml", "classpath:urule-console-context.xml"})
 public class MalaguApplication {
 
-	private DataSource dataSource;
-
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(MalaguApplication.class, args);
 	}
 
 	@Bean
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-    public ServletRegistrationBean UReportServletRegistration() { 
+    public ServletRegistrationBean uReportServletRegistration() { 
         ServletRegistrationBean registration = new ServletRegistrationBean(new UReportServlet());  
         registration.addUrlMappings("/ureport/*");
         return registration;
@@ -45,7 +43,7 @@ public class MalaguApplication {
 	
 	@Bean
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-    public ServletRegistrationBean UfloServletRegistration() {
+    public ServletRegistrationBean ufloServletRegistration() {
         ServletRegistrationBean registration = new ServletRegistrationBean(new UfloServlet());  
         registration.addUrlMappings("/uflo/*");
         return registration;
@@ -53,7 +51,7 @@ public class MalaguApplication {
 	
 	@Bean
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ServletRegistrationBean UruleServletRegistration() {
+	public ServletRegistrationBean uRuleServletRegistration() {
 		ServletRegistrationBean registration = new ServletRegistrationBean(new URuleServlet());
 		registration.addUrlMappings("/urule/*");
 		return registration;
@@ -62,7 +60,7 @@ public class MalaguApplication {
 	@Bean
 	public LocalSessionFactoryBean localSessionFactoryBean() {
 		LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-		dataSource = DataSourceBuilder.create(MalaguApplication.class.getClassLoader())
+		DataSource dataSource = DataSourceBuilder.create(MalaguApplication.class.getClassLoader())
 				.driverClassName("com.mysql.jdbc.Driver").url("jdbc:mysql://localhost:3306/master?useUnicode=true&characterEncoding=utf-8&useSSL=false").username("root")
 				.password("root").build();
 		localSessionFactoryBean.setDataSource(dataSource);
@@ -73,21 +71,25 @@ public class MalaguApplication {
 		localSessionFactoryBean.setHibernateProperties(properties);
 		return localSessionFactoryBean;
 	}
-	
-//	@Bean
-//	public LocalSessionFactoryBean localSessionFactoryBean() {
-//		LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-//		dataSource = DataSourceBuilder.create(MalaguApplication.class.getClassLoader())
-//				.driverClassName("oracle.jdbc.driver.OracleDriver").url("jdbc:oracle:thin:@127.0.0.1:1521:orcl").username("master")
-//				.password("123456").build();
-//		localSessionFactoryBean.setDataSource(dataSource);
-//		localSessionFactoryBean.setPackagesToScan("com.bstek.uflo.model*");
-//		Properties properties = new Properties();
-//		properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
-//		properties.put("hibernate.hbm2ddl.auto", "update");
-//		localSessionFactoryBean.setHibernateProperties(properties);
-//		return localSessionFactoryBean;
-//	}
+
+	/**
+	 * oracle数据库使用
+	 * @return
+	 * 现暂未使用
+	 */
+	public LocalSessionFactoryBean localOracleSessionFactoryBean() {
+		LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
+		DataSource dataSource = DataSourceBuilder.create(MalaguApplication.class.getClassLoader())
+				.driverClassName("oracle.jdbc.driver.OracleDriver").url("jdbc:oracle:thin:@127.0.0.1:1521:orcl").username("master")
+				.password("123456").build();
+		localSessionFactoryBean.setDataSource(dataSource);
+		localSessionFactoryBean.setPackagesToScan("com.bstek.uflo.model*");
+		Properties properties = new Properties();
+		properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
+		properties.put("hibernate.hbm2ddl.auto", "update");
+		localSessionFactoryBean.setHibernateProperties(properties);
+		return localSessionFactoryBean;
+	}
 	
 	@Bean
 	public PlatformTransactionManager platformTransactionManager(EntityManagerFactory factory) {

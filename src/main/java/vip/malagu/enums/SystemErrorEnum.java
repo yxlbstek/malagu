@@ -5,9 +5,19 @@ import vip.malagu.custom.exception.ICustomException;
 public enum SystemErrorEnum implements ICustomException {
 
 	/**
-	 * 100  失败
+	 * 100  操作失败
 	 */
-	FAIL("100", "失败"),
+	FAIL("100", "操作失败"),
+	
+	/**
+	 * 150  资源释放失败
+	 */
+	RESOURCE_RELEASE_FAIL("150", "资源释放失败"),
+	
+	/**
+	 * 160  实体文件删除失败
+	 */
+	FILE_DELETE_FAIL("160", "实体文件删除失败"),
 	
 	/**
 	 * 101  用户未登录
@@ -60,9 +70,9 @@ public enum SystemErrorEnum implements ICustomException {
 	PASSWORD_WRONG("110", "密码不正确"),
 
 	/**
-	 * 200  成功
+	 * 200  操作成功
 	 */
-	SUCCESS("200", "成功"),
+	SUCCESS("200", "操作成功"),
 
 	/**
 	 * 300  处理中，请稍后

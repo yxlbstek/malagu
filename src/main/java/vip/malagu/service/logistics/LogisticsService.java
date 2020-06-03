@@ -1,7 +1,6 @@
 package vip.malagu.service.logistics;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -13,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import vip.malagu.config.kuaidi.LogisticsConfig;
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.util.EncryptUtils;
 
 @Service
@@ -26,8 +27,9 @@ public class LogisticsService {
 	 * @param com 快递公司编码
 	 * @param num 快递单号
 	 * @return
+	 * @throws Exception 
 	 */
-	public String queryInfos(String com, String num) {
+	public String queryInfos(String com, String num) throws Exception {
 		Map<String, String> params = new HashMap<String, String>();
 		StringBuilder param = new StringBuilder("{");
 		param.append("\"com\":\"").append(com).append("\"");
@@ -46,8 +48,9 @@ public class LogisticsService {
 	 * 		com 快递公司编码
 	 * 		num 快递单号
 	 * @return
+	 * @throws Exception 
 	 */
-	public String execute(Map<String, String> params) {
+	public String execute(Map<String, String> params) throws Exception {
 		StringBuffer response = new StringBuffer("");
 		BufferedReader reader = null;
 		try {
@@ -79,14 +82,10 @@ public class LogisticsService {
 				response.append(line);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new CustomException("物流信息查询失败", SystemErrorEnum.FAIL.getStatus());
 		} finally {
-			try {
-				if (null != reader) {
-					reader.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (null != reader) {
+				reader.close();
 			}
 		}
 		return response.toString();

@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.OSSObject;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
+
 public class AliyunOSSFileUtils {
 
 	private static final String DOWNLOAD_FILE_PATH = "C:/tmp/";
@@ -96,8 +99,7 @@ public class AliyunOSSFileUtils {
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+			throw new CustomException("文件下载失败", SystemErrorEnum.FAIL.getStatus());
 		} finally {
 			if (os != null) {
 				os.close();

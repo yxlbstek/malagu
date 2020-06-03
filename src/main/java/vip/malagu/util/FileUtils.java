@@ -13,6 +13,8 @@ import com.bstek.bdf3.dorado.jpa.JpaUtil;
 import com.bstek.dorado.core.Configure;
 import com.bstek.dorado.web.DoradoContext;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.orm.FileInfo;
 
 /**
@@ -82,7 +84,10 @@ public final class FileUtils {
 			for (FileInfo f : files) {
 				File file = new File(f.getPath());
 				if (file.exists()) {
-					file.delete();
+					boolean result = file.delete();
+					if (!result) {
+						throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
+					}
 				}
 			}
 			JpaUtil
@@ -103,7 +108,10 @@ public final class FileUtils {
 			FileInfo fileInfo = files.get(0);
 			File file = new File(fileInfo.getPath());
 			if (file.exists()) {
-				file.delete();
+				boolean result = file.delete();
+				if (!result) {
+					throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
+				}
 			}
 			JpaUtil
 				.lind(FileInfo.class)
@@ -116,7 +124,10 @@ public final class FileUtils {
 	public static void deleteFile(FileInfo fileInfo) {
 		File file = new File(fileInfo.getPath());
 		if (file.exists()) {
-			file.delete();
+			boolean result = file.delete();
+			if (!result) {
+				throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
+			}
 		}
 		JpaUtil
 			.lind(FileInfo.class)

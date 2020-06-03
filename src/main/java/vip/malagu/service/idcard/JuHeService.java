@@ -2,7 +2,6 @@ package vip.malagu.service.idcard;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -16,6 +15,8 @@ import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 
 import vip.malagu.config.idcard.JuHeConfig;
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
 
 @Service
 public class JuHeService {
@@ -28,9 +29,9 @@ public class JuHeService {
 	 * @param idCard 身份证号
 	 * @param realName 姓名
 	 * @return
-	 * @throws Exception
+	 * @throws Exception 
 	 */
-	public boolean verify(String idCard, String realName) {
+	public boolean verify(String idCard, String realName) throws Exception {
 		boolean result = false;
 		HttpURLConnection conn = null;
 		BufferedReader bufferedReader = null;
@@ -70,14 +71,10 @@ public class JuHeService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new CustomException("实名认证失败", SystemErrorEnum.FAIL.getStatus());
 		} finally {
 			if (bufferedReader != null) {
-				try {
-					bufferedReader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				bufferedReader.close();
 			}
 			if (conn != null) {
 				conn.disconnect();

@@ -9,6 +9,9 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
+
 /**
  * 加密工具类
  * @author Lynn -- 2020年5月21日 下午5:11:45
@@ -46,7 +49,7 @@ public final class EncryptUtils {
 				return new String(str);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new CustomException("MD5加密失败", SystemErrorEnum.FAIL.getStatus());
 		}
 		return null;
 	}
@@ -73,8 +76,7 @@ public final class EncryptUtils {
 			byte[] bytes = cipher.doFinal(data.getBytes());
 			return byte2hex(bytes);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return data;
+			throw new CustomException("DES加密失败", SystemErrorEnum.FAIL.getStatus());
 		}
 	}
 
@@ -99,8 +101,7 @@ public final class EncryptUtils {
 			cipher.init(Cipher.DECRYPT_MODE, secretKey, paramSpec);
 			return new String(cipher.doFinal(hex2byte(data.getBytes())));
 		} catch (Exception e) {
-			e.printStackTrace();
-			return data;
+			throw new CustomException("DES解密失败", SystemErrorEnum.FAIL.getStatus());
 		}
 	}
 

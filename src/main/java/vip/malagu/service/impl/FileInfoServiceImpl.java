@@ -13,13 +13,15 @@ import com.bstek.bdf3.dorado.jpa.policy.SaveContext;
 import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
 import com.bstek.dorado.data.provider.Page;
 
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.orm.FileInfo;
 import vip.malagu.service.FileInfoService;
 import vip.malagu.util.DateUtils;
 
 @Service
 public class FileInfoServiceImpl implements FileInfoService {
-
+	
 	@Override
 	@Transactional(readOnly = true)
 	public void load(Page<FileInfo> page, Map<String, Object> param) {
@@ -61,13 +63,19 @@ public class FileInfoServiceImpl implements FileInfoService {
 				FileInfo fileInfo = context.getEntity();
 				File file = new File(fileInfo.getPath());
 				if (file.exists()) {
-					file.delete();
+					boolean result = file.delete();
+					if (!result) {
+						throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
+					}
 				}
 				int index = fileInfo.getPath().lastIndexOf(".");
 				String previewFilePath = fileInfo.getPath().substring(0, index) + ".pdf";
 				File previewFile = new File(previewFilePath);
 				if (previewFile.exists()) {
-					previewFile.delete();
+					boolean result = previewFile.delete();
+					if (!result) {
+						throw new CustomException(SystemErrorEnum.FILE_DELETE_FAIL);
+					}
 				}
 				return true;
 			}

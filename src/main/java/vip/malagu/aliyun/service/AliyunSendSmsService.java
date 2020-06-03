@@ -113,7 +113,7 @@ public class AliyunSendSmsService {
 				return true;
 			}
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.FAIL);
+			throw new CustomException("短信发送失败", SystemErrorEnum.FAIL.getStatus());
 		}
 		return false;
 	}
