@@ -9,6 +9,7 @@ import vip.malagu.app.param.dto.AuthCodeParam;
 import vip.malagu.app.service.AuthCodeService;
 import vip.malagu.constants.CacheConstant;
 import vip.malagu.constants.ErrorTipConstant;
+import vip.malagu.constants.PropertyConstant;
 import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.json.JsonResult;
 import vip.malagu.util.AssertUtils;
@@ -82,9 +83,9 @@ public class AppLoginController {
 					SecurityContextHolder.getContext().setAuthentication(authRequest);
 					String token = TokenUtils.createToken(type, orgId, username);
 					
-					response.setHeader("token", token);
+					response.setHeader(PropertyConstant.TOKEN, token);
 					Map<String, Object> result = new HashMap<>();
-					result.put("token", token);
+					result.put(PropertyConstant.TOKEN, token);
 					result.put("user", user);
 					return JsonResult.success(result);
 				} else {
@@ -147,9 +148,9 @@ public class AppLoginController {
 				SecurityContextHolder.getContext().setAuthentication(authRequest);
 				
 				String token = TokenUtils.createToken(type, orgId, user.getUsername());// 生成token
-				response.setHeader("token", token);
+				response.setHeader(PropertyConstant.TOKEN, token);
 				Map<String, Object> result = new HashMap<>();
-				result.put("token", token);
+				result.put(PropertyConstant.TOKEN, token);
 				result.put("user", users.get(0));
 				return JsonResult.success(result);
 			}
@@ -162,12 +163,11 @@ public class AppLoginController {
 	 * .登出
 	 * @param request
 	 * @return
-	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping(path = "/logout", method = RequestMethod.POST)
-	public JsonResult<Object> logout(HttpServletRequest request) throws Exception {
-		String token = request.getHeader("token");
+	public JsonResult<Object> logout(HttpServletRequest request) {
+		String token = request.getHeader(PropertyConstant.TOKEN);
 		String type = request.getHeader("type");
 		String tokenInfo = EncryptUtils.DESDecode(token);
 		String[] infos = tokenInfo.split("=");

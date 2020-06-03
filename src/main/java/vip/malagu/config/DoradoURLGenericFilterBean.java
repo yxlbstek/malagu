@@ -16,27 +16,35 @@ import org.springframework.stereotype.Component;
 @Component
 public class DoradoURLGenericFilterBean implements Filter {
 	
+	/**
+	 *   HttpServletRequest req = (HttpServletRequest)request;
+	 *   HttpServletResponse res = (HttpServletResponse)response;
+	 *   String orgId = MultitenantUtils.getLoginOrgId();
+	 *   if (orgId != null && !orgId.equals("master")) {
+	 *   	if (req.getServletPath().indexOf("view.company.CompanyMaintain.d") != -1) {
+	 *			res.sendRedirect("/Main.d");
+	 *   	}
+	 *   	if (req.getServletPath().indexOf("view.OrganizationMaintain.d") != -1) {
+	 *   		res.sendRedirect("/Main.d");
+	 *   	}
+	 *   }
+	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-//		HttpServletRequest req = (HttpServletRequest)request;
-//	    HttpServletResponse res = (HttpServletResponse)response;
-//	    String orgId = MultitenantUtils.getLoginOrgId();
-//	    if (orgId != null && !orgId.equals("master")) {
-//	    	if (req.getServletPath().indexOf("view.company.CompanyMaintain.d") != -1) {
-//				res.sendRedirect("/Main.d");
-//	    	}
-//	    	if (req.getServletPath().indexOf("view.OrganizationMaintain.d") != -1) {
-//	    		res.sendRedirect("/Main.d");
-//	    	}
-//	    }
 		chain.doFilter(request, response);
 	}
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {}
+	public void init(FilterConfig filterConfig) throws ServletException {
+		// 暂无需实现
+	}
 
 	@Override
-	public void destroy() {}
+	public void destroy() {
+		// 暂无需实现
+	}
+
+	
 
 }

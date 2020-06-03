@@ -22,27 +22,27 @@ public class AliyunSendSmsService {
 	/**
 	 * 注册code
 	 */
-	public final static String REGIEST_TEMPLATECODE = "SMS_170600087"; 
+	public static final String REGIEST_TEMPLATECODE = "SMS_170600087"; 
 
 	/**
 	 * 登录
 	 */
-	public final static String LOGIN_TEMPLATECODE = "SMS_170450797"; 
+	public static final String LOGIN_TEMPLATECODE = "SMS_170450797"; 
 
 	/**
 	 * 身份证验证
 	 */
-	public final static String IDCATD_TEMPLATECODE = "SMS_170450798"; 
+	public static final String IDCATD_TEMPLATECODE = "SMS_170450798"; 
 
 	/**
 	 * 修改密码
 	 */
-	public final static String MODIFY_PSW_TEMPLATECODE = "SMS_170450794"; 
+	public static final String MODIFY_PSW_TEMPLATECODE = "SMS_170450794"; 
 
 	/**
 	 * 信息变更
 	 */
-	public final static String MESSAGE_TEMPLATECODE = "SMS_170450793"; 
+	public static final String MESSAGE_TEMPLATECODE = "SMS_170450793"; 
 
 	/**
 	 * 验证码有效期 单位：秒

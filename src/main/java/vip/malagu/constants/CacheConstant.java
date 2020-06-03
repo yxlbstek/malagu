@@ -5,8 +5,6 @@ package vip.malagu.constants;
  * @author Lynn -- 2020年5月21日 下午4:59:42
  */
 public class CacheConstant {
-	
-	public CacheConstant() {}
 
 	/**
 	 * 终端登录缓存Key 前缀

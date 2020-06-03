@@ -71,7 +71,7 @@ public class RedisConfig {
     }
 
 	@Bean
-    public JedisConnectionFactory JedisConnectionFactory(JedisPoolConfig poolConfig){
+    public JedisConnectionFactory jedisConnectionFactory(JedisPoolConfig poolConfig){
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration ();
         redisStandaloneConfiguration.setHostName(host);
         redisStandaloneConfiguration.setPort(port);
@@ -79,13 +79,12 @@ public class RedisConfig {
         redisStandaloneConfiguration.setDatabase(databaseIndex);
         JedisClientConfiguration.JedisPoolingClientConfigurationBuilder jedisClientConfiguration = (JedisPoolingClientConfigurationBuilder) JedisClientConfiguration.builder();
         jedisClientConfiguration.poolConfig(poolConfig);
-        JedisConnectionFactory factory = new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration.build());
-        return factory;
+        return new JedisConnectionFactory(redisStandaloneConfiguration, jedisClientConfiguration.build());
     }
     
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(JedisConnectionFactory factory) {
-	    RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
+	    RedisTemplate<Object, Object> template = new RedisTemplate<>();
 	    template.setConnectionFactory(factory);
 	    GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
 	    template.setKeySerializer(new StringRedisSerializer());

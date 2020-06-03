@@ -1,5 +1,6 @@
 package vip.malagu.config;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,7 +25,7 @@ public class ColumnBuilder extends AbstractBuilder<Column> {
 		if(column instanceof ColumnGroup){
 			return ((ColumnGroup)column).getColumns();
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 }
