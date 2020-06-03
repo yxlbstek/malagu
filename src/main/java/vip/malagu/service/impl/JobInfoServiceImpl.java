@@ -34,6 +34,7 @@ import com.bstek.bdf3.dorado.jpa.policy.impl.SmartSavePolicyAdapter;
 import com.bstek.bdf3.security.ContextUtils;
 import com.bstek.dorado.data.provider.Page;
 
+import vip.malagu.constants.PropertyConstant;
 import vip.malagu.orm.BeanInfo;
 import vip.malagu.orm.CronDate;
 import vip.malagu.orm.JobCalendar;
@@ -58,7 +59,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 	public void loadJobs(Page<JobInfo> page) {
 		JpaUtil
 			.linq(JobInfo.class)
-			.desc("createDate")
+			.desc(PropertyConstant.CREATE_DATE)
 			.paging(page);
 	}
 
@@ -91,15 +92,15 @@ public class JobInfoServiceImpl implements JobInfoService {
 					JobInfo job = context.getParent();
 					JpaUtil
 						.lind(JobCalendarLink.class)
-						.equal("jobId", job.getId())
-						.equal("calendarId", jobCalendar.getId())
+						.equal(PropertyConstant.JOB_ID, job.getId())
+						.equal(PropertyConstant.CALENDAR_ID, jobCalendar.getId())
 						.delete();
 					return false;
 				} else if (context.getEntity() instanceof JobInfo) {
 					JobInfo job = context.getEntity();
 					JpaUtil
 						.lind(JobCalendarLink.class)
-						.equal("jobId", job.getId())
+						.equal(PropertyConstant.JOB_ID, job.getId())
 						.delete();
 					try {
 						Object obj = applicationContext.getBean(job.getBeanId());
@@ -122,10 +123,10 @@ public class JobInfoServiceImpl implements JobInfoService {
 		return JpaUtil
 			.linq(JobCalendar.class)
 			.exists(JobCalendarLink.class)
-				.equalProperty("calendarId", "id")
-				.equal("jobId", jobId)
+				.equalProperty(PropertyConstant.CALENDAR_ID, "id")
+				.equal(PropertyConstant.JOB_ID, jobId)
 			.end()
-			.desc("createDate")
+			.desc(PropertyConstant.CREATE_DATE)
 			.list();
 	}
 	
@@ -137,7 +138,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 			.addIf(id)
 				.equal("id", id)
 			.endIf()
-			.desc("createDate")
+			.desc(PropertyConstant.CREATE_DATE)
 			.list();
 	}
 
@@ -146,7 +147,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 	public List<JobCalendarDate> loadCalendarDates(String calendarId) {
 		return JpaUtil
 			.linq(JobCalendarDate.class)
-			.equal("calendarId", calendarId)
+			.equal(PropertyConstant.CALENDAR_ID, calendarId)
 			.asc("calendarDate")
 			.list();
 	}
@@ -176,7 +177,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 	@Transactional(readOnly = true)
 	public List<CronDate> loadCronDates(String cron) throws ParseException {
 		CronExpression expr = new CronExpression(cron);
-		List<CronDate> dates = new ArrayList<CronDate>();
+		List<CronDate> dates = new ArrayList<>();
 		Date startDate = new Date();
 		for (int i = 0; i < 50; i++) {
 			startDate = expr.getNextValidTimeAfter(startDate);
@@ -193,7 +194,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 	public void startJob(JobInfo job) {
 		JpaUtil
 			.linu(JobInfo.class)
-			.set("state", "running")
+			.set(PropertyConstant.STATE, "running")
 			.equal("id", job.getId())
 			.update();
 		try {
@@ -208,7 +209,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 				Set<String> ids = JpaUtil.collect(calendars, "id");
 				List<JobCalendarDate> dates = JpaUtil
 					.linq(JobCalendarDate.class)
-					.in("calendarId", ids)
+					.in(PropertyConstant.CALENDAR_ID, ids)
 					.list();
 				if (!dates.isEmpty()) {
 					for (JobCalendarDate jobCalendarDate : dates) {
@@ -246,7 +247,7 @@ public class JobInfoServiceImpl implements JobInfoService {
 	public void stopJob(JobInfo job) {
 		JpaUtil
 			.linu(JobInfo.class)
-			.set("state", "stop")
+			.set(PropertyConstant.STATE, "stop")
 			.equal("id", job.getId())
 			.update();
 		Object obj = applicationContext.getBean(job.getBeanId());
@@ -262,10 +263,10 @@ public class JobInfoServiceImpl implements JobInfoService {
 	public String existExecuteJob(String calendarId) {
 		List<JobInfo> jobs = JpaUtil
 			.linq(JobInfo.class)
-			.equal("state", "running")
+			.equal(PropertyConstant.STATE, "running")
 			.exists(JobCalendarLink.class)
-				.equalProperty("jobId", "id")
-				.equal("calendarId", calendarId)
+				.equalProperty(PropertyConstant.JOB_ID, "id")
+				.equal(PropertyConstant.CALENDAR_ID, calendarId)
 			.end()
 			.list();
 		if (!jobs.isEmpty()) {

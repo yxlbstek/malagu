@@ -23,5 +23,38 @@ public class PropertyConstant {
 	 */
 	public static final String CREATE_DATE = "createDate";
 	
+	/**
+	 * jobId
+	 */
+	public static final String JOB_ID = "jobId";
+	
+	/**
+	 * calendarId
+	 */
+	public static final String CALENDAR_ID = "calendarId";
+	
+	/**
+	 * state
+	 */
+	public static final String STATE = "state";
+	
+	/**
+	 * messageId
+	 */
+	public static final String MESSAGE_ID = "messageId";
+	
+	/**
+	 * userId
+	 */
+	public static final String USER_ID = "userId";
+	
+	/**
+	 * username
+	 */
+	public static final String USERNAME = "username";
+	
+	
+	
+	
 
 }

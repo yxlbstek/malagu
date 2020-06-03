@@ -1,6 +1,7 @@
 package vip.malagu.service.logistics;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import vip.malagu.config.kuaidi.LogisticsConfig;
+import vip.malagu.constants.PropertyConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
 import vip.malagu.util.EncryptUtils;
@@ -27,10 +29,10 @@ public class LogisticsService {
 	 * @param com 快递公司编码
 	 * @param num 快递单号
 	 * @return
-	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public String queryInfos(String com, String num) throws Exception {
-		Map<String, String> params = new HashMap<String, String>();
+	public String queryInfos(String com, String num) throws IOException {
+		Map<String, String> params = new HashMap<>();
 		StringBuilder param = new StringBuilder("{");
 		param.append("\"com\":\"").append(com).append("\"");
 		param.append(",\"num\":\"").append(num).append("\"");
@@ -48,22 +50,21 @@ public class LogisticsService {
 	 * 		com 快递公司编码
 	 * 		num 快递单号
 	 * @return
-	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	public String execute(Map<String, String> params) throws Exception {
-		StringBuffer response = new StringBuffer("");
-		BufferedReader reader = null;
+	public String execute(Map<String, String> params) throws IOException {
+		StringBuilder response = new StringBuilder("");
 		try {
 			StringBuilder builder = new StringBuilder();
 			for (Map.Entry<String, String> param : params.entrySet()) {
 				if (builder.length() > 0) {
 					builder.append('&');
 				}
-				builder.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+				builder.append(URLEncoder.encode(param.getKey(), PropertyConstant.UTF_8));
 				builder.append('=');
-				builder.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+				builder.append(URLEncoder.encode(String.valueOf(param.getValue()), PropertyConstant.UTF_8));
 			}
-			byte[] bytes = builder.toString().getBytes("UTF-8");
+			byte[] bytes = builder.toString().getBytes(PropertyConstant.UTF_8);
 
 			URL url = new URL(logisticsConfig.getUrl());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -76,17 +77,15 @@ public class LogisticsService {
 			conn.setRequestProperty("Content-Length", String.valueOf(bytes.length));
 			conn.setDoOutput(true);
 			conn.getOutputStream().write(bytes);
-			reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				response.append(line);
+			
+			try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), PropertyConstant.UTF_8))) {
+				String line = "";
+				while ((line = reader.readLine()) != null) {
+					response.append(line);
+				}
 			}
 		} catch (Exception e) {
 			throw new CustomException("物流信息查询失败", SystemErrorEnum.FAIL.getStatus());
-		} finally {
-			if (null != reader) {
-				reader.close();
-			}
 		}
 		return response.toString();
 	}

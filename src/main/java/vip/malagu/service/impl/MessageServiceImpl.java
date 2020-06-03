@@ -18,6 +18,7 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
 import vip.malagu.constants.CacheConstant;
+import vip.malagu.constants.PropertyConstant;
 import vip.malagu.orm.FileInfo;
 import vip.malagu.orm.Message;
 import vip.malagu.orm.MessageUserLink;
@@ -46,8 +47,8 @@ public class MessageServiceImpl implements MessageService {
 			.linq(Message.class)
 			.where(criteria)
 			.exists(MessageUserLink.class)
-				.equalProperty("messageId", "id")
-				.equal("userId", ContextUtils.getLoginUsername())
+				.equalProperty(PropertyConstant.MESSAGE_ID, "id")
+				.equal(PropertyConstant.USER_ID, ContextUtils.getLoginUsername())
 			.end()
 			.desc("createDate")
 			.paging(page);
@@ -55,10 +56,10 @@ public class MessageServiceImpl implements MessageService {
 			Set<String> msgIds = JpaUtil.collect(page.getEntities(), "id");
 			List<MessageUserLink> links = JpaUtil
 				.linq(MessageUserLink.class)
-				.equal("userId", ContextUtils.getLoginUsername())
-				.in("messageId", msgIds)
+				.equal(PropertyConstant.USER_ID, ContextUtils.getLoginUsername())
+				.in(PropertyConstant.MESSAGE_ID, msgIds)
 				.list();
-			Map<String, MessageUserLink> linkMap = JpaUtil.index(links, "messageId");
+			Map<String, MessageUserLink> linkMap = JpaUtil.index(links, PropertyConstant.MESSAGE_ID);
 			for (Message msg : page.getEntities()) {
 				MessageUserLink link = linkMap.get(msg.getId());
 				if (link != null) {
@@ -77,13 +78,13 @@ public class MessageServiceImpl implements MessageService {
 			.linq(User.class)
 			.addIf(searchKey)
 				.or()
-					.like("username", "%" + searchKey + "%")
+					.like(PropertyConstant.USERNAME, "%" + searchKey + "%")
 					.like("nickname", "%" + searchKey + "%")
 				.end()
 			.endIf()
 			.exists(MessageUserLink.class)
-				.equalProperty("userId", "username")
-				.equal("messageId", msgId)
+				.equalProperty(PropertyConstant.USER_ID, PropertyConstant.USERNAME)
+				.equal(PropertyConstant.MESSAGE_ID, msgId)
 			.end()
 			.paging(page);
 	}
@@ -95,7 +96,7 @@ public class MessageServiceImpl implements MessageService {
 			.linq(User.class)
 			.where(criteria)
 			.equal("enabled", true)
-			.notEqual("username", ContextUtils.getLoginUsername())
+			.notEqual(PropertyConstant.USERNAME, ContextUtils.getLoginUsername())
 			.paging(page);
 	}
 
@@ -137,7 +138,7 @@ public class MessageServiceImpl implements MessageService {
 						List<User> users = JpaUtil
 							.linq(User.class)
 							.equal("enabled", true)
-							.notEqual("username", ContextUtils.getLoginUsername())
+							.notEqual(PropertyConstant.USERNAME, ContextUtils.getLoginUsername())
 							.list();
 						if (!users.isEmpty()) {
 							for (User u : users) {
@@ -200,8 +201,8 @@ public class MessageServiceImpl implements MessageService {
 					} else {
 						JpaUtil
 							.lind(MessageUserLink.class)
-							.equal("userId", ContextUtils.getLoginUsername())
-							.equal("messageId", msg.getId())
+							.equal(PropertyConstant.USER_ID, ContextUtils.getLoginUsername())
+							.equal(PropertyConstant.MESSAGE_ID, msg.getId())
 							.delete();
 					}
 				}
@@ -223,8 +224,8 @@ public class MessageServiceImpl implements MessageService {
 		JpaUtil
 			.linu(MessageUserLink.class)
 			.set("isRead", true)
-			.equal("userId", ContextUtils.getLoginUsername())
-			.equal("messageId", msgId)
+			.equal(PropertyConstant.USER_ID, ContextUtils.getLoginUsername())
+			.equal(PropertyConstant.MESSAGE_ID, msgId)
 			.update();
 	}
 
