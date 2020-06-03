@@ -22,6 +22,8 @@ import org.springframework.util.CollectionUtils;
  */
 public final class CommonUtils {
 	
+	private CommonUtils() {}
+	
 	private static final String[] agent = { "Android", "iPhone", "iPod", "iPad", "Windows Phone", "MQQBrowser" }; 
 	
 	/**

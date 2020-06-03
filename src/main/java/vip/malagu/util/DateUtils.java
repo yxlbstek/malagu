@@ -11,6 +11,8 @@ import java.util.Locale;
  * @author Lynn -- 2020年5月21日 下午5:11:28
  */
 public final class DateUtils {
+	
+	private DateUtils() {}
 
 	/**
 	 * 获取当天时间  Sat Apr 21 00:00:00 CST 2018

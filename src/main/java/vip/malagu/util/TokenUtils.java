@@ -11,6 +11,8 @@ import vip.malagu.enums.SystemErrorEnum;
  * @author Lynn -- 2020年5月21日 下午5:14:24
  */
 public class TokenUtils {
+	
+	private TokenUtils() {}
 
 	/**
 	 * 创建token

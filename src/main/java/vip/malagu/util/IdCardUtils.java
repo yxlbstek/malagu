@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
  * @author Lynn -- 2020年5月22日 上午10:22:56
  */
 public class IdCardUtils {
+	
+	private IdCardUtils() {}
 
 	private static final String regexPassport = "^(P\\d{7}|G\\d{8}|S\\d{7,8}|D\\d+|1[4,5]\\d{7})$";
 	

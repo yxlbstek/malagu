@@ -7,6 +7,8 @@ import java.util.UUID;
  * @author Lynn -- 2020年5月21日 下午5:13:39
  */
 public final class IdUtils {
+	
+	private IdUtils() {}
 
 	//开始时间截 2020-01-01
 	private static final long TWEPOCH = 1577808000000L;

@@ -14,6 +14,8 @@ import vip.malagu.enums.SystemErrorEnum;
  */
 public final class BeanUtils {
 	
+	private BeanUtils() {}
+	
 	/**
 	 * 获取类Clazz 的所有字段
 	 * @param clazz

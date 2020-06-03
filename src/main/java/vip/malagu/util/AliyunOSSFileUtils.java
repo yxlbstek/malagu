@@ -16,6 +16,8 @@ import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
 
 public class AliyunOSSFileUtils {
+	
+	private AliyunOSSFileUtils() {}
 
 	private static final String DOWNLOAD_FILE_PATH = "C:/tmp/";
 	

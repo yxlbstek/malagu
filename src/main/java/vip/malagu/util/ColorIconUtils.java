@@ -8,6 +8,8 @@ import java.util.Random;
 import java.util.Set;
 
 public final class ColorIconUtils {
+	
+	private ColorIconUtils() {}
 
 	public static List<String> getColorsBy(Integer number) {
 		

@@ -25,6 +25,8 @@ import vip.malagu.enums.SystemErrorEnum;
 @SuppressWarnings("hiding")
 public final class RedisUtils {
 	
+	private RedisUtils() {}
+	
 	private static RedisTemplate<Object, Object> redisTemplate;
 	
 	@Autowired  

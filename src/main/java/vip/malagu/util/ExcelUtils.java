@@ -36,6 +36,8 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @SuppressWarnings("hiding")
 public final class ExcelUtils {
+	
+	private ExcelUtils() {}
 
 	/**
 	 * 导入Excel, 构造数据

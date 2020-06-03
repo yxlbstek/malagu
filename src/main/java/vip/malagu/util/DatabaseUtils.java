@@ -24,6 +24,8 @@ import vip.malagu.enums.SystemErrorEnum;
  * @author Lynn -- 2020年5月21日 下午5:11:12
  */
 public final class DatabaseUtils {
+	
+	private DatabaseUtils() {}
 
 	/**
 	 * Mysql数据库备份
