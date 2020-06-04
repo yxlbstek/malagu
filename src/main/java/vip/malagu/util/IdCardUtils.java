@@ -9,7 +9,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
+import vip.malagu.custom.exception.CustomException;
+import vip.malagu.enums.SystemErrorEnum;
 
 /**
  * 身份证号相关
@@ -29,33 +30,27 @@ public class IdCardUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String validateIdCard(String idStr) throws ParseException {
+	public static boolean validateIdCard(String idStr) throws ParseException {
 		String[] valCodeArr = { "1", "0", "X", "9", "8", "7", "6", "5", "4", "3", "2" };
 		String[] wi = { "7", "9", "10", "5", "8", "4", "2", "1", "6", "3", "7", "9", "10", "5", "8", "4", "2" };
 		String cardNo = null;
 		if (idStr.length() != 15 && idStr.length() != 18) {
-			return "身份证号码长度应该为15位或18位";
+			throw new CustomException("身份证号码长度应该为15位或18位", SystemErrorEnum.FAIL.getStatus());
 		}
 		cardNo = buildCardNo(idStr, cardNo);
 		if (!isNumber(cardNo)) {
-			return "身份证15位号码都应为数字、18位号码除最后一位外、都应为数字";
+			throw new CustomException("身份证15位号码都应为数字、18位号码除最后一位外、都应为数字", SystemErrorEnum.FAIL.getStatus());
 		}
-		if (cardNo != null) {
-			String validResult = validateIdCardBirthday(cardNo);
-			if (StringUtils.isNotBlank(validResult)) {
-				return validResult;
-			}
-			Map<String, String> codes = getAreaCode();
-			if (codes.get(cardNo.substring(0, 2)) == null) {
-				return "身份证地区编码错误";
-			}
-			cardNo = validateIdCardLastCode(valCodeArr, wi, cardNo);
-			if (idStr.length() == 18 && !cardNo.equals(idStr)) {
-				return "身份证无效，不是合法的身份证号码";
-			}
-			return "ok";
+		validateIdCardBirthday(cardNo);
+		Map<String, String> codes = getAreaCode();
+		if (codes.get(cardNo.substring(0, 2)) == null) {
+			throw new CustomException("身份证地区编码错误", SystemErrorEnum.FAIL.getStatus());
 		}
-		return "身份证号码无效，请检查";
+		cardNo = validateIdCardLastCode(valCodeArr, wi, cardNo);
+		if (idStr.length() == 18 && !cardNo.equals(idStr)) {
+			throw new CustomException("身份证无效，不是合法的身份证号码", SystemErrorEnum.FAIL.getStatus());
+		}
+		return true;
 	}
 
 	private static String validateIdCardLastCode(String[] valCodeArr, String[] wi, String cardNo) {
@@ -70,7 +65,7 @@ public class IdCardUtils {
 		return cardNo;
 	}
 
-	private static String validateIdCardBirthday(String cardNo) throws ParseException {
+	private static boolean validateIdCardBirthday(String cardNo) throws ParseException {
 		GregorianCalendar gc = new GregorianCalendar();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String year = cardNo.substring(6, 10);
@@ -79,15 +74,15 @@ public class IdCardUtils {
 		if (!isDate(year + "-" + month + "-" + day)
 				|| (gc.get(Calendar.YEAR) - Integer.parseInt(year)) > 150
 				|| (gc.getTime().getTime() - dateFormat.parse(year + "-" + month + "-" + day).getTime()) < 0) {
-			return "身份证出生日期无效";
+			throw new CustomException("身份证出生日期无效", SystemErrorEnum.FAIL.getStatus());
 		}
 		if (Integer.parseInt(month) > 12 || Integer.parseInt(month) == 0) {
-			return "身份证月份无效";
+			throw new CustomException("身份证月份无效", SystemErrorEnum.FAIL.getStatus());
 		}
 		if (Integer.parseInt(day) > 31 || Integer.parseInt(day) == 0) {
-			return "身份证日期无效";
+			throw new CustomException("身份证日期无效", SystemErrorEnum.FAIL.getStatus());
 		}
-		return null;
+		return true;
 	}
 
 	private static String buildCardNo(String idStr, String cardNo) {
