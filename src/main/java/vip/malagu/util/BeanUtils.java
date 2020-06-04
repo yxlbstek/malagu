@@ -2,6 +2,7 @@ package vip.malagu.util;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,8 +136,9 @@ public final class BeanUtils {
 	 * @param type 类型
 	 * @param value 值
 	 * @return
+	 * @throws ParseException 
 	 */
-	public static Object convertType(Class<?> clz, String value) {
+	public static Object convertType(Class<?> clz, String value) throws ParseException {
 		String type = clz.getSimpleName();
 		if (type.equals("long")) {
 			return Long.parseLong(value);

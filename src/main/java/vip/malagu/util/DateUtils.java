@@ -10,8 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import vip.malagu.custom.exception.CustomException;
-import vip.malagu.enums.SystemErrorEnum;
 
 /**
  * 日期工具类
@@ -247,16 +245,11 @@ public final class DateUtils {
 	 * @param date
 	 * @param patten
 	 * @return
+	 * @throws ParseException 
 	 */
-	public static Date stringToDate(String source, String patten) {
+	public static Date stringToDate(String source, String patten) throws ParseException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(patten, Locale.CHINA);
-		Date date = null;
-		try {
-			date = dateFormat.parse(source);
-		} catch (ParseException e) {
-			throw new CustomException("转换失败", SystemErrorEnum.FAIL.getStatus());
-		}
-		return date;
+		return dateFormat.parse(source);
 	}
 	
 	/**
@@ -468,7 +461,7 @@ public final class DateUtils {
 		return result;
 	}
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
     	Date startDate = stringToDate("2020-06-01 00:00:00", "yyyy-MM-dd HH:mm:ss");
     	Date endDate = stringToDate("2020-06-30 00:00:00", "yyyy-MM-dd HH:mm:ss");
     	List<Date> dates = getBetweenDatesOfDesc(startDate, endDate);

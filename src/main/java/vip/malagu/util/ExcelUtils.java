@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,8 +52,9 @@ public final class ExcelUtils {
 	 * @throws InvalidFormatException 
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
+	 * @throws ParseException 
 	 */
-	public static <T> List<T> importExcel(MultipartFile file, Map<String, String> columnMap, Class<T> clazz) throws InvalidFormatException, IOException, InstantiationException, IllegalAccessException  {		
+	public static <T> List<T> importExcel(MultipartFile file, Map<String, String> columnMap, Class<T> clazz) throws InvalidFormatException, IOException, InstantiationException, IllegalAccessException, ParseException  {		
 		List<T> result = new ArrayList<>();
 		Workbook workbook = WorkbookFactory.create(file.getInputStream());
 		List<Map<String, Object>> entityList = new ArrayList<>();
