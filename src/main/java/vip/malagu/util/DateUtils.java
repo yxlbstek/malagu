@@ -337,5 +337,31 @@ public final class DateUtils {
 		calendar.set(Calendar.MONTH, month);
 		return calendar.getActualMaximum(Calendar.DATE);
 	}
-
+	
+	
+	/**  
+     * 获取year的 第一天日期  
+     * @param year 年份  
+     * @return Date  
+     */  
+    public static Date getYearFirstDate(int year){   
+        Calendar calendar = Calendar.getInstance();   
+        calendar.clear();   
+        calendar.set(Calendar.YEAR, year);   
+        return calendar.getTime();
+    }   
+       
+    /**  
+     * 获取year的 最后一天日期  
+     * @param year 年份  
+     * @return Date  
+     */  
+    public static Date getYearLastDate(int year){   
+        Calendar calendar = Calendar.getInstance();   
+        calendar.clear();   
+        calendar.set(Calendar.YEAR, year);   
+        calendar.roll(Calendar.DAY_OF_YEAR, -1);   
+        return calendar.getTime();    
+    } 
+ 
 }
