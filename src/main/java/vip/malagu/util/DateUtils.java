@@ -338,13 +338,12 @@ public final class DateUtils {
 		return calendar.getActualMaximum(Calendar.DATE);
 	}
 	
-	
 	/**  
      * 获取year的 第一天日期  
      * @param year 年份  
      * @return Date  
      */  
-    public static Date getYearFirstDate(int year){   
+    public static Date getYearFirstDate(int year) {   
         Calendar calendar = Calendar.getInstance();   
         calendar.clear();   
         calendar.set(Calendar.YEAR, year);   
@@ -356,12 +355,77 @@ public final class DateUtils {
      * @param year 年份  
      * @return Date  
      */  
-    public static Date getYearLastDate(int year){   
+    public static Date getYearLastDate(int year) {   
         Calendar calendar = Calendar.getInstance();   
         calendar.clear();   
         calendar.set(Calendar.YEAR, year);   
         calendar.roll(Calendar.DAY_OF_YEAR, -1);   
         return calendar.getTime();    
     } 
+    
+    /**  
+     * 获取当前年份  指定 month 第一天日期  
+     * @param year 月份  
+     * @return Date  
+     */  
+    public static Date getCurrentYearOfMonthFirstDate(int month) {   
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DATE, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }   
+       
+    /**  
+     * 获取当前年份  指定 month 最后一天日期  
+     * @param year 月份  
+     * @return Date  
+     */  
+    public static Date getCurrentYearOfMonthLastDate(int month) {   
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DATE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();    
+    }
+    
+    /**  
+     * 获取year 指定 month 第一天日期  
+     * @param year 年份  
+     * @param year 月份  
+     * @return Date  
+     */  
+    public static Date getMonthFirstDate(int year, int month) {   
+        Calendar calendar = Calendar.getInstance();   
+        calendar.clear();   
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        return calendar.getTime();
+    }   
+       
+    /**  
+     * 获取year 指定 month 最后一天日期  
+     * @param year 年份  
+     * @param year 月份  
+     * @return Date  
+     */  
+    public static Date getMonthLastDate(int year, int month) {   
+        Calendar calendar = Calendar.getInstance();   
+        calendar.clear();   
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DATE, 0);
+        return calendar.getTime();    
+    }
  
+    public static void main(String[] args) {
+    	System.out.println(dateToString(getCurrentYearOfMonthLastDate(7), "yyyy-MM-dd HH:mm:ss"));
+	}
+    
 }
