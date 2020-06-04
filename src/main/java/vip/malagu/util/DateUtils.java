@@ -2,8 +2,12 @@ package vip.malagu.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import vip.malagu.custom.exception.CustomException;
@@ -423,9 +427,54 @@ public final class DateUtils {
         calendar.set(Calendar.DATE, 0);
         return calendar.getTime();    
     }
+    
+    /**
+     * 获取 startDate 和 endDate 之间间隔的 所有日期 
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return
+     */
+    public static List<Date> getBetweenDates(Date startDate, Date endDate) {
+    	return buildBetweenDates(startDate, endDate, "asc");
+    }
+    
+    /**
+     * 获取 startDate 和 endDate 之间间隔的 所有日期 （倒序）
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return
+     */
+    public static List<Date> getBetweenDatesOfDesc(Date startDate, Date endDate) {
+    	return buildBetweenDates(startDate, endDate, "desc");
+    }
  
-    public static void main(String[] args) {
-    	System.out.println(dateToString(getCurrentYearOfMonthLastDate(7), "yyyy-MM-dd HH:mm:ss"));
+    private static List<Date> buildBetweenDates(Date startDate, Date endDate, String sort) {
+		List<Date> result = new ArrayList<>();
+		Calendar tempDate = Calendar.getInstance();
+		tempDate.setTime(startDate);
+		while (startDate.getTime() <= endDate.getTime()) {
+			result.add(tempDate.getTime());
+			tempDate.add(Calendar.DAY_OF_YEAR, 1);
+			startDate = tempDate.getTime();
+		}
+		if (sort.equals("desc")) {
+			Collections.sort(result, new Comparator<Date>() {
+				@Override
+				public int compare(Date d1, Date d2) {
+					return d2.compareTo(d1);
+				}
+			});
+		}
+		return result;
 	}
+    
+    public static void main(String[] args) {
+    	Date startDate = stringToDate("2020-06-01 00:00:00", "yyyy-MM-dd HH:mm:ss");
+    	Date endDate = stringToDate("2020-06-30 00:00:00", "yyyy-MM-dd HH:mm:ss");
+    	List<Date> dates = getBetweenDatesOfDesc(startDate, endDate);
+    	for (Date date : dates) {
+    		System.out.println(dateToString(date, "yyyy-MM-dd HH:mm:ss"));
+		}
+    }
     
 }
