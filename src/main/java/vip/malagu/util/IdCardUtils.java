@@ -38,7 +38,7 @@ public class IdCardUtils {
 			throw new CustomException("身份证号码长度应该为15位或18位", SystemErrorEnum.FAIL.getStatus());
 		}
 		cardNo = buildCardNo(idStr, cardNo);
-		if (!isNumber(cardNo)) {
+		if (cardNo == null || !isNumber(cardNo)) {
 			throw new CustomException("身份证15位号码都应为数字、18位号码除最后一位外、都应为数字", SystemErrorEnum.FAIL.getStatus());
 		}
 		validateIdCardBirthday(cardNo);
