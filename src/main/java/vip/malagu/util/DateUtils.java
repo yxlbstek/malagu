@@ -38,6 +38,12 @@ public final class DateUtils {
 	 * yyyyMMddHHmmss
 	 */
 	public static final String PATTEN_MERGE = "yyyyMMddHHmmss";
+	
+	/**
+	 * yyyyMMddHHmmssSSS
+	 */
+	public static final String PATTEN_MERGE_MILLISECOND = "yyyyMMddHHmmssSSS";
+
 
 	/**
 	 * yyyyMMdd
