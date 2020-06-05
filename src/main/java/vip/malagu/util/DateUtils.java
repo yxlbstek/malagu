@@ -44,7 +44,6 @@ public final class DateUtils {
 	 */
 	public static final String PATTEN_MERGE_MILLISECOND = "yyyyMMddHHmmssSSS";
 
-
 	/**
 	 * yyyyMMdd
 	 */
