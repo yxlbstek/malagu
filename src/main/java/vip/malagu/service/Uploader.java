@@ -50,7 +50,7 @@ public class Uploader {
 		fileInfo.setRemark((String) param.get("remark"));
 		String fileName = file.getFileName();
 		String fileSuf = getFileSuf(fileName);
-		File dest = new File(FileUtils.getFileDirectory(), ContextUtils.getLoginUsername() + "@" + DateUtils.dateToString(new Date(), "yyyyMMddHHmmss") + "@" + fileInfo.getId() + fileSuf);
+		File dest = new File(FileUtils.getFileDirectory(), ContextUtils.getLoginUsername() + "@" + DateUtils.dateToString(new Date(), DateUtils.PATTEN_MERGE) + "@" + fileInfo.getId() + fileSuf);
 		fileInfo.setPath(dest.getAbsolutePath());
 		JpaUtil.persist(fileInfo);
 		org.apache.commons.io.FileUtils.copyInputStreamToFile(file.getInputStream(), dest);

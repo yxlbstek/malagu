@@ -18,7 +18,47 @@ import java.util.Locale;
 public final class DateUtils {
 	
 	private DateUtils() {}
+	
+	/**
+	 * yyyy-MM-dd HH:mm:ss
+	 */
+	public static final String PATTEN_BASIC = "yyyy-MM-dd HH:mm:ss";
+	
+	/**
+	 * yyyy-MM-dd
+	 */
+	public static final String PATTEN_BASIC_PREFIX = "yyyy-MM-dd";
+	
+	/**
+	 * yyyy-MM
+	 */
+	public static final String PATTEN_BASIC_PREFIX_MM = "yyyy-MM";
 
+	/**
+	 * yyyyMMddHHmmss
+	 */
+	public static final String PATTEN_MERGE = "yyyyMMddHHmmss";
+
+	/**
+	 * yyyyMMdd
+	 */
+	public static final String PATTEN_MERGE_PREFIX = "yyyyMMdd";
+	
+	/**
+	 * yyyyMM
+	 */
+	public static final String PATTEN_MERGE_PREFIX_MM = "yyyyMM";
+
+	/**
+	 * yyyy/MM/dd
+	 */
+	public static final String PATTEN_SLASH_PREFIX = "yyyy/MM/dd";
+	
+	/**
+	 * yyyy/MM
+	 */
+	public static final String PATTEN_SLASH_PREFIX_MM = "yyyy/MM";
+	
 	/**
 	 * 获取当天时间  Sat Apr 21 00:00:00 CST 2018
 	 * @return

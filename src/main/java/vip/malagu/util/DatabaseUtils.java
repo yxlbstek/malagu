@@ -44,7 +44,7 @@ public final class DatabaseUtils {
 		Map<String, String> result = new HashMap<>();
 		String prefix = Configure.getString("file.prefixPath");
 		String savePath = prefix + File.separator + "backupsDb" + File.separator;
-		String fileName = "数据库备份" + DateUtils.dateToString(new Date(),  "yyyyMMddHHmmss") + ".sql";
+		String fileName = "数据库备份" + DateUtils.dateToString(new Date(),  DateUtils.PATTEN_MERGE) + ".sql";
 		File saveFile = new File(savePath);
 		if (!saveFile.exists()) {
 			saveFile.mkdirs();

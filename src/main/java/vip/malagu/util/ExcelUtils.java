@@ -191,7 +191,7 @@ public final class ExcelUtils {
 				String cellValue = "";
 				Object fieldValue = BeanUtils.getFieldValue(objs.get(i), field);
 				if (field.getType().getName().indexOf("Date") != -1) {
-					cellValue = fieldValue != null ? DateUtils.dateToString((Date) fieldValue, "yyyy-MM-dd HH:mm:ss") : "";
+					cellValue = fieldValue != null ? DateUtils.dateToString((Date) fieldValue, DateUtils.PATTEN_BASIC) : "";
 				} else {
 					cellValue = fieldValue != null ? fieldValue.toString() : "";
 				}

@@ -161,7 +161,7 @@ public final class BeanUtils {
 		} else if (type.equals("boolean") || type.equals("Boolean")) {
 			return value.equals("0") || value.equals("true") ? Boolean.TRUE : Boolean.FALSE;
 		} else if (type.equals("Date")) {
-			return DateUtils.stringToDate(value, "yyyy-MM-dd HH:mm:ss");
+			return DateUtils.stringToDate(value, DateUtils.PATTEN_BASIC);
 		}
 		return value;
 	}

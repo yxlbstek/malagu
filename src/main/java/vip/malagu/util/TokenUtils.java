@@ -22,7 +22,7 @@ public class TokenUtils {
 	 * @return
 	 */
 	public static String createToken(String type, String orgId, String username) {
-		String dateStr = DateUtils.dateToString(new Date(), "yyyyMMddHHmmss");
+		String dateStr = DateUtils.dateToString(new Date(), DateUtils.PATTEN_MERGE);
 		String token = EncryptUtils.encodeByDES(orgId + "=" + username + "=" +  dateStr);
 		String key = CacheConstant.CACHE_USER_LOGIN_PREFIX + type + "_" + orgId + "_" + username;
 		RedisUtils.set(key, token);
