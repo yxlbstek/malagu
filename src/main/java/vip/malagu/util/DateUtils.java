@@ -502,11 +502,11 @@ public final class DateUtils {
 	}
     
     public static void main(String[] args) throws ParseException {
-    	Date startDate = stringToDate("2020-06-01 00:00:00", "yyyy-MM-dd HH:mm:ss");
-    	Date endDate = stringToDate("2020-06-30 00:00:00", "yyyy-MM-dd HH:mm:ss");
+    	Date startDate = stringToDate("2020-06-01 00:00:00", PATTEN_BASIC);
+    	Date endDate = stringToDate("2020-06-30 00:00:00", PATTEN_BASIC);
     	List<Date> dates = getBetweenDatesOfDesc(startDate, endDate);
     	for (Date date : dates) {
-    		System.out.println(dateToString(date, "yyyy-MM-dd HH:mm:ss"));
+    		System.out.println(dateToString(date, PATTEN_BASIC));
 		}
     }
     
