@@ -400,14 +400,14 @@ public final class RedisUtils {
 			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
 		}
 	}
-	
+
 	/**
 	 * 获取自增数字
-	 * @param key 可当做数据库 表 的分类标识
+	 * @param key 键
 	 * @param delta 递增的基数
 	 * @return
 	 */
-	public static long getOnlyNumber(String key, long delta) {
+	public static long getAddNumber(String key, long delta) {
 		try {
 			RedisAtomicLong counter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
 			return counter.addAndGet(delta);
