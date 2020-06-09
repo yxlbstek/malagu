@@ -55,10 +55,11 @@ public class JgPushService {
 	 * @return
 	 */
 	public PushPayload buildPushObjectAllAlert(String content, Map<String, String> param) {
-		return PushPayload.newBuilder()
-				.setPlatform(Platform.all())
-				.setNotification(buildNotification(content, param))
-				.build();
+		return PushPayload
+			.newBuilder()
+			.setPlatform(Platform.all())
+			.setNotification(buildNotification(content, param))
+			.build();
 	}
 
 	/**
@@ -66,11 +67,12 @@ public class JgPushService {
 	 * @return
 	 */
 	public PushPayload buildPushObjectAllAliasAlert(String appid, String content, Map<String, String> param) {
-		return PushPayload.newBuilder()
-				.setPlatform(Platform.all())
-				.setAudience(Audience.registrationId(appid))
-				.setNotification(buildNotification(content, param))
-				.build();
+		return PushPayload
+			.newBuilder()
+			.setPlatform(Platform.all())
+			.setAudience(Audience.registrationId(appid))
+			.setNotification(buildNotification(content, param))
+			.build();
 	}
 
 	private Notification buildNotification(String content, Map<String, String> param) {
