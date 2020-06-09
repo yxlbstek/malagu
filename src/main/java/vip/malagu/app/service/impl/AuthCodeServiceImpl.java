@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import vip.malagu.aliyun.service.AliyunSendSmsService;
 import vip.malagu.app.param.dto.AuthCodeParam;
 import vip.malagu.app.service.AuthCodeService;
 import vip.malagu.constants.ErrorTipConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
+import vip.malagu.service.sdk.aliyun.AliyunSendSmsService;
 import vip.malagu.util.AssertUtils;
 import vip.malagu.util.RedisUtils;
 

@@ -1,4 +1,4 @@
-package vip.malagu.service.logistics;
+package vip.malagu.service.sdk.logistics;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,10 +9,9 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import vip.malagu.config.kuaidi.LogisticsConfig;
 import vip.malagu.constants.PropertyConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
@@ -21,8 +20,14 @@ import vip.malagu.util.EncryptUtils;
 @Service
 public class LogisticsService {
 
-	@Autowired
-	public LogisticsConfig logisticsConfig;
+	@Value("${logistics.key}")
+	private String key;
+	
+	@Value("${logistics.customer}")
+	private String customer;
+	
+	@Value("${logistics.url}")
+	private String url;
 
 	/**
 	 * 查询快递信息
@@ -38,8 +43,8 @@ public class LogisticsService {
 		param.append(",\"num\":\"").append(num).append("\"");
 		param.append("}");
 		params.put("param", param.toString());
-		params.put("customer", logisticsConfig.getCustomer());
-		String sign = EncryptUtils.encodeByMD5(param + logisticsConfig.getKey() + logisticsConfig.getCustomer());
+		params.put("customer", customer);
+		String sign = EncryptUtils.encodeByMD5(param + key + customer);
 		params.put("sign", sign);
 		return execute(params);
 	}
@@ -66,8 +71,8 @@ public class LogisticsService {
 			}
 			byte[] bytes = builder.toString().getBytes(PropertyConstant.UTF_8);
 
-			URL url = new URL(logisticsConfig.getUrl());
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			URL connUrl = new URL(url);
+			HttpURLConnection conn = (HttpURLConnection) connUrl.openConnection();
 			conn.setConnectTimeout(3000);
 			conn.setReadTimeout(3000);
 			conn.setRequestMethod("POST");

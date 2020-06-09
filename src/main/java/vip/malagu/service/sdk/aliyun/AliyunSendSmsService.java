@@ -1,4 +1,4 @@
-package vip.malagu.aliyun.service;
+package vip.malagu.service.sdk.aliyun;
 
 import java.util.Random;
 
@@ -74,16 +74,16 @@ public class AliyunSendSmsService {
 	 */
 	public static final String USER_MESSAGE_PREX = "message_";
 	
-	@Value("${aliyun.sms.accessKeyId}")
+	@Value("${aliyun.sms.access-key-id}")
     private String accessKeyId;
  
-    @Value("${aliyun.sms.accessKeySecret}")
+    @Value("${aliyun.sms.access-key-secret}")
     private String accessKeySecret;
  
-    @Value("${aliyun.sms.regionId}")
+    @Value("${aliyun.sms.region-id}")
     private String regionId;
     
-    @Value("${aliyun.sms.signName}")
+    @Value("${aliyun.sms.sign-name}")
     private String signName;
 
 	/**
