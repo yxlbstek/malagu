@@ -1,4 +1,4 @@
-package vip.malagu.service.sdk.jg;
+package vip.malagu.service.sdk.jiguang;
 
 import java.util.Map;
 
