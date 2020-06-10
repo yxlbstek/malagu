@@ -36,7 +36,7 @@ public final class CommonUtils {
 	 * @param childrenProperty 集合中 对象的 子集集合 属性(children)
 	 * @return
 	 */
-	public static <T> List<T> buildTree(List<T> datas, String idProperty, String parentIdProperty, String childrenProperty) {
+	public static <T> List<T> listToTree(List<T> datas, String idProperty, String parentIdProperty, String childrenProperty) {
 		List<T> result = new ArrayList<>();
 		Map<Object, List<T>> childrenMap = new HashMap<>();
 		
@@ -72,7 +72,7 @@ public final class CommonUtils {
 	 * @param childrenProperty 集合中 对象的 子集集合 属性(children)
 	 * @return
 	 */
-	public static <T> List<T> cancelTree(List<T> datas, String childrenProperty) {
+	public static <T> List<T> treeToList(List<T> datas, String childrenProperty) {
 		List<T> result = new ArrayList<>();
 		analysisTree(datas, childrenProperty, result);
 		return result;
