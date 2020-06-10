@@ -162,18 +162,16 @@ public final class CommonUtils {
 	 * @return
 	 */
 	public static boolean checkAgentIsMobile(String userAgent) {
-		boolean result = false;
 		if ((!userAgent.contains(PropertyConstant.WINDOWS_NT) || (userAgent.contains(PropertyConstant.WINDOWS_NT) && userAgent.contains("compatible; MSIE 9.0;"))) 
 				&& !userAgent.contains(PropertyConstant.WINDOWS_NT) 
 				&& !userAgent.contains("Macintosh")) {
 			for (String item : agent) {
 				if (userAgent.contains(item)) {
-					result = true;
-					break;
+					return true;
 				}
 			}
 		}
-		return result;
+		return false;
 	}
 
 }
