@@ -140,12 +140,18 @@ public final class CommonUtils {
 		return result;
 	}
 	
+	/**
+	 * 获取对象 obj 的指定属性值
+	 * @param obj
+	 * @param propertyName 属性
+	 * @return
+	 */
 	@SuppressWarnings("rawtypes")
-	public static Object getValue(Object obj, String propertyName) {
+	public static Object getValue(Object obj, String property) {
 		if (obj instanceof Map) {
-			return ((Map) obj).get(propertyName);
+			return ((Map) obj).get(property);
 		} else if (obj != null) {
-			return BeanUtils.getFieldValue(obj, propertyName);
+			return BeanUtils.getFieldValue(obj, property);
 		}
 		return null;
 	}
