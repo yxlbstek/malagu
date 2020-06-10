@@ -50,7 +50,7 @@ public final class CommonUtils {
 				childrenMap.put(entityId, BeanUtils.getFieldValue(entity, childrenProperty));
 			}
 
-			if (entityParentId == null || "0".equals((String) entityParentId)) {
+			if (entityParentId == null || "0".equals(String.valueOf(entityParentId))) {
 				result.add(entity);
 			} else {
 				List<T> children;
