@@ -16,7 +16,11 @@ window.tip = function(msg, title) {
  * 异常拦截显示处理
  */
 dorado.Exception.processException = function (e) {
-	window.tip(e.message, "系统提示");
+	if (e.message.indexOf("HTTP 0") != -1) {
+		window.location.reload();
+	} else {
+		window.tip(e.message, "系统提示");
+	}
 }
 
 /**
