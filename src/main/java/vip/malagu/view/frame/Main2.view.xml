@@ -122,7 +122,7 @@
   <View id="view" layout="hbox align:center;pack:start">
     <ClientEvent name="onReady" signature="self,arg,tabControl,subUrlCon,splitPanel,ajaxActionMsg,ajaxActionOpen">window.urlShow = true;
 
-window.openTab(&quot;导航菜单&quot;, &quot;&quot;, &quot;vip.malagu.view.frame.Url.d&quot;);
+//window.openTab(&quot;导航菜单&quot;, &quot;&quot;, &quot;vip.malagu.view.frame.Url.d&quot;);
 
 /**
  * 用户信息-侧面板
@@ -538,7 +538,7 @@ var $sidePanel = $(&quot;#d_urlSidePanel&quot;);
 if (url.get(&quot;path&quot;)) {
 	$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;active&quot;);
 	$sidePanel.attr(&quot;data-disabled&quot;, &quot;active&quot;);
-	window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+	window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;), true);
 } else {
 	$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);
 	$sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);

@@ -119,12 +119,59 @@
       </PropertyDef>
     </DataType>
   </Model>
-  <View id="view">
+  <View id="view" layout="hbox align:center;pack:start">
     <ClientEvent name="onReady" signature="self,arg,tabControl,subUrlCon,splitPanel,ajaxActionMsg,ajaxActionOpen">window.urlShow = true;
+
+//window.openTab(&quot;导航菜单&quot;, &quot;&quot;, &quot;vip.malagu.view.frame.Url.d&quot;);
+
+/**
+ * 用户信息-侧面板
+ */
+$(function() {
+    $('#d_userInfoSidePanel').simplerSidebar({
+        opener: '#d_userImg',
+        top: 60,
+        sidebar: {
+            align: 'right',
+            width: 600
+        },
+        mask: {
+        	css: {
+				bottom: &quot;10px&quot;,
+				left: &quot;8px&quot;,
+				right: &quot;12px&quot;,
+				opacity: 0.35
+			}
+        }
+    });
+});
+
+/**
+ * 导航菜单-侧面板
+ */
+$(function() {
+    $('#d_urlSidePanel').simplerSidebar({
+        opener: '#d_urlShowBtnCon',
+        top: 50,
+        sidebar: {
+            align: 'left',
+            width: 190
+        },
+        mask: {
+        	css: {
+				bottom: &quot;0px&quot;,
+				left: &quot;0px&quot;,
+				right: &quot;0px&quot;,
+				opacity: 0.1
+			}
+        }
+    });
+});
+
 </ClientEvent>
     <Property name="packages">font-awesome,colors</Property>
+    <Property name="javaScriptFile">static/js/FrameMain.js,static/js/simpler-sidebar.min.js</Property>
     <Property name="contentOverflow">hidden</Property>
-    <Property name="javaScriptFile">static/js/FrameMain.js</Property>
     <DataSet id="dsUrl">
       <ClientEvent name="onLoadData" signature="self,arg,dtUrl">setTimeout(function() {&#xD;
 	var i = 0;&#xD;
@@ -156,24 +203,47 @@ if (picture) {&#xD;
       <Property name="dataType">User</Property>
       <Property name="dataProvider">userMaintainController#loadLoginUser</Property>
     </DataSet>
-    <Container>
+    <Container id="urlShowBtnCon" layoutConstraint="left">
+      <ClientEvent name="onClick">//var $sidePanel = $(&quot;#d_urlSidePanel&quot;);&#xD;
+//$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);&#xD;
+//$sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);&#xD;
+</ClientEvent>
+      <Property name="height">50</Property>
+      <Property name="width">50</Property>
+      <Property name="contentOverflow">hidden</Property>
+      <Container id="urlShowBtn">
+        <Property name="contentOverflow">hidden</Property>
+        <Property name="height">25</Property>
+        <Property name="width">25</Property>
+      </Container>
+    </Container>
+    <Container layoutConstraint="left">
       <Property name="height">100%</Property>
       <Property name="width">100%</Property>
+      <Property name="contentOverflow">hidden</Property>
       <Container>
         <Property name="contentOverflow">hidden</Property>
-        <Property name="height">50</Property>
+        <Property name="height">42</Property>
         <Property name="style">
           <Property name="background">#fff</Property>
         </Property>
         <Container layout="hbox align:center;pack:end" layoutConstraint="right">
           <Property name="width">280</Property>
-          <Property name="height">50</Property>
+          <Property name="height">42</Property>
           <Property name="contentOverflow">hidden</Property>
+          <Control id="homePage">
+            <ClientEvent name="onClick">window.location.href = &quot;${configure['bdf3.loginSuccessPage']}&quot;;&#xD;
+</ClientEvent>
+            <ClientEvent name="onCreateDom">$(arg.dom).attr(&quot;title&quot;, &quot;首页&quot;);</ClientEvent>
+            <Property name="height">22</Property>
+            <Property name="width">22</Property>
+          </Control>
           <Control id="exit">
             <ClientEvent name="onClick">dorado.MessageBox.confirm(&quot;确认退出系统？&quot;, function() {&#xD;
 	window.location.href = &quot;${configure['bdf3.logoutPath']}&quot;;&#xD;
 });&#xD;
 </ClientEvent>
+            <ClientEvent name="onCreateDom">$(arg.dom).attr(&quot;title&quot;, &quot;退出系统&quot;);</ClientEvent>
             <Property name="height">20</Property>
             <Property name="width">20</Property>
           </Control>
@@ -203,6 +273,7 @@ Chat.show(function() {&#xD;
 });&#xD;
 arg.returnValue = false;&#xD;
 </ClientEvent>
+            <ClientEvent name="onCreateDom">$(arg.dom).attr(&quot;title&quot;, &quot;消息&quot;);</ClientEvent>
             <Property name="height">20</Property>
             <Property name="width">20</Property>
           </Control>
@@ -213,11 +284,15 @@ arg.returnValue = false;&#xD;
             <Property name="width">25</Property>
           </Control>
           <Control id="userImg">
-            <ClientEvent name="onClick" signature="self,arg,dialogUser">dialogUser.show();</ClientEvent>
+            <ClientEvent name="onClick" signature="self,arg,dialogUser">var $sidePanel = $(&quot;#d_userInfoSidePanel&quot;);&#xD;
+$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);&#xD;
+$sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);&#xD;
+$sidePanel.css(&quot;margin-right&quot;, &quot;12px&quot;);&#xD;
+&#xD;
+</ClientEvent>
             <Property name="height">30</Property>
             <Property name="width">30</Property>
             <Property name="style">
-              <Property name="margin-top">10px</Property>
               <Property name="margin-right">30px</Property>
             </Property>
           </Control>
@@ -232,7 +307,7 @@ arg.returnValue = false;&#xD;
           </Label>
         </Container>
         <Container layout="hbox align:center;pack:start" layoutConstraint="left">
-          <Property name="height">50</Property>
+          <Property name="height">42</Property>
           <Property name="contentOverflow">hidden</Property>
           <Property name="width">500</Property>
           <Control>
@@ -272,7 +347,7 @@ $.ajax(options);*/</ClientEvent>
       </Container>
       <SplitPanel id="splitPanel">
         <ClientEvent name="onReady">$(&quot;.side-panel&quot;).addClass(&quot;urlShow&quot;);</ClientEvent>
-        <Property name="position">180</Property>
+        <Property name="position">0</Property>
         <Property name="collapsed">false</Property>
         <Property name="width">100%</Property>
         <Property name="resizeable">false</Property>
@@ -322,39 +397,97 @@ $.ajax(options);*/</ClientEvent>
               <Property name="background-color">rgb(38, 45, 73)</Property>
             </Property>
             <Property name="contentOverflow">hidden</Property>
-            <Container layout="hbox align:center;pack:center">
-              <Property name="height">30</Property>
-              <Property name="style">
-                <Property name="background">#fff</Property>
-                <Property name="border-bottom">1px solid #e5e5e5</Property>
-              </Property>
+          </Container>
+        </SideControl>
+      </SplitPanel>
+    </Container>
+    <Container id="userInfoSidePanel" layoutConstraint="right">
+      <Property name="width">600</Property>
+      <Property name="contentOverflow">hidden</Property>
+      <Property name="className">sidePanel-main</Property>
+      <Container layout="hbox align:center;pack:start">
+        <Property name="height">54</Property>
+        <Property name="className">levelParentCon</Property>
+        <Property name="contentOverflow">hidden</Property>
+        <Label>
+          <Property name="text">个人信息</Property>
+          <Property name="height">0</Property>
+          <Property name="className">sidePanel-caption</Property>
+        </Label>
+        <Label id="sidePanelCloseBtn">
+          <ClientEvent name="onClick">var $sidePanel = $(&quot;#d_userInfoSidePanel&quot;);&#xD;
+$sidePanel.attr(&quot;data-disabled&quot;, &quot;active&quot;);&#xD;
+$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;active&quot;);&#xD;
+$sidePanel.css(&quot;margin-right&quot;, &quot;0px&quot;);</ClientEvent>
+          <Property name="exClassName">fa fa-angle-right</Property>
+          <Property name="height">0</Property>
+          <Property name="className">sidePanel-closeBtn</Property>
+        </Label>
+      </Container>
+      <Panel>
+        <Property name="caption">个人信息</Property>
+        <Property name="showCaptionBar">false</Property>
+        <Buttons/>
+        <Children>
+          <Container>
+            <Container id="imgInfoCon" layout="hbox align:center;pack:start">
+              <Property name="height">70</Property>
               <Property name="contentOverflow">hidden</Property>
-              <Property name="ignored">true</Property>
-              <Control>
-                <ClientEvent name="onClick" signature="self,arg,splitPanel">if (window.urlShow) {&#xD;
-	$(&quot;.side-panel&quot;).removeClass(&quot;urlShow&quot;);&#xD;
-	$(&quot;.side-panel&quot;).addClass(&quot;urlHide&quot;);&#xD;
-	$(&quot;.side-panel&quot;).animate({width: &quot;32px&quot;});&#xD;
-	setTimeout(function() {&#xD;
-		splitPanel.set(&quot;position&quot;, &quot;32&quot;);&#xD;
-	}, 120);&#xD;
-	window.urlShow = false;&#xD;
-} else {&#xD;
-	$(&quot;.side-panel&quot;).removeClass(&quot;urlHide&quot;);&#xD;
-	$(&quot;.side-panel&quot;).addClass(&quot;urlShow&quot;);&#xD;
-	$(&quot;.side-panel&quot;).animate({width: &quot;190px&quot;});&#xD;
-	setTimeout(function() {&#xD;
-		splitPanel.set(&quot;position&quot;, &quot;190&quot;);&#xD;
-	}, 120);&#xD;
-	window.urlShow = true;&#xD;
-}&#xD;
-&#xD;
-</ClientEvent>
-                <Property name="className">lrBtn</Property>
+              <Control id="infoImg">
+                <Property name="height">60</Property>
+                <Property name="width">60</Property>
               </Control>
+              <Label id="infoNameLabel">
+                <Property name="height">0</Property>
+                <Property name="dataSet">dsCustomUser</Property>
+                <Property name="property">name</Property>
+              </Label>
+              <Label id="infoOrgLabel">
+                <Property name="height">0</Property>
+              </Label>
             </Container>
-            <DataTree id="dtUrl">
-              <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
+            <Container id="UserInfoCon">
+              <AutoForm id="userInfoAF">
+                <Property name="dataSet">dsLoginUser</Property>
+                <Property name="cols">*</Property>
+                <AutoFormElement>
+                  <Property name="name">username</Property>
+                  <Property name="property">username</Property>
+                  <Property name="editable">false</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">nickname</Property>
+                  <Property name="property">nickname</Property>
+                  <Property name="editable">false</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">password</Property>
+                  <Property name="property">password</Property>
+                  <Property name="editable">false</Property>
+                  <Property name="editorType">PasswordEditor</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Container>
+          </Container>
+          <Button id="infoPassBtn">
+            <ClientEvent name="onClick" signature="self,arg,dialogPassword">dialogPassword.show();</ClientEvent>
+            <Property name="caption">修改</Property>
+            <Property name="className">simple</Property>
+            <Property name="icon">/static/img/info-modify.png</Property>
+          </Button>
+        </Children>
+        <Tools/>
+      </Panel>
+    </Container>
+    <Container id="urlSidePanel" layoutConstraint="right">
+      <Property name="width">190</Property>
+      <Property name="contentOverflow">hidden</Property>
+      <Property name="className">sidePanel-url</Property>
+      <DataTree id="dtUrl">
+        <ClientEvent name="onRenderNode">var data = arg.node.get(&quot;data&quot;);
 var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
 if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
 	if (icon != arg.node.get(&quot;iconClass&quot;)) {
@@ -385,7 +518,7 @@ if (arg.node.get(&quot;level&quot;)) {
 }
 
 </ClientEvent>
-              <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
+        <ClientEvent name="onDataNodeCreate">var data = arg.node.get(&quot;data&quot;);
 var icon = data.get(&quot;icon&quot;) || &quot;&quot;;
 if (icon.indexOf(&quot;.png&quot;) == -1 &amp;&amp; icon.indexOf(&quot;.svg&quot;) == -1) {
 	if (icon != arg.node.get(&quot;iconClass&quot;)) {
@@ -400,9 +533,19 @@ $(arg.dom).text(data.get(&quot;name&quot;) || &quot;&quot;);
 
 arg.node.expandAsync();
 arg.node.collapse();</ClientEvent>
-              <ClientEvent name="onDataRowClick">var url = self.get(&quot;currentEntity&quot;);
+        <ClientEvent name="onDataRowClick">var url = self.get(&quot;currentEntity&quot;);
+var $sidePanel = $(&quot;#d_urlSidePanel&quot;);
 if (url.get(&quot;path&quot;)) {
-	window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;), true);
+	$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;active&quot;);
+	$sidePanel.attr(&quot;data-disabled&quot;, &quot;active&quot;);
+	window.openTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+} else {
+	$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;disabled&quot;);
+	$sidePanel.attr(&quot;data-disabled&quot;, &quot;disabled&quot;);
+	setTimeout(function() {
+		$sidePanel.attr(&quot;data-simplersidebar&quot;, &quot;active&quot;);
+		$sidePanel.attr(&quot;data-disabled&quot;, &quot;active&quot;);
+	}, 300);
 }
 
 var node = self.get(&quot;currentNode&quot;);
@@ -412,119 +555,26 @@ if (node.get(&quot;expanded&quot;)) {
 	node.expandAsync();
 }
 </ClientEvent>
-              <ClientEvent name="onDataRowDoubleClick">var url = self.get(&quot;currentEntity&quot;);
+        <ClientEvent name="onDataRowDoubleClick">var url = self.get(&quot;currentEntity&quot;);
 if (url.get(&quot;path&quot;)) {
-	window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
+	//window.refreshTab(url.get(&quot;name&quot;), url.get(&quot;icon&quot;), url.get(&quot;path&quot;));
 }
 
 </ClientEvent>
-              <Property name="dataSet">dsUrl</Property>
-              <Property name="currentNodeDataPath">currentNode</Property>
-              <Property name="draggable">false</Property>
-              <BindingConfigs>
-                <BindingConfig>
-                  <Property name="childrenProperty">children</Property>
-                  <Property name="labelProperty">name</Property>
-                  <Property name="recursive">true</Property>
-                  <Property name="tipProperty">description</Property>
-                  <Property name="name">name</Property>
-                </BindingConfig>
-              </BindingConfigs>
-            </DataTree>
-          </Container>
-        </SideControl>
-      </SplitPanel>
+        <Property name="dataSet">dsUrl</Property>
+        <Property name="currentNodeDataPath">currentNode</Property>
+        <Property name="draggable">false</Property>
+        <BindingConfigs>
+          <BindingConfig>
+            <Property name="childrenProperty">children</Property>
+            <Property name="labelProperty">name</Property>
+            <Property name="recursive">true</Property>
+            <Property name="tipProperty">description</Property>
+            <Property name="name">name</Property>
+          </BindingConfig>
+        </BindingConfigs>
+      </DataTree>
     </Container>
-    <Dialog id="dialogUser">
-      <ClientEvent name="onShow" signature="self,arg,dsCustomUser,infoOrgLabel">/*var user = dsCustomUser.getData(&quot;#&quot;);&#xD;
-if (user) {&#xD;
-	var picture = user.get(&quot;picture&quot;);&#xD;
-	if (picture) {&#xD;
-		var prx = &quot;${configure['file.prefixPath']}&quot;;&#xD;
-		var index = picture.indexOf(prx);&#xD;
-		picture = picture.substring(index, picture.length);&#xD;
-		$(&quot;#d_infoImg&quot;).css({&#xD;
-			&quot;background-image&quot; : &quot;url(&quot; + picture.replace(/\\/g, &quot;/&quot;) + &quot;)&quot;,&#xD;
-			&quot;background-repeat&quot; : &quot;no-repeat&quot;,&#xD;
-			&quot;background-size&quot; : &quot;100% 100%&quot;&#xD;
-		});&#xD;
-	}&#xD;
-	var value = &quot;测试内容&quot;;&#xD;
-	if (user.get(&quot;orgName&quot;)) {&#xD;
-		value += user.get(&quot;orgName&quot;);&#xD;
-	}&#xD;
-	infoOrgLabel.set(&quot;text&quot;, value);&#xD;
-}*/&#xD;
-</ClientEvent>
-      <Property name="width">650</Property>
-      <Property name="height">560</Property>
-      <Property name="showCaptionBar">false</Property>
-      <Buttons/>
-      <Children>
-        <Panel>
-          <Property name="caption">个人信息</Property>
-          <Buttons/>
-          <Children>
-            <Container>
-              <Container id="imgInfoCon" layout="hbox align:center;pack:start">
-                <Property name="height">70</Property>
-                <Property name="contentOverflow">hidden</Property>
-                <Control id="infoImg">
-                  <Property name="height">60</Property>
-                  <Property name="width">60</Property>
-                </Control>
-                <Label id="infoNameLabel">
-                  <Property name="height">0</Property>
-                  <Property name="dataSet">dsCustomUser</Property>
-                  <Property name="property">name</Property>
-                </Label>
-                <Label id="infoOrgLabel">
-                  <Property name="height">0</Property>
-                </Label>
-              </Container>
-              <Container id="UserInfoCon">
-                <AutoForm id="userInfoAF">
-                  <Property name="dataSet">dsLoginUser</Property>
-                  <Property name="cols">*</Property>
-                  <AutoFormElement>
-                    <Property name="name">username</Property>
-                    <Property name="property">username</Property>
-                    <Property name="editable">false</Property>
-                    <Editor/>
-                  </AutoFormElement>
-                  <AutoFormElement>
-                    <Property name="name">nickname</Property>
-                    <Property name="property">nickname</Property>
-                    <Property name="editable">false</Property>
-                    <Editor/>
-                  </AutoFormElement>
-                  <AutoFormElement>
-                    <Property name="name">password</Property>
-                    <Property name="property">password</Property>
-                    <Property name="editable">false</Property>
-                    <Property name="editorType">PasswordEditor</Property>
-                    <Editor/>
-                  </AutoFormElement>
-                </AutoForm>
-              </Container>
-            </Container>
-            <Button id="infoPassBtn">
-              <ClientEvent name="onClick" signature="self,arg,dialogPassword">dialogPassword.show();</ClientEvent>
-              <Property name="caption">修改</Property>
-              <Property name="className">simple</Property>
-              <Property name="icon">/static/img/info-modify.png</Property>
-            </Button>
-          </Children>
-          <Tools>
-            <SimpleIconButton>
-              <ClientEvent name="onClick" signature="self,arg,dialogUser">dialogUser.hide();</ClientEvent>
-              <Property name="icon">/static/img/close.png</Property>
-            </SimpleIconButton>
-          </Tools>
-        </Panel>
-      </Children>
-      <Tools/>
-    </Dialog>
     <FloatPanel id="dialogPassword" layout="padding:20">
       <Property name="caption">密码修改</Property>
       <Property name="center">true</Property>
@@ -600,6 +650,19 @@ if (entity.get(&quot;oldPassword&quot;) &amp;&amp; entity.get(&quot;newPassword&
       <Tools/>
     </FloatPanel>
     <Import src="com.bstek.bdf3.notice.ui.view.Chat#Chat"/>
+    <Dialog id="dialogMsg">
+      <Property name="width">1000</Property>
+      <Property name="height">560</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="caption">站内邮件</Property>
+      <Buttons/>
+      <Children>
+        <IFrame>
+          <Property name="path">vip.malagu.view.message.MessageMaintain.d</Property>
+        </IFrame>
+      </Children>
+      <Tools/>
+    </Dialog>
     <AjaxAction id="ajaxActionMsgCount">
       <ClientEvent name="onSuccess" signature="self,arg,emailCount">arg.result&#xD;
 if (arg.result > 0) {&#xD;
@@ -616,18 +679,53 @@ setInterval(function() {&#xD;
       <Property name="service">messageController#getNotReadMsgNumber</Property>
       <Property name="async">false</Property>
     </AjaxAction>
-    <Dialog id="dialogMsg">
-      <Property name="width">1000</Property>
-      <Property name="height">560</Property>
-      <Property name="maximizeable">true</Property>
-      <Property name="caption">站内邮件</Property>
-      <Buttons/>
-      <Children>
-        <IFrame>
-          <Property name="path">vip.malagu.view.message.MessageMaintain.d</Property>
-        </IFrame>
-      </Children>
-      <Tools/>
-    </Dialog>
+    <Menu id="menu">
+      <Property name="iconPosition">left</Property>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,tabControl">tabControl.closeOtherTabs(tabControl.get(&quot;currentTab&quot;));
+</ClientEvent>
+        <Property name="caption">关闭其他标签页</Property>
+        <Property name="iconClass">fa fa-times-circle red-text</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick" signature="self,arg,tabControl">tabControl.closeAllTabs();
+</ClientEvent>
+        <Property name="caption">关闭所有标签页</Property>
+        <Property name="iconClass">fa fa-times-circle red-text</Property>
+      </MenuItem>
+      <Separator/>
+      <MenuItem>
+        <Property name="caption">刷新（Ctrl + R）</Property>
+        <Property name="iconClass">fa fa-refresh blue-text</Property>
+        <Property name="action">actionRefreshTab</Property>
+      </MenuItem>
+      <MenuItem>
+        <Property name="caption">最大最小化（Ctrl + X）</Property>
+        <Property name="iconClass">fa fa-arrows-alt blue-text</Property>
+        <Property name="action">actionMax</Property>
+      </MenuItem>
+    </Menu>
+    <Action id="actionRefreshTab">
+      <ClientEvent name="onSuccess" signature="self,arg,tabControl">var tab = tabControl.get(&quot;currentTab&quot;);
+if (tab) {
+	if (tab instanceof dorado.widget.tab.IFrameTab) {
+		tab.get(&quot;control&quot;).reload();
+	} else {
+		tab.refresh();
+	}
+}
+
+</ClientEvent>
+      <Property name="hotkey">ctrl+r</Property>
+    </Action>
+    <Action id="actionMax">
+      <ClientEvent name="onSuccess" signature="self,arg,workspace">if (workspace.get(&quot;maximized&quot;)) {
+		workspace.maximizeRestore();
+	} else {
+		workspace.maximize();
+	}
+</ClientEvent>
+      <Property name="hotkey">ctrl+x</Property>
+    </Action>
   </View>
 </ViewConfig>

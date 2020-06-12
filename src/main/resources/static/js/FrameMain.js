@@ -4,7 +4,7 @@
  * icon 新页签图标
  * path 页面路径
  */
-window.openTab = function (caption, icon, path) {
+window.openTab = function (caption, icon, path, closeOther) {
 	var tabControl = view.get("#tabControl");
 	if (!path) {
 		return;
@@ -24,7 +24,9 @@ window.openTab = function (caption, icon, path) {
 		tab.getControl().reload();
 	}
 	tabControl.set("currentTab", tab);
-	tabControl.closeOtherTabs(tabControl.get("currentTab"));
+	if (closeOther) {
+		tabControl.closeOtherTabs(tabControl.get("currentTab"));
+	}
 };
 
 /**
