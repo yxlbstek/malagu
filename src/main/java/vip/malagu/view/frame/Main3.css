@@ -152,6 +152,11 @@ html, body {
 .workspace .d-tabbar .tabs-wrap .tabs .tab-selected {
 	height: 33px !important;
 }
+
+.workspace .d-tabbar .tabs-wrap {
+	margin-right: 22px !important;
+}
+
 .workspace .d-tabbar {
     background: #fff;
     width: calc(100% + 1px);
@@ -184,6 +189,7 @@ html, body {
 
 .workspace .d-tabbar .menu-button {
 	top: 2px;
+	display: none;
 }
 
 .workspace .d-tabbar .menu-button-click,
@@ -199,6 +205,10 @@ html, body {
 .workspace .d-tabbar .left-button {
 	height: 32px;
 	line-height: 32px;
+}
+
+.workspace .d-tabbar .right-button {
+	right: 0px !important;
 }
 
 .workspace .d-tabbar .right-button-click,
