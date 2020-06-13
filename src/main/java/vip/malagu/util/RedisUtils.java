@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public final class RedisUtils {
     public void setRedisTemplate(RedisTemplate<Object, Object> redisTemplate) {  
 		RedisUtils.redisTemplate = redisTemplate;  
     }
-	
+
 	/**
 	 * 存入字符串
 	 * @param key 键
@@ -44,7 +45,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForValue().set(key, value);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -59,7 +65,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForValue().set(key, value, time, unit);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -72,7 +83,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.opsForValue().get(key);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -86,7 +102,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.opsForValue().getAndSet(key, value);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -99,7 +120,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForValue().append(key, value);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -112,7 +138,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entity));
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -127,7 +158,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForValue().set(key, JSONObject.toJSONString(value), time, unit);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -140,7 +176,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entityList));
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -155,7 +196,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForValue().set(key, JSONObject.toJSONString(entityList), time, unit);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -172,7 +218,12 @@ public final class RedisUtils {
 			}
 			return null;
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -189,7 +240,12 @@ public final class RedisUtils {
 			}
 			return Collections.emptyList();
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -207,7 +263,12 @@ public final class RedisUtils {
 			}
 			return null;
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -225,7 +286,12 @@ public final class RedisUtils {
 			}
 			return Collections.emptyList();
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -239,7 +305,12 @@ public final class RedisUtils {
 		try {
 			return JSONArray.parseObject(text, clz);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -253,7 +324,12 @@ public final class RedisUtils {
 		try {
 			return JSONArray.parseArray(text, clz);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -266,7 +342,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.hasKey(key);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -278,7 +359,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.delete(key);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -292,7 +378,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForHash().put(key, hashKey, hashValue);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -305,7 +396,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForHash().putAll(key, map);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -317,7 +413,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.opsForHash().entries(key);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -331,7 +432,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.opsForHash().get(key, hashKey);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -344,7 +450,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.opsForHash().keys(key);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -357,7 +468,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.opsForHash().values(key);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -370,7 +486,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.opsForHash().size(key);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -384,7 +505,12 @@ public final class RedisUtils {
 		try {
 			return redisTemplate.opsForHash().hasKey(key, hashKey);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	
@@ -397,7 +523,12 @@ public final class RedisUtils {
 		try {
 			redisTemplate.opsForHash().delete(key, hashKey);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 
@@ -412,7 +543,12 @@ public final class RedisUtils {
 			RedisAtomicLong counter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
 			return counter.addAndGet(delta);
 		} catch (Exception e) {
-			throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
 		}
 	}
 	

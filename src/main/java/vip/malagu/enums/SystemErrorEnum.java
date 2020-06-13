@@ -95,14 +95,19 @@ public enum SystemErrorEnum implements ICustomException {
 	REDIS_NOT_CONNECTION("600", "Redis链接失败,请检查"),
 	
 	/**
-	 * 601  连接错误、请联系管理员（数据库备份接口）
+	 * 601 Redis缓存数据失败,请检查
 	 */
-	DATABASE_CONNECTION_ERROR("601", "连接错误、请联系管理员"),
+	REDIS_CACHE_ERROR("601", "Redis缓存数据失败,请检查"),
 	
 	/**
-	 * 602  数据库连接失败、请检查配置是否填写错误或联系管理员
+	 * 602  连接错误、请联系管理员（数据库备份接口）
 	 */
-	DATABASE_CONNECTION_ERROR_TIP("602", "数据库连接失败、请检查配置是否填写错误或联系管理员");
+	DATABASE_CONNECTION_ERROR("602", "连接错误、请联系管理员"),
+	
+	/**
+	 * 603  数据库连接失败、请检查配置是否填写错误或联系管理员
+	 */
+	DATABASE_CONNECTION_ERROR_TIP("603", "数据库连接失败、请检查配置是否填写错误或联系管理员");
 
 	/**
 	 * 错误状态值
