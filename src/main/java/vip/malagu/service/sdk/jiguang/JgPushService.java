@@ -58,6 +58,7 @@ public class JgPushService {
 		return PushPayload
 			.newBuilder()
 			.setPlatform(Platform.all())
+			.setAudience(Audience.all())
 			.setNotification(buildNotification(content, param))
 			.build();
 	}
