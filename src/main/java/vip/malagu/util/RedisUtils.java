@@ -531,6 +531,26 @@ public final class RedisUtils {
 			}
 		}
 	}
+	
+	/**
+	 * 获取Map中自增数字
+	 * @param key 键
+	 * @param hashKey Map的key
+	 * @param delta 递增的基数
+	 * @return
+	 */
+	public static long getAddNumberForMap(Object key, Object hashKey, long delta) {
+		try {
+			return redisTemplate.opsForHash().increment(key, hashKey, delta);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
 
 	/**
 	 * 获取自增数字
