@@ -16,7 +16,7 @@ import vip.malagu.enums.SystemErrorEnum;
  * 身份证号相关
  * @author Lynn -- 2020年5月22日 上午10:22:56
  */
-public class IdCardUtils {
+public final class IdCardUtils {
 	
 	private IdCardUtils() {}
 

@@ -90,6 +90,16 @@ public enum SystemErrorEnum implements ICustomException {
 	SYSTEM_ANOMALY("500", "对不起，系统异常"),
 	
 	/**
+	 * 508  微信支付参数异常
+	 */
+	WXPAY_ERROR("508", "微信支付参数异常"),
+	
+	/**
+	 * 508  支付宝支付参数异常
+	 */
+	ALIPAY_ERROR("508", "支付宝支付参数异常"),
+	
+	/**
 	 * 600 Redis链接失败,请检查
 	 */
 	REDIS_NOT_CONNECTION("600", "Redis链接失败,请检查"),

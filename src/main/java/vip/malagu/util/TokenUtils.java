@@ -10,7 +10,7 @@ import vip.malagu.enums.SystemErrorEnum;
  * Token相关工具类
  * @author Lynn -- 2020年5月21日 下午5:14:24
  */
-public class TokenUtils {
+public final class TokenUtils {
 	
 	private TokenUtils() {}
 
@@ -37,7 +37,7 @@ public class TokenUtils {
 	 * @return
 	 */
 	public static String checkToken(String type, String orgId, String token) {
-		String tokenInfo = EncryptUtils.decodeToDES(token);
+		String tokenInfo = EncryptUtils.decodeByDES(token);
 		String[] infos = tokenInfo.split("=");
 		if (infos.length != 3) {
 			throw new CustomException(SystemErrorEnum.TOKEN_INVALID);

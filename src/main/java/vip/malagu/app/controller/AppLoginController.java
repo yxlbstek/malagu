@@ -169,7 +169,7 @@ public class AppLoginController {
 	public JsonResult<Object> logout(HttpServletRequest request) {
 		String token = request.getHeader(PropertyConstant.TOKEN);
 		String type = request.getHeader("type");
-		String tokenInfo = EncryptUtils.decodeToDES(token);
+		String tokenInfo = EncryptUtils.decodeByDES(token);
 		String[] infos = tokenInfo.split("=");
 		if (infos.length != 3) {
 			return JsonResult.error(SystemErrorEnum.TOKEN_INVALID);

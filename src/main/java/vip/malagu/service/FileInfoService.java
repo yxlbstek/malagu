@@ -13,4 +13,10 @@ public interface FileInfoService {
 
 	void save(List<FileInfo> fileInfos);
 
+	void deleteModuleFileInfo(String businessId, String module);
+
+	void deleteFileInfo(String fileId);
+
+	void deleteFileInfo(FileInfo fileInfo);
+
 }

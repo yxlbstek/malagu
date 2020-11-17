@@ -33,7 +33,7 @@ public class FileInfoController {
 
 	@Expose
 	public boolean exist(String path) {
-		return FileUtils.exist(path);
+		return FileUtils.existLocal(path);
 	}
 
 }

@@ -21,6 +21,22 @@ public final class AssertUtils {
 	private static final Pattern MOBILE_PATTERN = Pattern.compile("^[1][0-9]{10}$");
 
 	/**
+	 * 异常提示语
+	 * @param msg 异常提示语
+	 */
+	public static void errorMsg(String msg) {
+		throw new CustomException(msg, SystemErrorEnum.FAIL.getStatus());
+	}
+	
+	/**
+	 * 异常提示语
+	 * @param msg 异常提示语
+	 */
+	public static void errorMsg(ICustomException customException) {
+		throw new CustomException(customException);
+	}
+	
+	/**
 	 * 对象不为Null，为Null时抛异常 
 	 * @param obj 对象
 	 * @param customException 错误异常

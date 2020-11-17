@@ -1,5 +1,6 @@
 package vip.malagu.util;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -586,5 +587,151 @@ public final class RedisUtils {
 			return IdUtils.getOnlyNumberId();
 		}
 	}
+	
+	
+	/**
+	 * 向左添加元素
+	 * @param key 键
+	 * @param value 值
+	 */
+	public static void leftPush(Object key, Object value) {
+		try {
+			redisTemplate.opsForList().leftPush(key, value);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 向左添加元素-集合
+	 * @param key 键
+	 * @param values 值（集合）
+	 */
+	public static void leftPushAll(Object key, Collection<Object> values) {
+		try {
+			redisTemplate.opsForList().leftPushAll(key, values);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 向右添加元素
+	 * @param key 键
+	 * @param value 值
+	 */
+	public static void rightPush(Object key, Object value) {
+		try {
+			redisTemplate.opsForList().rightPush(key, value);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 向右添加元素-集合
+	 * @param key 键
+	 * @param values 值（集合）
+	 */
+	public static void rightPushAll(Object key, Collection<Object> values) {
+		try {
+			redisTemplate.opsForList().rightPushAll(key, values);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
 
+	/**
+	 * 向左弹出元素
+	 * @param key 键
+	 * @return
+	 */
+	public static Object leftPop(Object key) {
+		try {
+			return redisTemplate.opsForList().rightPop(key);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 向右弹出元素
+	 * @param key 键
+	 * @return
+	 */
+	public static Object rightPop(Object key) {
+		try {
+			return redisTemplate.opsForList().rightPop(key);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 获取集合长度
+	 * @param key 键
+	 * @return
+	 */
+	public static long size(Object key) {
+		try {
+			return redisTemplate.opsForList().size(key);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 获取集合中指定下标的元素
+	 * @param key 键
+	 * @param index 下标
+	 * @return
+	 */
+	public static Object index(Object key, long index) {
+		try {
+			return redisTemplate.opsForList().index(key, index);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
 }

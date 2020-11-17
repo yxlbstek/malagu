@@ -71,15 +71,19 @@
           <Property name="height">40</Property>
           <Property name="contentOverflow">hidden</Property>
           <Button id="addBtn">
-            <ClientEvent name="onClick" signature="self,arg,dialogUser,dsUser">view.get(&quot;@User&quot;).getPropertyDef(&quot;password&quot;).set(&quot;readOnly&quot;, false);&#xD;
-dsUser.insert({&#xD;
-	administrator: false,&#xD;
-	accountNonExpired: true,&#xD;
-	accountNonLocked: true,&#xD;
-	credentialsNonExpired: true,&#xD;
-	enabled: true&#xD;
-});&#xD;
-dialogUser.show();</ClientEvent>
+            <ClientEvent name="onClick" signature="self,arg,dgLogInfo">if (self.get(&quot;caption&quot;) === &quot;显示过滤工具栏&quot;) {&#xD;
+	dgLogInfo.set(&quot;showFilterBar&quot;, true);&#xD;
+	self.set({&#xD;
+		caption: &quot;隐藏过滤工具栏&quot;,&#xD;
+		iconClass: &quot;fa fa-eye-slash blue-text&quot;&#xD;
+	});&#xD;
+} else {&#xD;
+	dgLogInfo.set(&quot;showFilterBar&quot;, false);&#xD;
+	self.set({&#xD;
+		caption: &quot;显示过滤工具栏&quot;,&#xD;
+		iconClass: &quot;fa fa-eye blue-text&quot;&#xD;
+	});&#xD;
+}</ClientEvent>
             <Property name="caption">显示过滤工具栏</Property>
             <Property name="className">sure</Property>
           </Button>

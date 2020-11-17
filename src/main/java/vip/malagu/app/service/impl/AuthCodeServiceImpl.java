@@ -25,11 +25,8 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 	public void getCode(@RequestBody AuthCodeParam param) {
 		AssertUtils.isNotEmptyParam(param.getPhone(), ErrorTipConstant.USER_PHONE_NOT_EMPTY);
 		AssertUtils.isNotNullParam(param.getCodeType(), ErrorTipConstant.MSG_CODE_TYPE_NOT_EMPTY);
-		String code = "";
-		Object object = RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
-		if (object != null) {
-			code = object.toString();
-		} else {
+		String code = (String) RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
+		if (code == null) {
 			code = String.valueOf(AliyunSendSmsService.randomCode());
 			RedisUtils.setAndTimeout(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone(), code, AliyunSendSmsService.CHECKCODE_VALIDITY_PERIOD, TimeUnit.MINUTES);
 		}
@@ -41,11 +38,11 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 		AssertUtils.isNotEmptyParam(param.getPhone(), ErrorTipConstant.USER_PHONE_NOT_EMPTY);
 		AssertUtils.isNotEmptyParam(param.getCode(), ErrorTipConstant.MSG_CODE_NOT_EMPTY);
 		AssertUtils.isNotNullParam(param.getCodeType(), ErrorTipConstant.MSG_CODE_TYPE_NOT_EMPTY);
-		Object cacheCode = RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
+		String cacheCode = (String) RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
 		if (cacheCode == null) {
 			throw new CustomException(SystemErrorEnum.CODE_NO_EMPTY);
 		}
-		if (!param.getCode().equals(cacheCode.toString())) {
+		if (!param.getCode().equals(cacheCode)) {
 			throw new CustomException(SystemErrorEnum.CODE_INCONFORMITY);
 		}
 		return true;

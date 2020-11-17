@@ -98,3 +98,12 @@
 	font-style: normal !important;
 }
 
+#d_ba {
+	color: #318bf5;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#d_ba:hover {
+	color: #0267df;
+}

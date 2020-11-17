@@ -6,12 +6,12 @@ package vip.malagu.enums;
 public enum JgPushTypeEnum {
 
 	/**
-	 * 所有用户
+	 * 1.所有用户
 	 */
 	ALL(1, "all"),
 
 	/**
-	 * 个人用户
+	 * 2.个人用户
 	 */
 	APPID(2, "appid");
 
