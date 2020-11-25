@@ -44,7 +44,7 @@ window.initPage = function(dataSet, pageControl) {
 	
 	//第一页页码按钮
 	var firstIndexBtn = new dorado.widget.Label({
-		id: "firstIndexBtn",
+		id: dataSet.get("id") + "_firstIndexBtn",
 		text: "1",
 		className: "indexPageBtn",
 		onCreateDom: function(self, arg) {
@@ -124,7 +124,7 @@ window.initPage = function(dataSet, pageControl) {
 		
 		//最后一页页码按钮
 		var lastIndexBtn = new dorado.widget.Label({
-			id: "lastIndexBtn",
+			id: dataSet.get("id") + "_lastIndexBtn",
 			text: window.pageNo,
 			className: "indexPageBtn",
 			onCreateDom: function(self, arg) {
@@ -199,7 +199,7 @@ window.initPage = function(dataSet, pageControl) {
 	
 	//跳转页数Editor
 	var numEditor = new dorado.widget.TextEditor({
-		id: "numEditor",
+		id: dataSet.get("id") + "_numEditor",
 		value: window.currentIndex,
 		className: "numEditor",
 		onFocus: function(self, arg) {
@@ -268,17 +268,17 @@ function indexBtnClick(oldIndex, dataSet) {
 					refreshIndexBtns(window.pageNo - 5);
 				} else if (window.currentIndex == 1) {
 					refreshIndexBtns(2);
-					$("#d_firstIndexBtn").addClass("current");
+					$("#d_" + dataSet.get("id") + "_firstIndexBtn").addClass("current");
 				} else if (window.currentIndex == window.pageNo) {
 					refreshIndexBtns(window.pageNo - 5);
-					$("#d_lastIndexBtn").addClass("current");
+					$("#d_" + dataSet.get("id") + "_lastIndexBtn").addClass("current");
 				}
 			}
 			
 		} else {
 			window.currentIndex = oldIndex;
 		}
-		viewMain.get("#numEditor").set("value", window.currentIndex);
+		viewMain.get("#" + dataSet.get("id") + "_numEditor").set("value", window.currentIndex);
 		dataSet.set("pageNo", window.currentIndex).flush();
 	}
 }
@@ -304,7 +304,7 @@ function leftDouNextClick(dataSet) {
 		refreshIndexBtns(2);
 	} else {
 		refreshIndexBtns(2);
-		$("#d_firstIndexBtn").addClass("current");
+		$("#d_" + dataSet.get("id") + "_firstIndexBtn").addClass("current");
 	}
 	dataSet.set("pageNo", window.currentIndex).flush();
 }
@@ -330,7 +330,7 @@ function rightDouNextClick(dataSet) {
 		refreshIndexBtns(window.pageNo - 5);
 	} else {
 		refreshIndexBtns(window.pageNo - 5);
-		$("#d_lastIndexBtn").addClass("current");
+		$("#d_" + dataSet.get("id") + "_lastIndexBtn").addClass("current");
 	}
 	dataSet.set("pageNo", window.currentIndex).flush();
 }
@@ -344,15 +344,15 @@ function refreshIndexBtns(index) {
 		}
 		index++;
 	});
-	viewMain.get("#numEditor").set("value", window.currentIndex);
+	viewMain.get("#" + dataSet.get("id") + "_numEditor").set("value", window.currentIndex);
 	window.douNextBtnChange = false;
 }
 
 function buildCurrentBtn(oldIndex) {
 	if (oldIndex == 1) {
-		$("#d_firstIndexBtn").addClass("current");
+		$("#d_" + dataSet.get("id") + "_firstIndexBtn").addClass("current");
 	} else if (oldIndex == window.pageNo) {
-		$("#d_lastIndexBtn").addClass("current");
+		$("#d_" + dataSet.get("id") + "_lastIndexBtn").addClass("current");
 	} else {
 		viewMain.get("^centerIndexBtnTags").each(function(btn) {
 			if (oldIndex == parseInt(btn.get("text"))) {
