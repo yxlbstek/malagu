@@ -21,6 +21,7 @@ public class UfloEnvironmentProvider implements EnvironmentProvider {
 	@Qualifier("platformTransactionManager")
 	private PlatformTransactionManager platformTransactionManager;
 
+	
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
