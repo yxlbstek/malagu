@@ -1,10 +1,10 @@
-window.currentIndex = 1;
-window.pageNo = 1;
-window.douNextBtnChange = false;
-
-window.initPage = function(dataSet, pageControl) {
-	pageControl.removeAllChildren();
-	window.pageNo = dataSet.getData().pageCount;
+window.initPage = function(dataSet, pageInfo) {
+	console.log("id: " + pageInfo.get("id"));
+	pageInfo.removeAllChildren();
+	var entityList = dataSet.getData();
+	var pageCount = entityList.pageCount;//总页数
+	var pageNo = entityList.pageNo;//当前页
+	
 	//向左翻页
 	var leftBtnCon = new dorado.widget.Container({
 		className: "pageLeftBtnCon"
@@ -14,7 +14,7 @@ window.initPage = function(dataSet, pageControl) {
 		onCreateDom: function(self, arg) {
 			$(arg.dom).hover(
 				function(){
-					if (window.currentIndex > 1) {
+					if (pageNo > 1) {
 						$(arg.dom).removeClass("leftUnClick");
 						$(arg.dom).addClass("leftClick");
 					} else {
@@ -29,8 +29,10 @@ window.initPage = function(dataSet, pageControl) {
 			)
 		},
 		onClick: function(self, arg) {
-			if (window.currentIndex > 1) {
-				indexBtnClick(window.currentIndex - 1, dataSet);
+			if (pageNo > 1) {
+				pageNo = pageNo - 1;
+				entityList.previousPage();
+				refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 			}
 		}
 	});
@@ -44,22 +46,25 @@ window.initPage = function(dataSet, pageControl) {
 	
 	//第一页页码按钮
 	var firstIndexBtn = new dorado.widget.Label({
-		id: dataSet.get("id") + "_firstIndexBtn",
 		text: "1",
 		className: "indexPageBtn",
+		tags: "otherIndexBtnTags",
 		onCreateDom: function(self, arg) {
-			if (window.currentIndex == 1) {
+			if (pageNo == 1) {
 				$(".indexPageBtn").removeClass("current");
 				$(arg.dom).addClass("current");
 			}
 		},
 		onClick: function(self, arg) {
-			indexBtnClick(parseInt(self.get("text")), dataSet);
+			pageNo = 1;
+			entityList.firstPage();
+			refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 		}
 	});
 	indexBtnCon.addChild(firstIndexBtn);
 	//向左翻5页按钮
 	var leftDouNextBtn = new dorado.widget.Label({
+		id: pageInfo.get("id") + "_leftDouBtn",
 		text: "...",
 		className: "indexPageBtn",
 		onCreateDom: function(self, arg) {
@@ -75,13 +80,15 @@ window.initPage = function(dataSet, pageControl) {
 			)
 		},
 		onClick: function(self, arg) {
-			leftDouNextClick(dataSet);
+			pageNo = pageNo - 5 > 1 ? pageNo -5 : 1;
+			entityList.gotoPage(pageNo);
+			refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 		}
 	});
 	indexBtnCon.addChild(leftDouNextBtn);
 	
-	if (window.pageNo > 7) {
-		//中间页码按钮
+	//中间页码
+	if (pageCount > 7) {
 		for (var i = 2; i <= 6; i++) {
 			var indexBtn = new dorado.widget.Label({
 				text: i,
@@ -89,13 +96,15 @@ window.initPage = function(dataSet, pageControl) {
 				tags: "centerIndexBtnTags",
 				onCreateDom: function(self, arg) {
 					$(arg.dom).addClass("centerIndexBtn");
-					if (parseInt(self.get("text")) == window.currentIndex) {
+					if (parseInt(self.get("text")) == pageNo) {
 						$(".indexPageBtn").removeClass("current");
 						$(arg.dom).addClass("current");
 					}
 				},
 				onClick: function(self, arg) {
-					indexBtnClick(parseInt(self.get("text")), dataSet);
+					pageNo = parseInt(self.get("text"));
+					entityList.gotoPage(pageNo);
+					refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 				}
 			});
 			indexBtnCon.addChild(indexBtn);
@@ -103,6 +112,7 @@ window.initPage = function(dataSet, pageControl) {
 		
 		//向右翻5页按钮
 		var rightDouNextBtn = new dorado.widget.Label({
+			id: pageInfo.get("id") + "_rightDouBtn",
 			text: "...",
 			className: "indexPageBtn",
 			onCreateDom: function(self, arg) {
@@ -117,43 +127,49 @@ window.initPage = function(dataSet, pageControl) {
 				)
 			},
 			onClick: function(self, arg) {
-				rightDouNextClick(dataSet);
+				pageNo = pageNo + 5 >= pageCount ? pageCount : pageNo + 5;
+				entityList.gotoPage(pageNo);
+				refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 			}
 		});
 		indexBtnCon.addChild(rightDouNextBtn);
 		
 		//最后一页页码按钮
 		var lastIndexBtn = new dorado.widget.Label({
-			id: dataSet.get("id") + "_lastIndexBtn",
-			text: window.pageNo,
+			text: pageCount,
 			className: "indexPageBtn",
+			tags: "otherIndexBtnTags",
 			onCreateDom: function(self, arg) {
-				if (window.currentIndex == window.pageNo) {
+				if (pageNo == pageCount) {
 					$(".indexPageBtn").removeClass("current");
 					$(arg.dom).addClass("current");
 				}
 			},
 			onClick: function(self, arg) {
-				indexBtnClick(parseInt(self.get("text")), dataSet);
+				pageNo = pageCount;
+				entityList.lastPage();
+				refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 			}
 		});
 		indexBtnCon.addChild(lastIndexBtn);
 		
 	} else {
-		for (var i = 2; i <= window.pageNo; i++) {
+		for (var i = 2; i <= pageCount; i++) {
 			var indexBtn = new dorado.widget.Label({
 				text: i,
 				className: "indexPageBtn",
 				tags: "centerIndexBtnTags",
 				onCreateDom: function(self, arg) {
 					$(arg.dom).addClass("centerIndexBtn");
-					if (parseInt(self.get("text")) == window.currentIndex) {
+					if (parseInt(self.get("text")) == pageNo) {
 						$(".indexPageBtn").removeClass("current");
 						$(arg.dom).addClass("current");
 					}
 				},
 				onClick: function(self, arg) {
-					indexBtnClick(parseInt(self.get("text")), dataSet);
+					pageNo = parseInt(self.get("text"));
+					entityList.gotoPage(pageNo);
+					refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 				}
 			});
 			indexBtnCon.addChild(indexBtn);
@@ -169,7 +185,7 @@ window.initPage = function(dataSet, pageControl) {
 		onCreateDom: function(self, arg) {
 			$(arg.dom).hover(
 				function(){
-					if (window.currentIndex < pageNo) {
+					if (pageNo < pageCount) {
 						$(arg.dom).removeClass("rightUnClick");
 						$(arg.dom).addClass("rightClick");
 					} else {
@@ -184,8 +200,10 @@ window.initPage = function(dataSet, pageControl) {
 			)
 		},
 		onClick: function(self, arg) {
-			if (window.currentIndex < window.pageNo) {
-				indexBtnClick(window.currentIndex + 1, dataSet);
+			if (pageNo < pageCount) {
+				pageNo = pageNo + 1;
+				entityList.nextPage(pageNo);
+				refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 			}
 		}
 	});
@@ -199,8 +217,8 @@ window.initPage = function(dataSet, pageControl) {
 	
 	//跳转页数Editor
 	var numEditor = new dorado.widget.TextEditor({
-		id: dataSet.get("id") + "_numEditor",
-		value: window.currentIndex,
+		id: pageInfo.get("id") + "_numEditor",
+		value: pageNo,
 		className: "numEditor",
 		onFocus: function(self, arg) {
 			
@@ -208,15 +226,19 @@ window.initPage = function(dataSet, pageControl) {
 		onBlur: function(self, arg) {
 			var reg = /^\+?[1-9][0-9]*$/;
 			if (reg.test(self.get("value"))) {
-				if (window.currentIndex != parseInt(self.get("value"))) {
-					if (parseInt(self.get("value")) >= window.pageNo) {
-						indexBtnClick(window.pageNo, dataSet);
+				if (pageNo != parseInt(self.get("value"))) {
+					if (parseInt(self.get("value")) >= pageCount) {
+						pageNo = pageCount;
+						entityList.lastPage();
+						refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 					} else {
-						indexBtnClick(parseInt(self.get("value")), dataSet);
+						pageNo = parseInt(self.get("value"));
+						entityList.gotoPage(pageNo);
+						refreshPageInfoBtns(pageNo, pageCount, pageInfo);
 					}
 				}
 			} else {
-				self.set("value", window.currentIndex);
+				self.set("value", pageNo);
 			}
 		}
 	});
@@ -227,153 +249,75 @@ window.initPage = function(dataSet, pageControl) {
 		className: "yLabel"
 	});
 	
-	pageControl.addChild(leftBtnCon);
-	pageControl.addChild(indexBtnCon);
-	pageControl.addChild(pageRightBtnCon);
-	pageControl.addChild(leftLabel);
-	pageControl.addChild(numEditor);
-	pageControl.addChild(rightLabel);
+	pageInfo.addChild(leftBtnCon);
+	pageInfo.addChild(indexBtnCon);
+	pageInfo.addChild(pageRightBtnCon);
+	pageInfo.addChild(leftLabel);
+	pageInfo.addChild(numEditor);
+	pageInfo.addChild(rightLabel);
 }
 
-function indexBtnClick(oldIndex, dataSet) {
-	if (window.currentIndex != oldIndex) {
-		$(".indexPageBtn").removeClass("current");
-		buildCurrentBtn(oldIndex);
-		if (window.pageNo > 7) {
-			if (oldIndex >= 5) {
-				$(".leftDouNext").removeClass("leftHide");
-			} else {
-				$(".leftDouNext").addClass("leftHide");
-			}
-				
-			if (oldIndex + 2 < window.pageNo - 1) {
-				$(".rightDouNext").removeClass("rightHide");
-			} else {
-				$(".rightDouNext").addClass("rightHide");
-			}
-			
-			if ((window.currentIndex < 5 && oldIndex >= 5)
-					|| (window.currentIndex >= 5 && oldIndex <= 5)
-					|| (window.currentIndex >= 5 && oldIndex > 5 && oldIndex <= window.pageNo - 3) ) {
-				window.douNextBtnChange = true;
-			}
-
-			window.currentIndex = oldIndex;
-			if (window.douNextBtnChange) {
-				if (window.currentIndex > 4 && window.currentIndex < window.pageNo - 3) {
-					refreshIndexBtns(window.currentIndex - 2);
-				} else if (window.currentIndex > 1 && window.currentIndex <= 4) {
-					refreshIndexBtns(2);
-				} else if (window.currentIndex < window.pageNo && window.currentIndex >= window.pageNo - 4) {
-					refreshIndexBtns(window.pageNo - 5);
-				} else if (window.currentIndex == 1) {
-					refreshIndexBtns(2);
-					$("#d_" + dataSet.get("id") + "_firstIndexBtn").addClass("current");
-				} else if (window.currentIndex == window.pageNo) {
-					refreshIndexBtns(window.pageNo - 5);
-					$("#d_" + dataSet.get("id") + "_lastIndexBtn").addClass("current");
-				}
-			}
-			
+/**
+ * 构造pageInfo信息
+ * @param pageNo 当前页
+ * @param pageCount 总页数
+ * @param pageInfo 
+ */
+function refreshPageInfoBtns(pageNo, pageCount, pageInfo) {
+	if (pageCount > 7) {
+		//隐藏、显示  左右翻5页按钮
+		if (pageNo >= 5) {
+			$("#d_" + pageInfo.get("id") + "_leftDouBtn").removeClass("leftHide");
 		} else {
-			window.currentIndex = oldIndex;
+			$("#d_" + pageInfo.get("id") + "_leftDouBtn").addClass("leftHide");
 		}
-		viewMain.get("#" + dataSet.get("id") + "_numEditor").set("value", window.currentIndex);
-		dataSet.set("pageNo", window.currentIndex).flush();
+			
+		if (pageNo < pageCount - 3) {
+			$("#d_" + pageInfo.get("id") + "_rightDouBtn").removeClass("rightHide");
+		} else {
+			$("#d_" + pageInfo.get("id") + "_rightDouBtn").addClass("rightHide");
+		}
+		
+		//给中间按钮重新赋值
+		if ((pageNo > 1 && pageNo <= 4) || pageNo == 1) {
+			changeCenterIndexBtnsText(2, pageNo);
+		} else if (pageNo > 4 && pageNo < pageCount - 3) {
+			changeCenterIndexBtnsText(pageNo - 2, pageNo);
+		} else if ((pageNo < pageCount && pageNo >= pageCount - 4) || pageNo == pageCount) {
+			changeCenterIndexBtnsText(pageCount - 5, pageNo);
+		}
 	}
+	
+	//跳转编辑框赋值
+	viewMain.get("#" + pageInfo.get("id") + "_numEditor").set("value", pageNo);
+	
+	//构造当前按钮
+	$(".indexPageBtn").removeClass("current");
+	viewMain.get("^otherIndexBtnTags").each(function(btn) {
+		if (pageNo == parseInt(btn.get("text"))) {
+			$(btn._dom).addClass("current");
+		}
+	});
+	viewMain.get("^centerIndexBtnTags").each(function(btn) {
+		if (pageNo == parseInt(btn.get("text"))) {
+			$(btn._dom).addClass("current");
+		}
+	});
 }
 
-function leftDouNextClick(dataSet) {
-	window.currentIndex -= 5;
-	if (window.currentIndex >= 5) {
-		$(".leftDouNext").removeClass("leftHide");
-	} else {
-		$(".leftDouNext").addClass("leftHide");
-	}
-	
-	if (window.currentIndex + 2 < window.pageNo - 1) {
-		$(".rightDouNext").removeClass("rightHide");
-	} else {
-		$(".rightDouNext").addClass("rightHide");
-	}
-	
-	
-	if (window.currentIndex > 4) {
-		refreshIndexBtns(window.currentIndex - 2);
-	} else if (window.currentIndex > 1 && window.currentIndex <= 4) {
-		refreshIndexBtns(2);
-	} else {
-		refreshIndexBtns(2);
-		$("#d_" + dataSet.get("id") + "_firstIndexBtn").addClass("current");
-	}
-	dataSet.set("pageNo", window.currentIndex).flush();
-}
-
-function rightDouNextClick(dataSet) {
-	window.currentIndex += 5;
-	if (window.currentIndex >= 5) {
-		$(".leftDouNext").removeClass("leftHide");
-	} else {
-		$(".leftDouNext").addClass("leftHide");
-	}
-	
-	if (window.currentIndex + 2 < window.pageNo - 1) {
-		$(".rightDouNext").removeClass("rightHide");
-	} else {
-		$(".rightDouNext").addClass("rightHide");
-	}
-	
-	
-	if (window.currentIndex < window.pageNo - 3) {
-		refreshIndexBtns(window.currentIndex - 2);
-	} else if (window.currentIndex < window.pageNo && window.currentIndex >= window.pageNo - 4) {//最后一页
-		refreshIndexBtns(window.pageNo - 5);
-	} else {
-		refreshIndexBtns(window.pageNo - 5);
-		$("#d_" + dataSet.get("id") + "_lastIndexBtn").addClass("current");
-	}
-	dataSet.set("pageNo", window.currentIndex).flush();
-}
-
-function refreshIndexBtns(index) {
+/**
+ * 给中间按钮重新赋值Text
+ * @param index 起始页
+ * @param pageNo 当前页
+ */
+function changeCenterIndexBtnsText(index, pageNo) {
 	$(".indexPageBtn").removeClass("current");
 	viewMain.get("^centerIndexBtnTags").each(function(btn) {
 		btn.set("text", index);
-		if (index == window.currentIndex) {
+		if (index == pageNo) {
 			$(btn._dom).addClass("current");
 		}
 		index++;
 	});
-	viewMain.get("#" + dataSet.get("id") + "_numEditor").set("value", window.currentIndex);
-	window.douNextBtnChange = false;
 }
-
-function buildCurrentBtn(oldIndex) {
-	if (oldIndex == 1) {
-		$("#d_" + dataSet.get("id") + "_firstIndexBtn").addClass("current");
-	} else if (oldIndex == window.pageNo) {
-		$("#d_" + dataSet.get("id") + "_lastIndexBtn").addClass("current");
-	} else {
-		viewMain.get("^centerIndexBtnTags").each(function(btn) {
-			if (oldIndex == parseInt(btn.get("text"))) {
-				$(btn._dom).addClass("current");
-			}
-		});
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
