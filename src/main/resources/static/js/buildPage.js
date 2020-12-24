@@ -1,5 +1,4 @@
 window.initPage = function(dataSet, pageInfo) {
-	console.log("id: " + pageInfo.get("id"));
 	pageInfo.removeAllChildren();
 	var entityList = dataSet.getData();
 	var pageCount = entityList.pageCount;//总页数
