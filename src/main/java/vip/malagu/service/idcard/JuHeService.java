@@ -1,4 +1,4 @@
-package vip.malagu.service.sdk.idcard;
+package vip.malagu.service.idcard;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

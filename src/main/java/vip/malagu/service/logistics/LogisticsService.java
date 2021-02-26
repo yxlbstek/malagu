@@ -1,4 +1,4 @@
-package vip.malagu.service.sdk.logistics;
+package vip.malagu.service.logistics;
 
 import java.io.BufferedReader;
 import java.io.IOException;

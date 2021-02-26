@@ -1,4 +1,4 @@
-package vip.malagu.service.sdk.aliyun;
+package vip.malagu.service.sms;
 
 import java.util.Random;
 
