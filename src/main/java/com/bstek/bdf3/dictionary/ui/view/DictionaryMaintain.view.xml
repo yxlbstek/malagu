@@ -124,7 +124,7 @@
             <DataColumn>
               <Property name="name">code</Property>
               <Property name="property">code</Property>
-              <Property name="align">center</Property>
+              <Property name="align">left</Property>
               <Editor/>
             </DataColumn>
             <DataColumn>
@@ -183,7 +183,7 @@
             <DataColumn>
               <Property name="name">key</Property>
               <Property name="property">key</Property>
-              <Property name="align">center</Property>
+              <Property name="align">left</Property>
               <Editor/>
             </DataColumn>
             <DataColumn>
