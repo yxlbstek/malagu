@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import vip.malagu.app.param.dto.AuthCodeParam;
 import vip.malagu.app.service.AuthCodeService;
+import vip.malagu.common.sdk.alipay.AlipayConfig;
 import vip.malagu.constants.ErrorTipConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
@@ -25,10 +26,10 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 	public void getCode(@RequestBody AuthCodeParam param) {
 		AssertUtils.isNotEmptyParam(param.getPhone(), ErrorTipConstant.USER_PHONE_NOT_EMPTY);
 		AssertUtils.isNotNullParam(param.getCodeType(), ErrorTipConstant.MSG_CODE_TYPE_NOT_EMPTY);
-		String code = (String) RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
+		String code = (String) RedisUtils.get(AlipayConfig.getTypeString(param.getCodeType()) + param.getPhone());
 		if (code == null) {
 			code = String.valueOf(AliyunSendSmsService.randomCode());
-			RedisUtils.setAndTimeout(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone(), code, AliyunSendSmsService.CHECKCODE_VALIDITY_PERIOD, TimeUnit.MINUTES);
+			RedisUtils.setAndTimeout(AlipayConfig.getTypeString(param.getCodeType()) + param.getPhone(), code, AlipayConfig.CHECKCODE_VALIDITY_PERIOD, TimeUnit.MINUTES);
 		}
 		aliyunSendSmsService.sendSms(param.getPhone(), param.getCodeType(), code);
 	}
@@ -38,7 +39,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 		AssertUtils.isNotEmptyParam(param.getPhone(), ErrorTipConstant.USER_PHONE_NOT_EMPTY);
 		AssertUtils.isNotEmptyParam(param.getCode(), ErrorTipConstant.MSG_CODE_NOT_EMPTY);
 		AssertUtils.isNotNullParam(param.getCodeType(), ErrorTipConstant.MSG_CODE_TYPE_NOT_EMPTY);
-		String cacheCode = (String) RedisUtils.get(AliyunSendSmsService.getCodeTypePrefix(param.getCodeType()) + param.getPhone());
+		String cacheCode = (String) RedisUtils.get(AlipayConfig.getTypeString(param.getCodeType()) + param.getPhone());
 		if (cacheCode == null) {
 			throw new CustomException(SystemErrorEnum.CODE_NO_EMPTY);
 		}
