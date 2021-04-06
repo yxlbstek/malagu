@@ -584,7 +584,7 @@ public final class RedisUtils {
 			RedisAtomicLong counter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
 			return counter.addAndGet(delta);
 		} catch (Exception e) {
-			return IdUtils.getOnlyNumberId();
+			return IdUtils.numberId();
 		}
 	}
 	
