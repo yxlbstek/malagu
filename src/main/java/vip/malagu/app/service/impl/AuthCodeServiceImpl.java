@@ -1,5 +1,6 @@
 package vip.malagu.app.service.impl;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import vip.malagu.app.param.dto.AuthCodeParam;
 import vip.malagu.app.service.AuthCodeService;
 import vip.malagu.common.sdk.alipay.AlipayConfig;
+import vip.malagu.common.sdk.alipay.AlipaySendSmsService;
 import vip.malagu.constants.ErrorTipConstant;
 import vip.malagu.custom.exception.CustomException;
 import vip.malagu.enums.SystemErrorEnum;
-import vip.malagu.service.sdk.aliyun.AliyunSendSmsService;
 import vip.malagu.util.AssertUtils;
 import vip.malagu.util.RedisUtils;
 
@@ -20,7 +21,7 @@ import vip.malagu.util.RedisUtils;
 public class AuthCodeServiceImpl implements AuthCodeService {
 
 	@Autowired
-	private AliyunSendSmsService aliyunSendSmsService;
+	private AlipaySendSmsService aliyunSendSmsService;
 
 	@Override
 	public void getCode(@RequestBody AuthCodeParam param) {
@@ -28,7 +29,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 		AssertUtils.isNotNullParam(param.getCodeType(), ErrorTipConstant.MSG_CODE_TYPE_NOT_EMPTY);
 		String code = (String) RedisUtils.get(AlipayConfig.getTypeString(param.getCodeType()) + param.getPhone());
 		if (code == null) {
-			code = String.valueOf(AliyunSendSmsService.randomCode());
+			code = randomCode();
 			RedisUtils.setAndTimeout(AlipayConfig.getTypeString(param.getCodeType()) + param.getPhone(), code, AlipayConfig.CHECKCODE_VALIDITY_PERIOD, TimeUnit.MINUTES);
 		}
 		aliyunSendSmsService.sendSms(param.getPhone(), param.getCodeType(), code);
@@ -47,6 +48,16 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 			throw new CustomException(SystemErrorEnum.CODE_INCONFORMITY);
 		}
 		return true;
+	}
+	
+	
+	public String randomCode() {
+        StringBuilder str = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            str.append(random.nextInt(10));
+        }
+        return str.toString();
 	}
 
 }
