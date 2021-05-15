@@ -760,7 +760,6 @@ if (enabled &amp;&amp; permissions) {
               <Property name="property">id</Property>
               <Property name="readOnly">true</Property>
               <Property name="caption">组件</Property>
-              <Property name="align">center</Property>
               <Editor/>
             </DataColumn>
           </Columns>
