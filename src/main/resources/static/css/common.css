@@ -768,18 +768,21 @@ a {
 	background: #F8F8F8 !important;
 	color: #41549C !important;
 	cursor: pointer;
+	font-weight: bold;
 }
 .second .current-row,
 .second .data-table .row .current-cell {
 	background: #EBEBEB !important;
 	color: #41549C !important;
 	cursor: pointer;
+	font-weight: bold;
 }
 .third .current-row,
 .third .data-table .row .current-cell {
 	background: #cccccc !important;
 	color: #41549C !important;
 	cursor: pointer;
+	font-weight: bold;
 }
 .first .data-table .hover-row,
 .second .data-table .hover-row,
