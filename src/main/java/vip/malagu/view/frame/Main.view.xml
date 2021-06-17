@@ -629,5 +629,121 @@ setInterval(function() {&#xD;
       </Children>
       <Tools/>
     </Dialog>
+    <CustomDropDown id="cascader">
+      <Property name="width">460</Property>
+      <Property name="height">220</Property>
+      <Property name="editable">true</Property>
+      <Property name="autoOpen">true</Property>
+      <Panel layout="hbox align:center;pack:center">
+        <Property name="contentOverflow">hidden</Property>
+        <Buttons/>
+        <Children>
+          <DataGrid>
+            <Property name="dataSet">dsUrl</Property>
+            <Property name="width">150</Property>
+            <Property name="showHeader">false</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="className">first</Property>
+            <DataColumn>
+              <Property name="property">name</Property>
+              <Property name="name">name</Property>
+            </DataColumn>
+          </DataGrid>
+          <DataGrid>
+            <ClientEvent name="onDataRowClick" signature="self,arg,thirdLevelDropDownYt">var children = view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#newProductType.#children.children&quot;);&#xD;
+if (children.entityCount == 0) {&#xD;
+	var id = self.get(&quot;currentEntity&quot;).get(&quot;producttypeid&quot;);&#xD;
+	var projectid = view.get(&quot;#dsProject.data.current&quot;).get(&quot;projectid&quot;);&#xD;
+	var oldfullid = view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).get(&quot;fullid&quot;);&#xD;
+	var fullid = self.get(&quot;currentEntity&quot;).get(&quot;fullid&quot;);&#xD;
+	//业态全名称&#xD;
+	var newfullname = self.get(&quot;currentEntity&quot;).get(&quot;fullname&quot;);&#xD;
+	//获取业态第二层的文字&#xD;
+	var simplename = self.get(&quot;currentEntity&quot;).get(&quot;simplename&quot;);&#xD;
+	var currentItem = view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.oldProductType&quot;);&#xD;
+	var currentItemIsEmpty = true;&#xD;
+	currentItem.each(function(data){&#xD;
+		//判断选中的是不是同一行&#xD;
+		if(data.get(&quot;fullid&quot;) == oldfullid) {&#xD;
+			if(data.get(&quot;simplename&quot;) == simplename){&#xD;
+				currentItemIsEmpty = true;&#xD;
+			}&#xD;
+		} else if(data.get(&quot;simplename&quot;) == simplename){&#xD;
+			currentItemIsEmpty = false;&#xD;
+		}&#xD;
+		&#xD;
+		&#xD;
+	});&#xD;
+	if(currentItemIsEmpty) {&#xD;
+		view.get(&quot;#dgSelectMapping.currentEntity&quot;).set(&quot;newfullid&quot;, fullid);&#xD;
+		view.get(&quot;#dgSelectMapping.currentEntity&quot;).set(&quot;newfullname&quot;, simplename);&#xD;
+		view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).set(&quot;newfullname&quot;,simplename);&#xD;
+		view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).set(&quot;simplename&quot;,simplename);&#xD;
+		view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).set(&quot;projectid&quot;, projectid);&#xD;
+		view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).set(&quot;newfullid&quot;,fullid);&#xD;
+	}else{&#xD;
+		window.silentTip(&quot;warning&quot;, &quot;不能选择相同的新业态.&quot;);&#xD;
+	}&#xD;
+	thirdLevelDropDownYt.close();&#xD;
+}&#xD;
+</ClientEvent>
+            <Property name="dataSet">dsUrl</Property>
+            <Property name="width">150</Property>
+            <Property name="showHeader">false</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="className">second</Property>
+            <DataColumn>
+              <Property name="property">name</Property>
+              <Property name="name">name</Property>
+            </DataColumn>
+          </DataGrid>
+          <DataGrid>
+            <ClientEvent name="onDataRowClick" signature="self,arg,thirdLevelDropDownYt">var id = self.get(&quot;currentEntity&quot;).get(&quot;producttypeid&quot;);&#xD;
+var projectid = view.get(&quot;#dsProject.data.current&quot;).get(&quot;projectid&quot;);&#xD;
+var oldfullid = view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).get(&quot;fullid&quot;);&#xD;
+var fullid = self.get(&quot;currentEntity&quot;).get(&quot;fullid&quot;);&#xD;
+//业态全名称&#xD;
+var newfullname = self.get(&quot;currentEntity&quot;).get(&quot;fullname&quot;);&#xD;
+//获取业态第三层的文字&#xD;
+var simplename = self.get(&quot;currentEntity&quot;).get(&quot;simplename&quot;);&#xD;
+var currentItem = view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.oldProductType&quot;);&#xD;
+var currentItemIsEmpty = true;&#xD;
+currentItem.each(function(data){&#xD;
+	//判断选中的是不是同一行&#xD;
+	if(data.get(&quot;fullid&quot;) == oldfullid) {&#xD;
+		if(data.get(&quot;simplename&quot;) == simplename){&#xD;
+			currentItemIsEmpty = true;&#xD;
+		}&#xD;
+	} else if(data.get(&quot;simplename&quot;) == simplename){&#xD;
+		currentItemIsEmpty = false;&#xD;
+	}&#xD;
+	&#xD;
+	&#xD;
+});&#xD;
+if(currentItemIsEmpty) {&#xD;
+	view.get(&quot;#dgSelectMapping.currentEntity&quot;).set(&quot;newfullid&quot;, fullid);&#xD;
+	view.get(&quot;#dgSelectMapping.currentEntity&quot;).set(&quot;newfullname&quot;, simplename);&#xD;
+	view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).set(&quot;newfullname&quot;,simplename);&#xD;
+	view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).set(&quot;simplename&quot;,simplename);&#xD;
+	view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).set(&quot;projectid&quot;, projectid);&#xD;
+	view.id(&quot;dsCmProductTypeYSDTO&quot;).getData(&quot;#.#oldProductType&quot;).set(&quot;newfullid&quot;,fullid);&#xD;
+}else{&#xD;
+	window.silentTip(&quot;warning&quot;, &quot;不能选择相同的新业态.&quot;);&#xD;
+}&#xD;
+thirdLevelDropDownYt.close();</ClientEvent>
+            <Property name="dataSet">dsUrl</Property>
+            <Property name="width">150</Property>
+            <Property name="showHeader">false</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="className">third</Property>
+            <DataColumn>
+              <Property name="property">name</Property>
+              <Property name="name">name</Property>
+            </DataColumn>
+          </DataGrid>
+        </Children>
+        <Tools/>
+      </Panel>
+    </CustomDropDown>
   </View>
 </ViewConfig>

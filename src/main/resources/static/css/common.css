@@ -730,3 +730,70 @@ a {
 	color: #5AA2F7;
     border: 1px solid #fff !important;
 }
+
+/* 级联下拉框样式   */
+.first,
+.first .row {
+	background-color: #FFF !important;
+}
+.second,
+.second .row {
+	background-color: #F8F8F8 !important;
+}
+.third,
+.third .row {
+	background-color: #EBEBEB !important;
+}
+
+.first, .second, .third {
+	-webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.first .row,
+.second .row,
+.third .row {
+	height: 35px !important;
+}
+.first .row .cell,
+.second .row .cell,
+.third .row .cell {
+	padding-left: 10px;
+	width: 134px !important;
+}
+.first .current-row,
+.first .data-table .row .current-cell {
+	background: #F8F8F8 !important;
+	color: #41549C !important;
+	cursor: pointer;
+}
+.second .current-row,
+.second .data-table .row .current-cell {
+	background: #EBEBEB !important;
+	color: #41549C !important;
+	cursor: pointer;
+}
+.third .current-row,
+.third .data-table .row .current-cell {
+	background: #cccccc !important;
+	color: #41549C !important;
+	cursor: pointer;
+}
+.first .data-table .hover-row,
+.second .data-table .hover-row,
+.third .data-table .hover-row {
+	background: none !important;
+	color: #4367f6 !important;
+	cursor: pointer;
+}
+
+.first .data-table > tbody > tr > td,
+.second .data-table > tbody > tr > td,
+.third .data-table > tbody > tr > td {
+	border-top: 0px solid #FFF !important;
+	border-left: 0px solid #FFF !important;
+    border-right: 0px solid #FFF !important;
+    border-bottom: 0px solid #FFF !important;
+    font-size: 14px; 
+}
