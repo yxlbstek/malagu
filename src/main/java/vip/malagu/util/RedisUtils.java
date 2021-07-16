@@ -2,8 +2,10 @@ package vip.malagu.util;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -11,9 +13,13 @@ import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.RedisStringCommands.SetOption;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 
@@ -85,6 +91,62 @@ public final class RedisUtils {
 	public static void setAndTimeout(Object key, Object value, long time, TimeUnit unit) {
 		try {
 			redisTemplate.opsForValue().set(key, value, time, unit);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 批量存入 map
+	 * @param map
+	 * @return 
+	 */
+	public static void setByPipelined(Map<String, String> map) {
+		try {
+			redisTemplate.executePipelined(new RedisCallback<Object>() {
+	           
+				@Override
+	            public String doInRedis(RedisConnection connection) throws DataAccessException {
+					for (Entry<String, String> entry : map.entrySet()) {
+						connection.set(entry.getKey().getBytes(), entry.getValue().getBytes());
+					}
+	                return null;
+	            }
+				
+	        });
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 批量存入-过期 map
+	 * @param map
+	 * @return 
+	 */
+	public static void setByPipelinedAndTimeout(Map<String, String> map, long time, TimeUnit unit) {
+		try {
+			redisTemplate.executePipelined(new RedisCallback<Object>() {
+	           
+				@Override
+	            public String doInRedis(RedisConnection connection) throws DataAccessException {
+					for (Entry<String, String> entry : map.entrySet()) {
+						connection.set(entry.getKey().getBytes(), entry.getValue().getBytes(), Expiration.from(time, unit), SetOption.UPSERT);
+					}
+	                return null;
+	            }
+				
+	        });
 		} catch (Exception e) {
 			if (e instanceof RedisConnectionFailureException) {
 				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
@@ -465,6 +527,23 @@ public final class RedisUtils {
 	}
 	
 	/**
+	 * 批量移除缓存数据
+	 * @param keys 键
+	 */
+	public static void deleteAll(List<Object> keys) {
+		try {
+			redisTemplate.delete(keys);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
 	 * 存入Map
 	 * @param key 键
 	 * @param hashKey Map的key
@@ -491,6 +570,37 @@ public final class RedisUtils {
 	public static void putAll(Object key, Map<? extends Object, ? extends Object> map) {
 		try {
 			redisTemplate.opsForHash().putAll(key, map);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 批量存入  
+	 * @param key
+	 * @param map
+	 * @return 
+	 */
+	public static void putByPipelined(String key, Map<String, String> map) {
+		try {
+			redisTemplate.executePipelined(new RedisCallback<Object>() {
+	           
+				@Override
+	            public String doInRedis(RedisConnection connection) throws DataAccessException {
+					Map<byte[], byte[]> byteMap = new HashMap<byte[], byte[]>();
+					for (Entry<String, String> entry : map.entrySet()) {
+						byteMap.put(entry.getKey().getBytes(), entry.getValue().getBytes());
+					}
+					connection.hMSet(key.getBytes(), byteMap);
+	                return null;
+	            }
+				
+	        });
 		} catch (Exception e) {
 			if (e instanceof RedisConnectionFailureException) {
 				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
