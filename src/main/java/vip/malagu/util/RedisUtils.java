@@ -9,8 +9,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
 
@@ -56,6 +59,23 @@ public final class RedisUtils {
 	}
 	
 	/**
+	 * 批量存入字符串
+	 * @param map 键-值
+	 */
+	public static void setAll(Map<Object, Object> map) {
+		try {
+			redisTemplate.opsForValue().multiSet(map);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
 	 * 存入字符串 并 设置过期时间
 	 * @param key 键
 	 * @param value 值
@@ -83,6 +103,81 @@ public final class RedisUtils {
 	public static Object get(Object key) {
 		try {
 			return redisTemplate.opsForValue().get(key);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 批量获取字符串
+	 * @param keys 键
+	 * @return 
+	 */
+	public static List<Object> multiGet(List<Object> keys) {
+		try {
+			return redisTemplate.opsForValue().multiGet(keys);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 批量获取
+	 * @param keys 键
+	 * @return 
+	 */
+	public static List<Object> getByPipelined(List<Object> keys) {
+		try {
+			return redisTemplate.executePipelined(new SessionCallback<Object>() {
+	            
+				@Override
+	            public <K, V> Object execute(RedisOperations<K, V> redisOperations) throws DataAccessException {
+	                for (int i = 0; i < keys.size(); i++) {
+	                	get(keys.get(i));
+	                }
+	                return null;
+	            }
+				
+	        });
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 批量获取 Map
+	 * @param key 键
+	 * @param hashKeys 
+	 * @return 
+	 */
+	public static List<Object> getMapValuesByPipelined(Object key, List<Object> hashKeys) {
+		try {
+			return redisTemplate.executePipelined(new SessionCallback<Object>() {
+	           
+				@Override
+	            public <K, V> Object execute(RedisOperations<K, V> redisOperations) throws DataAccessException {
+	                for (int i = 0; i < hashKeys.size(); i++) {
+	                	getMapValue(key, hashKeys.get(i));
+	                }
+	                return null;
+	            }
+				
+	        });
 		} catch (Exception e) {
 			if (e instanceof RedisConnectionFailureException) {
 				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
