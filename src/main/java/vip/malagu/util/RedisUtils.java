@@ -16,9 +16,7 @@ import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStringCommands.SetOption;
 import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.types.Expiration;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Component;
@@ -200,16 +198,14 @@ public final class RedisUtils {
 	 */
 	public static List<Object> getByPipelined(List<Object> keys) {
 		try {
-			return redisTemplate.executePipelined(new SessionCallback<Object>() {
-	            
-				@Override
-	            public <K, V> Object execute(RedisOperations<K, V> redisOperations) throws DataAccessException {
-	                for (int i = 0; i < keys.size(); i++) {
-	                	get(keys.get(i));
-	                }
+			return redisTemplate.executePipelined(new RedisCallback<String>() {
+	            @Override
+	            public String doInRedis(RedisConnection connection) throws DataAccessException {
+	            	for (int i = 0; i < keys.size(); i++) {
+	            		connection.get(keys.get(i).toString().getBytes());
+	            	}
 	                return null;
 	            }
-				
 	        });
 		} catch (Exception e) {
 			if (e instanceof RedisConnectionFailureException) {
@@ -229,17 +225,16 @@ public final class RedisUtils {
 	 */
 	public static List<Object> getMapValuesByPipelined(Object key, List<Object> hashKeys) {
 		try {
-			return redisTemplate.executePipelined(new SessionCallback<Object>() {
-	           
-				@Override
-	            public <K, V> Object execute(RedisOperations<K, V> redisOperations) throws DataAccessException {
-	                for (int i = 0; i < hashKeys.size(); i++) {
-	                	getMapValue(key, hashKeys.get(i));
+			return redisTemplate.executePipelined(new RedisCallback<String>() {
+	            @Override
+	            public String doInRedis(RedisConnection connection) throws DataAccessException {
+	            	for (int i = 0; i < hashKeys.size(); i++) {
+	                    connection.hGet(key.toString().getBytes(), hashKeys.get(i).toString().getBytes());
 	                }
 	                return null;
 	            }
-				
 	        });
+			
 		} catch (Exception e) {
 			if (e instanceof RedisConnectionFailureException) {
 				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
