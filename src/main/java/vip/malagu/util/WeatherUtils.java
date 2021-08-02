@@ -26,6 +26,9 @@ public final class WeatherUtils {
 	
 	private WeatherUtils() {}
 	
+	//高德KEY
+	private static String key = "d21233055636ac56da08e2246055505c";
+	
 	private static RestTemplate restTemplate;
 	
 	@Autowired  
@@ -35,7 +38,7 @@ public final class WeatherUtils {
 
 	public static WeatherCasts getWeather(String cityCode) {
 		try {
-			String weatherUrl = "https://restapi.amap.com/v3/weather/weatherInfo?extensions=all&key=d21233055636ac56da08e2246055505c&city=" + cityCode;
+			String weatherUrl = "https://restapi.amap.com/v3/weather/weatherInfo?extensions=all&key=" + key + "&city=" + cityCode;
 	        ResponseEntity<String> weatherEntity = restTemplate.getForEntity(weatherUrl, String.class);
 	        String weatherBody = weatherEntity.getBody();
 	        Weather weather = JSONObject.parseObject(weatherBody, Weather.class);
@@ -53,7 +56,7 @@ public final class WeatherUtils {
 	
 	public static List<WeatherCasts> getWeathers(String cityCode) {
 		try {
-			String weatherUrl = "https://restapi.amap.com/v3/weather/weatherInfo?extensions=all&key=d21233055636ac56da08e2246055505c&city=" + cityCode;
+			String weatherUrl = "https://restapi.amap.com/v3/weather/weatherInfo?extensions=all&key=" + key + "&city=" + cityCode;
 	        ResponseEntity<String> weatherEntity = restTemplate.getForEntity(weatherUrl, String.class);
 	        String weatherBody = weatherEntity.getBody();
 	        Weather weather = JSONObject.parseObject(weatherBody, Weather.class);
