@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.fastjson.JSONObject;
 
+import vip.malagu.dto.IpResultInfo;
 import vip.malagu.dto.Weather;
 import vip.malagu.dto.WeatherCasts;
 
@@ -69,4 +70,23 @@ public final class WeatherUtils {
         return Collections.emptyList();
 	}
 
+	/**
+	 * 根据IP获取所在城市信息
+	 * @param ip
+	 * @return
+	 */
+	public static IpResultInfo getCityInfo(String ip) {
+		try {
+			String url = "https://restapi.amap.com/v3/ip?key=" + key + "&ip=" + ip;
+	        ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class);
+	        String body = entity.getBody();
+	        IpResultInfo cityInfo = JSONObject.parseObject(body, IpResultInfo.class);
+	        if ("1".equals(cityInfo.getStatus())) {
+	        	return cityInfo;
+	        }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        return null;
+	}
 }
