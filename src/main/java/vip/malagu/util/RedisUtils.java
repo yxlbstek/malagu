@@ -10,7 +10,12 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.ss.formula.functions.T;
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.connection.RedisConnection;
@@ -39,10 +44,53 @@ public final class RedisUtils {
 	
 	private static RedisTemplate<Object, Object> redisTemplate;
 	
+	private static RedissonClient redissonClient;
+	
+    private static String host;
+ 
+    private static String password;
+ 
+    private static Integer port;
+    
+    private static int databaseIndex;
+    
+    @Value("${redis.host}")
+	public void setHost(String host) {
+    	RedisUtils.host = host;
+	}
+
+    @Value("${redis.password}")
+	public void setPassword(String password) {
+    	RedisUtils.password = password;
+	}
+
+    @Value("${redis.port}")
+	public void setPort(Integer port) {
+    	RedisUtils.port = port;
+	}
+
+    @Value("${redis.databaseIndex:0}")
+	public void setDatabaseIndex(int databaseIndex) {
+    	RedisUtils.databaseIndex = databaseIndex;
+	}
+
 	@Autowired  
     public void setRedisTemplate(RedisTemplate<Object, Object> redisTemplate) {  
 		RedisUtils.redisTemplate = redisTemplate;  
     }
+
+	//锁
+	private static RedissonClient redissonClient() {
+		if (redissonClient == null) {
+			Config config = new Config();
+			config.useSingleServer()
+					.setAddress(String.format("redis://%s:%s", host, port))
+					.setDatabase(databaseIndex)
+					.setPassword(password);
+			redissonClient = Redisson.create(config);
+		}
+		return redissonClient;
+	}
 
 	/**
 	 * 存入字符串
@@ -932,6 +980,15 @@ public final class RedisUtils {
 				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
 			}
 		}
+	}
+	
+	/**
+	 * 锁
+	 * @param key 
+	 * @return
+	 */
+	public static RLock getLock(String key) {
+		return redissonClient().getLock(key);
 	}
 	
 }
