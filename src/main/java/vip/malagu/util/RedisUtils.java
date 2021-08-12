@@ -1037,6 +1037,46 @@ public final class RedisUtils {
 	}
 	
 	/**
+	 * 获取指定区间的集合元素
+	 * @param key
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<Object> getList(Object key, long start, long end) {
+		try {
+			return redisTemplate.opsForList().range(key, start, end);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 获取集合元素
+	 * @param key
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	public static List<Object> getAllList(Object key) {
+		try {
+			return redisTemplate.opsForList().range(key, 0, -1);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
 	 * 集合添加指定下表元素
 	 * @param key
 	 * @param index
