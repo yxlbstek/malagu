@@ -91,32 +91,19 @@ public final class ExcelUtils {
 	 */
 	public static List<List<String>> importTxt(MultipartFile file) {
 		List<List<String>> result = new ArrayList<>();
-		InputStreamReader read = null;
-		BufferedReader bufferedReader = null;
-		try {
-			read = new InputStreamReader(file.getInputStream());
-			bufferedReader = new BufferedReader(read);
-			String lineTxt = null;
-            while ((lineTxt = bufferedReader.readLine()) != null) { //这里是一行行读数据，再根据split（）函数来把数字分隔开来。
-                System.out.println(lineTxt);
-                List<String> lineObj = new ArrayList<>();
-                String[] values = lineTxt.split(" ");
-                lineObj.addAll(Arrays.asList(values));
-                result.add(lineObj);
-            }
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (read != null) {
-					read.close();
-				}
-				if (bufferedReader != null) {
-					bufferedReader.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+		try (InputStreamReader read = new InputStreamReader(file.getInputStream())) {
+			try (BufferedReader bufferedReader = new BufferedReader(read)) {
+				String lineTxt = null;
+	            while ((lineTxt = bufferedReader.readLine()) != null) { //这里是一行行读数据，再根据split（）函数来把数字分隔开来。
+	                System.out.println(lineTxt);
+	                List<String> lineObj = new ArrayList<>();
+	                String[] values = lineTxt.split(" ");
+	                lineObj.addAll(Arrays.asList(values));
+	                result.add(lineObj);
+	            }
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return result;
 	}
