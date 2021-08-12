@@ -1037,6 +1037,43 @@ public final class RedisUtils {
 	}
 	
 	/**
+	 * 集合添加指定下表元素
+	 * @param key
+	 * @param index
+	 * @param value
+	 */
+	public static void addToList(Object key, int index, Object value) {
+		try {
+			redisTemplate.opsForList().set(key, index, value);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 删除List中的元素
+	 * @param key
+	 * @param value
+	 */
+	public static void removeToList(Object key, Object value) {
+		try {
+			redisTemplate.opsForList().remove(key, 0, value);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
 	 * 锁
 	 * @param key 
 	 * @return
