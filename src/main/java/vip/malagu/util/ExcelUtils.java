@@ -94,7 +94,7 @@ public final class ExcelUtils {
 		try (InputStreamReader read = new InputStreamReader(file.getInputStream())) {
 			try (BufferedReader bufferedReader = new BufferedReader(read)) {
 				String lineTxt = null;
-	            while ((lineTxt = bufferedReader.readLine()) != null) { //这里是一行行读数据，再根据split（）函数来把数字分隔开来。
+	            while ((lineTxt = bufferedReader.readLine()) != null) {
 	                System.out.println(lineTxt);
 	                List<String> lineObj = new ArrayList<>();
 	                String[] values = lineTxt.split(" ");
