@@ -1,12 +1,15 @@
 package vip.malagu.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -76,6 +79,43 @@ public final class ExcelUtils {
 					}
 				}
 				result.add(obj);
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * 解析Txt文件内容
+	 * @param file
+	 * @return
+	 */
+	public static List<List<String>> importTxt(MultipartFile file) {
+		List<List<String>> result = new ArrayList<>();
+		InputStreamReader read = null;
+		BufferedReader bufferedReader = null;
+		try {
+			read = new InputStreamReader(file.getInputStream());
+			bufferedReader = new BufferedReader(read);
+			String lineTxt = null;
+            while ((lineTxt = bufferedReader.readLine()) != null) { //这里是一行行读数据，再根据split（）函数来把数字分隔开来。
+                System.out.println(lineTxt);
+                List<String> lineObj = new ArrayList<>();
+                String[] values = lineTxt.split(" ");
+                lineObj.addAll(Arrays.asList(values));
+                result.add(lineObj);
+            }
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (read != null) {
+					read.close();
+				}
+				if (bufferedReader != null) {
+					bufferedReader.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		return result;
