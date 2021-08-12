@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisStringCommands.SetOption;
 import org.springframework.data.redis.core.RedisCallback;
@@ -193,6 +194,59 @@ public final class RedisUtils {
 	            }
 				
 	        });
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 获取所有的key
+	 */
+	public static Set<Object> keys() {
+		try {
+			return redisTemplate.keys("*");
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 修改key
+	 * @param oldKey
+	 * @param newKey
+	 */
+	public static void renameKey(Object oldKey, Object newKey) {
+		try {
+			redisTemplate.rename(oldKey, newKey);
+		} catch (Exception e) {
+			if (e instanceof RedisConnectionFailureException) {
+				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
+			} else {
+				e.printStackTrace();
+				throw new CustomException(SystemErrorEnum.REDIS_CACHE_ERROR);
+			}
+		}
+	}
+	
+	/**
+	 * 判断key的类型
+	 * @param key
+	 * @return
+	 */
+	public static String type(String key) {
+		try {
+			DataType dataType = redisTemplate.type(key);
+			return dataType.code();
 		} catch (Exception e) {
 			if (e instanceof RedisConnectionFailureException) {
 				throw new CustomException(SystemErrorEnum.REDIS_NOT_CONNECTION);
