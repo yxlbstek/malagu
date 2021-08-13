@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -96,10 +97,10 @@ public final class ExcelUtils {
 				String lineTxt = null;
 	            while ((lineTxt = bufferedReader.readLine()) != null) {
 	                System.out.println(lineTxt);
-	                List<String> lineObj = new ArrayList<>();
 	                String[] values = lineTxt.split(" ");
-	                lineObj.addAll(Arrays.asList(values));
-	                result.add(lineObj);
+	                if (values.length > 0 && StringUtils.isNotBlank(values[0])) {
+	                	result.add(Arrays.asList(values));
+	                }
 	            }
 			}
 		} catch (Exception e) {
